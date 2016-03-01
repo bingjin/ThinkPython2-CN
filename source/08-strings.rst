@@ -1,3 +1,5 @@
+翻译者　`iphyer <https://github.com/iphyer>`_
+
 Strings
 =======
 
