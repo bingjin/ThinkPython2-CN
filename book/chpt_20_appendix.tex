@@ -669,7 +669,7 @@ space requirements.  See
 \url{http://en.wikipedia.org/wiki/Analysis_of_algorithms}.
 
 {\em 算法分析} ({\bf Analysis of algorithms}) 是计算机科学的一个分支，
- 其研究算法的性能， 特别是他们运行的时间和对资源空间的需求。
+ 着重研究算法的性能， 特别是他们的运行时间和对资源空间的需求。
 见：\href{http://en.wikipedia.org/wiki/Analysis_of_algorithms}{算法分析\textsuperscript{(维基百科)}} 。
 \index{algorithm} \index{analysis of algorithms}
 
@@ -864,7 +864,7 @@ belong to the same order of growth, which is written $O(n)$ in
 {\bf Big-Oh notation} and often called {\bf linear} because every function
 in the set grows linearly with $n$.
 
-{\em 增长阶数}\footnote{译注：又译{\em 增长数量级}} (order of growth) 是一个函数集合， 其渐近的增长行为被认为是相当的。
+{\em 增长阶数}\footnote{译注：又译{\em 增长数量级}，{\em 增长级}； 即：算法性能}} (order of growth) 是一个函数集合， 其渐近的增长行为被认为是相当的。
 例如 $2n$ 、 $100n$ 和 $n+1$ 属于相同的增长阶数，
 被用 \href{https://zh.wikipedia.org/wiki/%E5%A4%A7O%E7%AC%A6%E5%8F%B7}{{\em 大{\em O}符号}} (Big-Oh notation) 写成 $O(n)$ ，
 而且通常被称作 {\em 线性的} (linear) ，
@@ -882,7 +882,7 @@ The following table shows some of the orders of growth that
 appear most commonly in algorithmic analysis,
 in increasing order of badness.
 
-下表按照计算性能开销逐渐增大的顺序排列显示了算法分析中最通常的一些增长阶数。
+下表按照计算性能开销效率降序顺序排列显示了算法分析中最通常的一些增长阶数。
 \index{badness}
 
 \begin{tabular}{|r|r|r|}
@@ -900,16 +900,30 @@ $O(c^n)$           & exponential (for any $c$)    \\
 \hline
 \end{tabular}
 
+\begin{tabular}{|r|r|r|}
+\hline
+增长阶数     &   名称      \\
+\hline
+$O(1)$             & 常数级 \\
+$O(\log_b n)$      & 对数级 (对于任意 $b$) \\
+$O(n)$             & 线性级 \\
+$O(n \log_b n)$    & 线性对数级 \\
+$O(n^2)$           & 二次方级     \\
+$O(n^3)$           & 三次方级     \\
+$O(c^n)$           & 指数级 (对于任意 $c$)    \\
+\hline
+\end{tabular}
+
 For the logarithmic terms, the base of the logarithm doesn't matter;
 changing bases is the equivalent of multiplying by a constant, which
 doesn't change the order of growth.  Similarly, all exponential
 functions belong to the same order of growth regardless of the base of
 the exponent. Exponential functions grow very quickly, so exponential algorithms are only useful for small problems.
 
-对于 log 项， log 的基数没有什么关系。
-改变阶数等价于乘以一个常数，其不改变增长阶数。
-简单来讲，如果不考虑指数的基数，指数函数属于相同的增长结束。
-指数函数增长的非常快，因此指数级算法只对于小问题有用。
+对于对数级数， 对数的基数并不影响增长阶数。
+改变阶数等价于乘以一个常数， 其不改变增长阶数。
+相应的， 所有的指数级数都属于相同的增长阶数， 而无需考虑指数的基数大小
+指数函数增长阶数增长的非常快， 因此指数级算法只用于小规模问题。
 \index{logarithmic growth}  \index{exponential growth}
 
 
@@ -977,16 +991,16 @@ division takes even longer, but these run times don't depend on the
 magnitude of the operands.  Very large integers are an exception; in
 that case the run time increases with the number of digits.
 
-大部分算术运算是常数时间的。乘法通常比加减法用更长的时间，
-除法甚至更长，但是这些运行时间不依赖运算数的数量级。
-非常大的整数是个例外，在这种情况下，运行时间随着位数的增加而增加。
+大部分算术运算的开销是常数级的。 乘法会比加减法用更长的时间，
+除法更长，但是这些运算时间不依赖被运算数的数量级。
+非常大的整数却是个例外，在这种情况下，运行时间随着位数的增加而增加。
 \index{analysis of primitives}
 
 Indexing operations---reading or writing elements in a sequence
 or dictionary---are also constant time, regardless of the size
 of the data structure.
 
-索引运算 － 在序列或字典中读或写元素–也是常数时间， 不考虑数据结构的大小。
+索引操作 --- 在序列或字典中读或写元素 --- 在不考虑数据结构的大小的情况下也是常数级的。
 \index{indexing}
 
 A {\tt for} loop that traverses a sequence or dictionary is
