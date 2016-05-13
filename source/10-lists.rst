@@ -235,7 +235,7 @@ Python为列表提供了一些方法. 例如, ``append`` 添加一个新元素�
 
 
 \ ``total``\ 被初始化为 0。每次循环时, ``x`` 从列表中获取一个元素。
-运算符 += 提供了一个快捷的更新变量的方法。这个 **增量赋值语句（augmented assignment statement）** 
+运算符 += 提供了一个快捷的更新变量的方法。这个 **增量赋值语句（augmented assignment statement）**
 
 ::
 
