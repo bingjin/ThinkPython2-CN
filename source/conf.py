@@ -32,7 +32,8 @@ import os
 extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
-    'sphinx.ext.mathjax',
+    # 'sphinx.ext.mathjax',
+    'sphinx.ext.imgmath',
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
 ]
@@ -42,8 +43,13 @@ templates_path = ['_templates']
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
-# source_suffix = ['.rst', '.md']
-source_suffix = '.rst'
+from recommonmark.parser import CommonMarkParser
+
+source_parsers = {
+    '.md': CommonMarkParser,
+}
+
+source_suffix = ['.rst', '.md']
 
 # The encoding of source files.
 #source_encoding = 'utf-8-sig'
@@ -52,17 +58,17 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = '《Think Python 2ed》中译本'
-copyright = '2016, EarlGrey et.al'
+project = u'《Think Python 2e》中译本'
+copyright = '2016, EarlGrey et.al@codingpy.com'
 author = 'Allen Downey'
-translator = 'EarlGrey'
+translator = 'EarlGrey et al'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
 # The short X.Y version.
-version = '1.0'
+version = ''
 # The full version, including alpha/beta/rc tags.
 release = '1.0'
 
@@ -211,36 +217,45 @@ html_use_smartypants = True
 #html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = '《Think Python 2ed》中译本'
+htmlhelp_basename = u'《Think Python 2e》中译本'
 
 # -- Options for LaTeX output ---------------------------------------------
 
+f = open('latexonly.tex', 'r+')
+PREAMBLE = f.read()
+
 latex_elements = {
-# The paper size ('letterpaper' or 'a4paper').
-#'papersize': 'letterpaper',
-
-# The font size ('10pt', '11pt' or '12pt').
-#'pointsize': '10pt',
-
-# Additional stuff for the LaTeX preamble.
-#'preamble': '',
-
-# Latex figure (float) alignment
-#'figure_align': 'htbp',
+    # The paper size ('letterpaper' or 'a4paper').
+    'papersize': 'letterpaper',
+    'pointsize': '10pt',
+    'babel': '',  # 必須
+    'inputenc': '',  # 必須
+    'utf8extra': '',  # 必須
+    'fncychap': '\\usepackage[Sonny]{fncychap}',
+    'releasename': "",
+    'printindex': '',
+    'maketitle': '',
+    'fontpkg': '',
+    # Additional stuff for the LaTeX preamble.
+    'preamble': PREAMBLE,
+    # Latex figure (float) alignment
+    'figure_align': 'htbp',
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'ThinkPython2ndEditionChineseTranslation.tex', 'Think Python 2nd Edition Chinese Translation Documentation',
+    (master_doc, 'ThinkPython2e.tex', 'Think Python 2e 中译版 ',
      'Allen Downey', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
 # the title page.
-#latex_logo = None
-
+latex_logo = '_static/cover.jpg'
+latex_show_pagerefs = False
+latex_domain_indices = False
+latex_use_modindex = False
 # For "manual" documents, if this is true, then toplevel headings are parts,
 # not chapters.
 #latex_use_parts = False
@@ -263,7 +278,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'thinkpython2ndeditionchinesetranslation', 'Think Python 2nd Edition Chinese Translation Documentation',
+    (master_doc, 'thinkpython2e-cn', u'Think Python 2e中文版',
      [author], 1)
 ]
 
@@ -277,8 +292,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'ThinkPython2ndEditionChineseTranslation', 'Think Python 2nd Edition Chinese Translation Documentation',
-     author, 'ThinkPython2ndEditionChineseTranslation', 'One line description of project.',
+    (master_doc, 'thinkpython2e-cn', u'Think Python 2e中文版',
+     author, 'thinkpython2e-cn', 'One line description of project.',
      'Miscellaneous'),
 ]
 
@@ -300,7 +315,7 @@ texinfo_documents = [
 # Bibliographic Dublin Core info.
 epub_title = project
 epub_author = author
-epub_publisher = author
+epub_publisher = translator
 epub_copyright = copyright
 
 # The basename for the epub file. It defaults to the project name.
@@ -310,24 +325,24 @@ epub_copyright = copyright
 # optimized for small screen space, using the same theme for HTML and epub
 # output is usually not wise. This defaults to 'epub', a theme designed to save
 # visual space.
-#epub_theme = 'epub'
+epub_theme = 'epub'
 
 # The language of the text. It defaults to the language option
 # or 'en' if the language is not set.
 #epub_language = ''
 
 # The scheme of the identifier. Typical schemes are ISBN or URL.
-#epub_scheme = ''
+epub_scheme = 'URL'
 
 # The unique identifier of the text. This can be a ISBN number
 # or the project homepage.
-#epub_identifier = ''
+epub_identifier = 'http://codingpy.com/books/thinkpython2/'
 
 # A unique identification for the text.
-#epub_uid = ''
+epub_uid = 'Think Python 2e'
 
 # A tuple containing the cover image and cover page html template filenames.
-#epub_cover = ()
+epub_cover = ('_static/cover.jpg', 'epub_cover.html')
 
 # A sequence of (type, uri, title) tuples for the guide element of content.opf.
 #epub_guide = ()
@@ -341,7 +356,8 @@ epub_copyright = copyright
 #epub_post_files = []
 
 # A list of files that should not be packed into the epub file.
-epub_exclude_files = ['search.html']
+epub_exclude_files = ['search.html', '_static/opensearch.xml', '_static/doctools.js', '_static/jquery.js',
+                      '_static/searchtools.js', '_static/underscore.js', '_static/basic.css', '_static/websupport.js']
 
 # The depth of the table of contents in toc.ncx.
 #epub_tocdepth = 3
@@ -359,7 +375,50 @@ epub_exclude_files = ['search.html']
 #epub_max_image_width = 0
 
 # How to display URL addresses: 'footnote', 'no', or 'inline'.
-#epub_show_urls = 'inline'
+epub_show_urls = 'no'
 
 # If false, no index is generated.
 #epub_use_index = True
+
+epub3_page_progression_direction = 'default'
+
+# -- Options for Mobi output ---------------------------------------------------
+
+mobi_theme = "mobi"
+mobi_title = project
+mobi_author = author
+mobi_publisher = translator
+mobi_copyright = copyright
+
+# The scheme of the identifier. Typical schemes are ISBN or URL.
+#mobi_scheme = ''
+
+# The unique identifier of the text. This can be a ISBN number
+# or the project homepage.
+#mobi_identifier = ''
+
+# A unique identification for the text.
+#mobi_uid = ''
+
+mobi_cover = "cover.png"
+
+# HTML files that should be inserted before the pages created by sphinx.
+# The format is a list of tuples containing the path and title.
+#mobi_pre_files = []
+
+# HTML files shat should be inserted after the pages created by sphinx.
+# The format is a list of tuples containing the path and title.
+#mobi_post_files = []
+
+# A list of files that should not be packed into the mobi file.
+mobi_exclude_files = ['_static/opensearch.xml', '_static/doctools.js',
+    '_static/jquery.js', '_static/searchtools.js', '_static/underscore.js',
+    '_static/basic.css', 'search.html', '_static/websupport.js']
+
+# The depth of the table of contents in toc.ncx.
+mobi_tocdepth = 2
+
+# Allow duplicate toc entries.
+mobi_tocdup = False
+
+mobi_add_visible_links = False

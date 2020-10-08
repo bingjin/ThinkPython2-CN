@@ -1,0 +1,956 @@
+
+
+% 👣 Chapter 1
+
+
+%🍁% \chapter{The way of the program  ｜  程序之道}
+\chapter{程序之道}
+
+%🍁% The goal of this book is to teach you to think like a computer
+%🍁% scientist.  This way of thinking combines some of the best features of
+%🍁% mathematics, engineering, and natural science.  Like mathematicians,
+%🍁% computer scientists use formal languages to denote ideas (specifically
+%🍁% computations).  Like engineers, they design things, assembling
+%🍁% components into systems and evaluating tradeoffs among alternatives.
+%🍁% Like scientists, they observe the behavior of complex systems, form
+%🍁% hypotheses, and test predictions.
+
+本书的目标是教你像计算机科学家一样思考。  
+这一思考方式集成了数学、工程以及自然科学的一些最好的特点。  
+像数学家一样，计算机科学家使用形式语言表示思想（具体来说是计算）。  
+像工程师一样，计算机科学家设计东西，将零件组成系统，在各种选择之间寻求平衡。  
+像科学家一样，计算机科学家观察复杂系统的行为，形成假设并且对预测进行检验。  
+
+\index{problem solving}
+\index{问题求解}
+
+%🍁% The single most important skill for a computer scientist is {\bf
+%🍁% problem solving}.  Problem solving means the ability to formulate
+%🍁% problems, think creatively about solutions, and express a solution
+%🍁% clearly and accurately.  As it turns out, the process of learning to
+%🍁% program is an excellent opportunity to practice problem-solving
+%🍁% skills.  That's why this chapter is called, ``The way of the
+%🍁% program''.
+
+对于计算机科学家，最重要的技能是 {\em 问题求解} 的能力 。  
+问题求解 (problem solving) 意味着对问题进行形式化， 寻求创新型的解决方案， 
+并且清晰、 准确地表达解决方案的能力。  
+事实证明， 学习编程的过程是锻炼问题解决能力的一个绝佳机会。  
+这就是为什么本章被称为``程序之道''。
+
+%🍁% On one level, you will be learning to program, a useful skill by
+%🍁% itself.  On another level, you will use programming as a means to an
+%🍁% end.  As we go along, that end will become clearer.
+
+一方面， 你将学习如何编程， 这本身就是一个有用的技能。  
+另一方面， 你将把编程作为实现自己目的的手段。  
+随着学习的深入， 你会更清楚自己的目的。
+
+%🍁% \section{What is a program?  |  什么是程序？}
+\section{什么是程序？}
+
+
+%🍁% A {\bf program} is a sequence of instructions that specifies how to
+%🍁% perform a computation.  The computation might be something
+%🍁% mathematical, such as solving a system of equations or finding the
+%🍁% roots of a polynomial, but it can also be a symbolic computation, such
+%🍁% as searching and replacing text in a document or something
+%🍁% graphical, like processing an image or playing a video.
+
+{\em 程序}是一系列定义计算机如何执行计算 (computation) 的指令。 这种计算可以是数学上的计算， 例如寻找公式的解或多项式的根， 也可以是一个符号计算 (symbolic computation)， 例如在文档中搜索并替换文本或者图片， 就像处理图片或播放视频。
+
+\index{program}
+\index{程序}
+
+%🍁% The details look different in different languages, but a few basic
+%🍁% instructions appear in just about every language:
+
+不同编程语言所写程序的细节各不一样，但是一些基本的指令几乎出现在每种语言当中：
+
+%🍁% \begin{description}
+%🍁%
+%🍁% \item[input:] Get data from the keyboard, a file, the network, or some
+%🍁% other device.
+%🍁%
+%🍁% \item[output:] Display data on the screen, save it in a
+%🍁% file, send it over the network, etc.
+%🍁%
+%🍁% \item[math:] Perform basic mathematical operations like addition and
+%🍁% multiplication.
+%🍁%
+%🍁% \item[conditional execution:] Check for certain conditions and
+%🍁% run the appropriate code.
+%🍁%
+%🍁% \item[repetition:] Perform some action repeatedly, usually with
+%🍁% some variation.
+%🍁%
+%🍁% \end{description}
+
+\begin{description}
+
+\item[输入 (input)：] 从键盘、文件、网络或者其他设备获取数据。
+
+\item[输出 (output)：] 在屏幕上显示数据， 将数据保存至文件， 通过网络传送数据， 等等。
+
+\item[数学 (math)：] 执行基本的数学运算， 如加法和乘法。
+
+\item[有条件执行 (conditional execution):] 检查符合某个条件后， 执行相应的代码。
+
+\item[重复 (repetition):] 检查符合某个条件后， 执行相应的代码。
+
+\end{description}
+
+%🍁% Believe it or not, that's pretty much all there is to it.  Every
+%🍁% program you've ever used, no matter how complicated, is made up of
+%🍁% instructions that look pretty much like these.  So you can think of
+%🍁% programming as the process of breaking a large, complex task
+%🍁% into smaller and smaller subtasks until the subtasks are
+%🍁% simple enough to be performed with one of these basic instructions.
+
+无论你是否相信， 程序的全部指令几乎都在这了。  
+每个你曾经用过的程序， 无论多么复杂， 都是由跟这些差不多的指令构成的。  
+因此， 你可以认为编程就是将庞大、 复杂的任务分解为越来越小的子任务， 直到这些子任务简单到可以用这其中的一个基本指令执行。
+
+
+%🍁% \section{Running Python  |  运行 Python}
+\section{运行 Python}
+
+%🍁% One of the challenges of getting started with Python is that you
+%🍁% might have to install Python and related software on your computer.
+%🍁% If you are familiar with your operating system, and especially
+%🍁% if you are comfortable with the command-line interface, you will
+%🍁% have no trouble installing Python.  But for beginners, it can be
+%🍁% painful to learn about system administration and programming at the
+%🍁% same time.
+
+Python入门的一个障碍， 是你可能需要在电脑上安装 Python 和相关软件。  
+如果你能熟练使用命令行 (command-line interface) ， 安装 Python 对你来说就不是问题了。  
+但对于初学者， 同时学习系统管理 (system administration) 和编程这两方面的知识是件痛苦的事。
+
+\index{running Python}  \index{Python!running}
+\index{运行 Python}  \index{Python!运行}
+
+%🍁% To avoid that problem, I recommend that you start out running Python
+%🍁% in a browser.  Later, when you are comfortable with Python, I'll
+%🍁% make suggestions for installing Python on your computer.
+
+为了避免这个问题，我建议你首先在浏览器中运行 Python。  
+等你对Python更加了解之后，我会建议你在电脑上安装 Python。
+
+\index{Python in a browser}
+\index{浏览器中运行 Python}
+
+
+%🍁% There are a number of web pages you can use to run Python.  If you
+%🍁% already have a favorite, go ahead and use it.  Otherwise I recommend
+%🍁% PythonAnywhere.  I provide detailed instructions for getting started
+%🍁% at \url{http://tinyurl.com/thinkpython2e}.
+
+网络上有许多网页可以让你运行 Python 。  
+如果你已经有最喜欢的网站， 那就打开网页运行 Python 吧。  
+如果没有， 我推荐 PythonAnywhere 。  
+在 \href{http://tinyurl.com/thinkpython2e}{http://tinyurl.com/thinkpython2e} 我给出了详细的使用指南。
+
+\index{PythonAnywhere}
+\label{python_anywhere}
+
+%🍁% There are two versions of Python, called Python 2 and Python 3.
+%🍁% They are very similar, so if you learn one, it is easy to switch
+%🍁% to the other.  In fact, there are only a few differences you will
+%🍁% encounter as a beginner.
+%🍁% This book is written for Python 3, but I include some notes
+%🍁% about Python 2.
+
+目前Python有两个版本， 分别是 Python 2 和 Python 3 。  
+二者十分相似， 因此如果你学过某个版本， 可以很容易地切换到另一个版本。  
+事实上， 作为初学者， 你只会接触到很少数的不同之处。  
+本书采用的是 Python 3 ，但是我会加入一些关于 Python 2 的说明。
+
+\index{Python 2}
+
+%🍁% The Python {\bf interpreter} is a program that reads and executes
+%🍁% Python code.  Depending on your environment, you might start the
+%🍁% interpreter by clicking on an icon, or by typing {\tt python} on
+%🍁% a command line.
+%🍁% When it starts, you should see output like this:
+
+Python 的 {\em 解释器} 是一个读取并执行 Python 代码的程序。  
+根据你的电脑环境不同， 你可以通过双击图标， 或者在命令行输入 \li{python} 的方式来启动解释器。  
+解释器启动后， 你应该看到类似下面的输出：
+\index{interpreter}
+\index{解释器}
+
+\begin{lstlisting}
+Python 3.4.0 (default, Jun 19 2015, 14:20:21)
+[GCC 4.8.2] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>>
+\end{lstlisting}
+
+%
+%🍁% The first three lines contain information about the interpreter
+%🍁% and the operating system it's running on, so it might be different for
+%🍁% you.  But you should check that the version number, which is
+%🍁% {\tt 3.4.0} in this example, begins with 3, which indicates that
+%🍁% you are running Python 3.  If it begins with 2, you are running
+%🍁% (you guessed it) Python 2.
+
+前三行中包含了关于解释器及其运行的操作系统的信息， 因此你看到的内容可能不一样。  
+但是你应该检查下版本号是否以 3 开头， 上面示例中的版本号是 3.4.0。  
+如果以 3 开头， 那说明你正在运行 Python 3。  
+如果以 2 开头， 那说明你正在运行（你猜对了） Python 2。
+
+%🍁% The last line is a {\bf prompt} that indicates that the interpreter is
+%🍁% ready for you to enter code.
+%🍁% If you type a line of code and hit Enter, the interpreter displays the
+%🍁% result:
+
+最后一行是一个 {\em 提示符} (prompt)， 表明你可以在解释器中输入代码了。  
+如果你输入一行代码然后按回车 (Enter)， 解释器就会显示结果：
+
+\index{prompt}
+\index{提示符}
+
+\begin{lstlisting}
+>>> 1 + 1
+2
+\end{lstlisting}
+
+%
+%🍁% Now you're ready to get started.
+%🍁% From here on, I assume that you know how to start the Python
+%🍁% interpreter and run code.
+
+现在你已经做好了开始学习的准备。  
+接下来， 我将默认你已经知道如何启动 Python 解释器和执行代码。
+
+
+%🍁% \section{The first program  |  第一个程序}
+\section{第一个程序}
+
+\label{hello}
+\index{Hello, World}
+
+%🍁% Traditionally, the first program you write in a new language
+%🍁% is called ``Hello, World!'' because all it does is display the
+%🍁% words ``Hello, World!''.  In Python, it looks like this:
+
+根据惯例， 学习使用一门语言写的第一个程序叫做 ``Hello, World!'' ， 
+因为它的功能就是显示单词 ``Hello, World!'' 。  
+在 Python 中，这个程序看起来像这样：
+
+\begin{lstlisting}
+>>> print('Hello, World!')
+\end{lstlisting}
+
+%
+%🍁% This is an example of a {\bf print statement}, although it
+%🍁% doesn't actually print anything on paper.  It displays a result on the
+%🍁% screen.  In this case, the result is the words:
+
+这是一个 \li{print} {\em 函数}的示例，尽管它并不会真的在纸上打印。  
+它将结果显示在屏幕上。  在此例中，结果是单词：
+
+\begin{lstlisting}
+Hello, World!
+\end{lstlisting}
+
+%
+%🍁% The quotation marks in the program mark the beginning and end
+%🍁% of the text to be displayed; they don't appear in the result.
+
+程序中的单引号标记了被打印文本的首尾；它们不会出现在结果中。
+\index{quotation mark}  \index{print statement}  \index{statement!print}
+
+\index{引用号}  \index{打印语句}  \index{语句!打印}
+
+%🍁% The parentheses indicate that {\tt print} is a function.  We'll get
+%🍁% to functions in Chapter~\ref{funcchap}.
+
+括号说明 print 是一个函数。 我们将在第三章介绍函数。
+
+\index{function} \index{print function}
+\index{函数} \index{打印函数}
+
+%🍁% In Python 2, the print statement is slightly different; it is not
+%🍁% a function, so it doesn't use parentheses.
+
+Python 2 中的打印语句略微不同， 打印语句在 Python 2 中并不是一个函数， 因此不需要使用括号。
+\index{Python 2}
+
+\begin{lstlisting}
+>>> print 'Hello, World!'
+\end{lstlisting}
+
+%
+%🍁% This distinction will make more sense soon, but that's enough to
+%🍁% get started.
+
+很快你就会明白二者之间的区别\footnote{译注：Python核心开发者Brett Cannon详细解释了 \href{http://codingpy.com/article/why-print-became-a-function-in-python-3/}{为什么print在Python 3中变成了函数}。 }，现在知道这些就足够了。
+
+%🍁% \section{Arithmetic operators  |  算术运算符}
+\section{算术运算符}
+\index{operator!arithmetic}  \index{arithmetic operator}
+\index{运算符!算术}  \index{算术运算符}
+
+%🍁% After ``Hello, World'', the next step is arithmetic.  Python provides
+%🍁% {\bf operators}, which are special symbols that represent computations
+%🍁% like addition and multiplication.
+
+接下来介绍算术。  
+Python 提供了许多代表加法和乘法等运算的特殊符号，叫做 {\em 运算符} (operators)。
+
+%🍁% The operators \li{+}, \li{-}, and \li{*} perform addition, subtraction, and multiplication, as in the following examples:
+
+运算符 \li{+} 、\li{-} 和 \li{*} 分别执行加法、减法和乘法，详见以下示例：
+
+\begin{lstlisting}
+>>> 40 + 2
+42
+>>> 43 - 1
+42
+>>> 6 * 7
+42
+\end{lstlisting}
+
+%
+%🍁%The operator \li{/} performs division:
+
+运算符 \li{/} 执行除法运算：
+
+
+\begin{lstlisting}
+>>> 84 / 2
+42.0
+\end{lstlisting}
+
+%
+%🍁% You might wonder why the result is {\tt 42.0} instead of {\tt 42}.
+%🍁% I'll explain in the next section.
+
+你可能会疑惑结果为什么是 \li{42.0} 而不是 \li{42} 。 \hyperref[value_types]{下节}中我们会进行解释。
+
+%🍁% Finally, the operator {\tt **} performs exponentiation; that is,
+%🍁% it raises a number to a power:
+
+最后，运算符 \li{*} 执行乘方运算；也就是说，它将某个数字乘以自身相应的次数：
+
+\begin{lstlisting}
+>>> 6**2 + 6
+42
+\end{lstlisting}
+
+
+%
+%🍁% In some other languages, \verb"^" is used for exponentiation, but
+%🍁% in Python it is a bitwise operator called XOR.  If you are not
+%🍁% familiar with bitwise operators, the result will surprise you:
+
+某些语言使用 \li{^} 运算符执行乘方运算，但是在 Python 中， 它却属于一种位运算符， 叫做 XOR 。 如果你对位运算符不太了解， 那么下面的结果会让你感到惊讶：
+
+\begin{lstlisting}
+>>> 6 ^ 2
+4
+\end{lstlisting}
+
+%
+%🍁% I won't cover
+%🍁% bitwise operators in this book, but you can read about
+%🍁% them at \url{http://wiki.python.org/moin/BitwiseOperators}.
+
+我们不会在本书中过深涉及位运算符， 你可以通过阅读 \href{http://wiki.python.org/moin/BitwiseOperators}{位运算符}\textsuperscript{(Python百科)} ， 了解相关内容。
+\index{bitwise operator}  \index{operator!bitwise}
+\index{位运算符}  \index{运算符!位运算符}
+
+
+%%
+%🍁% \section{Values and types  |  值和类型}
+\section{值和类型}
+\index{value}  \index{type}  \index{string}
+\index{值}  \index{类型}  \index{字符串}
+\label{value_types}
+
+%🍁%  A {\bf value} is one of the basic things a program works with, like a
+%🍁%  letter or a number.  Some values we have seen so far are {\tt 2},
+%🍁%  {\tt 42.0}, and \verb"'Hello, World!'".
+
+{\em 值} (value) 是程序处理的基本数据之一， 一个单词或一个数字都是值的实例。  
+我们目前已经接触到的值有： \li{2} ， \li{42.0} ， 和 \li{'Hello World!'} 。  
+
+%🍁%  These values belong to different {\bf types}:
+%🍁%  {\tt 2} is an {\bf integer}, {\tt 42.0} is a {\bf floating-point number},
+%🍁%  and \verb"'Hello, World!'" is a {\bf string},
+%🍁%  so-called because the letters it contains are strung together.
+
+这些值又属于不同的 {\em 类型} (types) ： 
+\li{2} 是一个 {\em 整型}数 (integer)， 
+\li{42.0} 是一个 {\em 浮点型}数 (floating point number)， 
+而 \li{'Hello, World!'} 则是一个  {\em 字符串} (string)， 
+这么称呼是因为其中的字符被串\footnote{strung together}在了一起。
+
+\index{integer}  \index{floating-point}
+\index{整型}  \index{浮点型}
+
+%🍁% If you are not sure what type a value has, the interpreter can
+%🍁% tell you:
+
+如果你不确定某个值的类型是什么，{\em 解释器}可以告诉你：
+
+\begin{lstlisting}
+>>> type(2)
+<class 'int'>
+>>> type(42.0)
+<class 'float'>
+>>> type('Hello, World!')
+<class 'str'>
+\end{lstlisting}
+
+%
+%🍁% In these results, the word ``class'' is used in the sense of
+%🍁% a category; a type is a category of values.
+
+``class'' 一词在上面的输出结果中，是类别的意思；一个类型就是一个类别的值。
+\index{class}  \index{类}
+
+%🍁% Not surprisingly, integers belong to the type {\tt int},
+%🍁% strings belong to {\tt str} and floating-point
+%🍁% numbers belong to {\tt float}.
+
+不出意料，整型数属于 \li{int} 类型，字符串属于 \li{str} 类型，浮点数属于 \li{float} 类型。
+\index{type}  \index{string type}  \index{type!str}
+\index{int type}  \index{type!int}  \index{float type}
+\index{type!float}
+\index{类}  \index{string 类}  \index{类!str}
+\index{int 类}  \index{类!int}  \index{float 类}
+\index{类!float}
+
+%🍁% What about values like \verb"'2'" and \verb"'42.0'"?
+%🍁% They look like numbers, but they are in quotation marks like
+%🍁% strings.
+
+那么像 \li{'2'} 和 \li{'42.0'} 这样的值呢？它们看上去像数字，但是又和字符串一样被引号括在了一起？
+\index{quotation mark}  \index{引号}
+
+\begin{lstlisting}
+>>> type('2')
+<class 'str'>
+>>> type('42.0')
+<class 'str'>
+\end{lstlisting}
+
+%
+%🍁% They're strings.
+
+它们其实是字符串。
+
+%🍁% When you type a large integer, you might be tempted to use commas
+%🍁% between groups of digits, as in {\tt 1,000,000}.  This is not a
+%🍁% legal {\em integer} in Python, but it is legal:
+
+当你输入一个大数值的整型数时，你可能会想用逗号进行区分，比如说像这样：\li{1,000,000}。 在Python中，这不是一个合法的{\em 整型数}，但是确实合法的值。
+
+\begin{lstlisting}
+>>> 1,000,000
+(1, 0, 0)
+\end{lstlisting}
+%
+%🍁% That's not what we expected at all!  Python interprets {\tt
+%🍁% 1,000,000} as a comma-separated sequence of integers.  We'll learn
+%🍁% more about this kind of sequence later.
+
+结果和我们预料的完全不同！ Python 把 \li{1,000,000} 当作成了一个以逗号区分的整型数序列。 在后面的章节中，我们会介绍更多有关这种序列的知识。
+\index{sequence}
+
+%This is the first example we have seen of a semantic error: the code
+%runs without producing an error message, but it doesn't do the
+%``right'' thing.
+%\index{semantic error}
+%\index{error!semantic}
+%\index{error message}
+% TODO: use this as an example of a semantic error later
+
+
+%🍁% \section{Formal and natural languages  |  形式语言和自然语言}
+\section{形式语言和自然语言}
+\index{formal language}  \index{natural language}
+\index{language!formal}  \index{language!natural}
+\index{形式语言}  \index{自然语言}
+\index{语言!形式}  \index{语言!自然}
+
+
+%🍁% {\bf Natural languages} are the languages people speak,
+%🍁% such as English, Spanish, and French.  They were not designed
+%🍁% by people (although people try to impose some order on them);
+%🍁% they evolved naturally.
+
+{\em 自然语言} (natural language) 是人们交流所使用的语言，例如英语、西班牙语和法语。 它们不是人为设计出来的（尽管有人试图这样做）；而是自然演变而来。
+
+%🍁%  {\bf Formal languages} are languages that are designed by people for
+%🍁%  specific applications.  For example, the notation that mathematicians
+%🍁%  use is a formal language that is particularly good at denoting
+%🍁%  relationships among numbers and symbols.  Chemists use a formal
+%🍁%  language to represent the chemical structure of molecules.  And
+%🍁%  most importantly:
+
+{\em 形式语言} (formal languages) 是人类为了特殊用途而设计出来的。  例如， 数学家使用的记号 (notation) 就是形式语言， 特别擅长表示数字和符号之间的关系。  化学家使用形式语言表示分子的化学结构。  最重要的是：
+
+%🍁%  \begin{quote}
+%🍁%  {\bf Programming languages are formal languages that have been
+%🍁%  designed to express computations.}
+%🍁%  \end{quote}
+
+\begin{quote}
+\textbf{编程语言是被设计用于表达计算的形式语言。 }
+\end{quote}
+
+%🍁% Formal languages tend to have strict {\bf syntax} rules that
+%🍁% govern the structure of statements.
+%🍁% For example, in mathematics the statement
+%🍁% $3 + 3 = 6$ has correct syntax, but
+%🍁% $3 + = 3 \$ 6$ does not.  In chemistry
+%🍁% $H_2O$ is a syntactically correct formula, but $_2Zz$ is not.
+
+形式语言通常拥有严格的 {\em 语法} 规则，规定了详细的语句结构。 例如， $3 + 3 = 6$ 是语法正确的数学表达式，而 $3 + = 3 \$ 6$ 则不是； $H_2O$ 是语法正确的化学式，而 $_2Zz$ 则不是。
+
+\index{syntax}
+\index{语法}
+
+%🍁% Syntax rules come in two flavors, pertaining to {\bf tokens} and
+%🍁% structure.  Tokens are the basic elements of the language, such as
+%🍁% words, numbers, and chemical elements.  One of the problems with
+%🍁% $3 += 3 \$ 6$ is that \( \$ \) is not a legal token in mathematics
+%🍁% (at least as far as I know).  Similarly, $_2Zz$ is not legal because
+%🍁% there is no element with the abbreviation $Zz$.
+
+语法规则有两种类型，分别涉及{\em 记号} (tokens) 和 结构。  
+记号是语言的基本元素，例如单词、数字和化学元素。  
+$3 + = 3 \$ 6$ 这个式子的问题之一， 
+就是 \$ 在数学中不是一个合法的记号 （至少据我所知）。  
+类似的， $_2Zz$ 也不合法，因为没有一个元素的简写是  $Zz$ 。
+
+\index{token}  \index{structure}
+\index{记号}  \index{结构}
+
+%🍁% The second type of syntax rule pertains to the way tokens are
+%🍁% combined.  The equation $3 += 3$ is illegal because even though $+$
+%🍁% and $=$ are legal tokens, you can't have one right after the other.
+%🍁% Similarly, in a chemical formula the subscript comes after the element
+%🍁% name, not before.
+
+第二种语法规则与标记的组合方式有关。  $3 + = 3$ 这个方程是非法的，因为即使 $+$ 和 $=$ 都是合法的记号，但是你却不能把它们俩紧挨在一起。 类似的，在化学式中，下标位于元素之后，而不是之前。
+
+This is @ well-structured Engli\$h
+sentence with invalid t*kens in it.  This sentence all valid tokens
+has, but invalid structure with.
+\footnote{译注： 上面两句英文都是不符合语法的， 一个包含非法标记， 另一个结构不符合语法。 }
+
+%🍁% When you read a sentence in English or a statement in a formal
+%🍁% language, you have to figure out the structure
+%🍁% (although in a natural language you do this subconsciously).  This
+%🍁% process is called {\bf parsing}.
+
+当你读一个用英语写的句子或者用形式语言写的语句时，你都必须要理清各自的结构（尽管在阅读自然语言时，你是下意识地进行的）。 这个过程被称为 {\em 解析} (parsing)。
+
+\index{parse}  \index{解析}
+
+%🍁% Although formal and natural languages have many features in
+%🍁% common---tokens, structure, and syntax---there are some
+%🍁% differences:
+
+虽然形式语言和自然语言有很多共同点 --- 标记、结构和语法，它们也有一些不同：
+
+\index{ambiguity}  \index{redundancy}  \index{literalness}
+
+%🍁% \begin{description}
+%🍁%
+%🍁% \item[ambiguity:] Natural languages are full of ambiguity, which
+%🍁% people deal with by using contextual clues and other information.
+%🍁% Formal languages are designed to be nearly or completely unambiguous,
+%🍁% which means that any statement has exactly one meaning,
+%🍁% regardless of context.
+%🍁%
+%🍁% \item[redundancy:] In order to make up for ambiguity and reduce
+%🍁% misunderstandings, natural languages employ lots of
+%🍁% redundancy.  As a result, they are often verbose.  Formal languages
+%🍁% are less redundant and more concise.
+%🍁%
+%🍁% \item[literalness:] Natural languages are full of idiom and metaphor.
+%🍁% If I say, ``The penny dropped'', there is probably no penny and
+%🍁% nothing dropping (this idiom means that someone understood something
+%🍁% after a period of confusion).  Formal languages
+%🍁% mean exactly what they say.
+%🍁%
+%🍁% \end{description}
+
+\begin{description}
+
+\item[歧义性 (ambiguity)：] 自然语言充满歧义，人们使用上下文线索以及其它信息处理这些歧义。 形式语言被设计成几乎或者完全没有歧义，这意味着不管上下文是什么，任何语句都只有一个意义。
+
+\item[冗余性 (redundancy)：] 为了弥补歧义性并减少误解，自然语言使用很多冗余。 结果，自然语言经常很冗长。 形式语言则冗余较少，更简洁。
+
+\item[字面性 (literalness)：] 自然语言充满成语和隐喻。 如果我说``The penny dropped''，可能根本没有便士、也没什么东西掉下来（这个成语的意思是，经过一段时间的困惑后终于理解某事）。 形式语言的含义，与它们字面的意思完全一致。
+
+\end{description}
+
+%🍁% Because we all grow up speaking natural languages, it is sometimes
+%🍁% hard to adjust to formal languages.  The difference between formal and
+%🍁% natural language is like the difference between poetry and prose, but
+%🍁% more so:
+
+由于我们都是说着自然语言长大的， 我们有时候很难适应形式语言。  
+形式语言与自然语言之间的不同， 类似诗歌与散文之间的差异， 而且更加明显：
+
+\index{poetry} \index{prose}
+
+%🍁% \begin{description}
+%🍁%
+%🍁% \item[Poetry:] Words are used for their sounds as well as for
+%🍁% their meaning, and the whole poem together creates an effect or
+%🍁% emotional response.  Ambiguity is not only common but often
+%🍁% deliberate.
+%🍁%
+%🍁% \item[Prose:] The literal meaning of words is more important,
+%🍁% and the structure contributes more meaning.  Prose is more amenable to
+%🍁% analysis than poetry but still often ambiguous.
+%🍁%
+%🍁% \item[Programs:] The meaning of a computer program is unambiguous
+%🍁% and literal, and can be understood entirely by analysis of the
+%🍁% tokens and structure.
+%🍁%
+%🍁% \end{description}
+
+\begin{description}
+
+\item[诗歌 (Poetry)：] 单词的含义和声音都有作用， 整首诗作为一个整理，会对人产生影响，或是引发情感上的共鸣。  歧义不但常见，而且经常是故意为之。
+
+\item[散文 (Prose)：] 单词表面的含义更重要，句子结构背后的寓意更深。  散文比诗歌更适合分析，但仍然经常有歧义。
+
+\item[程序 (Programs)：] 计算机程序的含义是无歧义、无引申义的， 通过分析程序的标记和结构，即可完全理解。
+
+\end{description}
+
+%🍁% Formal languages are more dense
+%🍁% than natural languages, so it takes longer to read them.  Also, the
+%🍁% structure is important, so it is not always best to read
+%🍁% from top to bottom, left to right.  Instead, learn to parse the
+%🍁% program in your head, identifying the tokens and interpreting the
+%🍁% structure.  Finally, the details matter.  Small errors in
+%🍁% spelling and punctuation, which you can get away
+%🍁% with in natural languages, can make a big difference in a formal
+%🍁% language.
+
+形式语言要比自然语言更加稠密，因此阅读起来花的时间会更长。  
+另外， 形式语言的结构也很重要， 所以从上往下、 从左往右阅读， 并不总是最好的策略。  
+相反， 你得学会在脑海里分析一个程序， 识别不同的标记并理解其结构。  
+最后，注重细节。  拼写和标点方面的小错误在自然语言中无伤大雅， 
+但是在形式语言中却会产生很大的影响。
+
+%🍁% \section{Debugging  |  调试}
+\section{调试}
+\index{debugging}  \index{调试}
+
+%🍁% Programmers make mistakes.  For whimsical reasons, programming errors
+%🍁% are called {\bf bugs} and the process of tracking them down is called
+%🍁% {\bf debugging}.
+
+程序员都会犯错。  
+由于比较奇怪的原因， 编程错误被称为 {\em 故障} \footnote{译注：英文为 bug，一般指虫子}，追踪错误的过程被称为 {\em 调试} (debugging) 。
+
+\index{debugging}  \index{调试}
+\index{bug}  \index{故障}
+
+%🍁% Programming, and especially debugging, sometimes brings out strong
+%🍁% emotions.  If you are struggling with a difficult bug, you might
+%🍁% feel angry, despondent, or embarrassed.
+
+编程，尤其是调试，有时会让人动情绪。  
+如果你有个很难的 bug 解决不了， 你可能会感到愤怒、 沮丧 抑或是 难堪。
+
+%🍁% There is evidence that people naturally respond to computers as if
+%🍁% they were people.  When they work well, we think
+%🍁% of them as teammates, and when they are obstinate or rude, we
+%🍁% respond to them the same way we respond to rude,
+%🍁% obstinate people (Reeves and Nass, {\it The Media
+%🍁%     Equation: How People Treat Computers, Television, and New Media
+%🍁%     Like Real People and Places}).
+
+有证据表明， 人们很自然地把计算机当人来对待。  
+当计算机表现好的时候， 我们认为它们是队友， 而当它们固执或无礼时， 我们也会像对待固执或无礼的人一样对待它们 
+\footnote{Reeves and Nass, {\it The Media Equation: How People Treat Computers, Television, and New Media Like Real People and Places}}。
+
+\index{debugging!emotional response}  \index{emotional debugging}
+\index{调试!情绪反应}  \index{情绪化调试}
+
+%🍁% Preparing for these reactions might help you deal with them.
+%🍁% One approach is to think of the computer as an employee with
+%🍁% certain strengths, like speed and precision, and
+%🍁% particular weaknesses, like lack of empathy and inability
+%🍁% to grasp the big picture.
+
+对这些反应做好准备有助于你对付它们。  一种方法是将计算机看做是一个雇员，拥有特定的长处， 例如速度和精度，也有些特别的缺点，像缺乏沟通以及不善于把握大局。
+
+%🍁% Your job is to be a good manager: find ways to take advantage
+%🍁% of the strengths and mitigate the weaknesses.  And find ways
+%🍁% to use your emotions to engage with the problem,
+%🍁% without letting your reactions interfere with your ability
+%🍁% to work effectively.
+
+你的工作是当一个好的管理者：找到充分利用优点、摒弃弱点的方法。  并且找到使用你的情感来解决问题的方法， 而不是让你的情绪干扰你有效工作的能力。
+
+%🍁% Learning to debug can be frustrating, but it is a valuable skill
+%🍁% that is useful for many activities beyond programming.  At the
+%🍁% end of each chapter there is a section, like this one,
+%🍁% with my suggestions for debugging.  I hope they help!
+
+学习调试可能很令人泄气， 但是它对于许多编程之外的活动也是一个非常有价值的技能。  在每一章的结尾，我都会花一节内容介绍一些调试建议，比如说这一节。 希望能帮到你！
+
+%🍁% \section{Glossary  |  术语表}
+\section{术语表}
+
+\begin{description}
+
+%🍁% \item[problem solving:]  The process of formulating a problem, finding
+%🍁% a solution, and expressing it.
+%🍁% \index{problem solving}
+
+\item[问题求解 (problem solving)：]  将问题形式化、寻找并表达解决方案的过程。
+\index{problem solving}  \index{问题求解}
+
+%🍁% \item[high-level language:]  A programming language like Python that
+%🍁% is designed to be easy for humans to read and write.
+%🍁% \index{high-level language}
+
+\item[高级语言 (high-level language)：]  像Python这样被设计成人类容易阅读和编写的编程语言。
+\index{high-level language}  \index{高级语言}
+
+%🍁% \item[low-level language:]  A programming language that is designed
+%🍁% to be easy for a computer to run; also called ``machine language'' or
+%🍁% ``assembly language''.
+%🍁% \index{low-level language}
+
+\item[低级语言 (low-level language)：]  被设计成计算机容易运行的编程语言；也被称为``机器语言'' (machine language ) 或``汇编语言'' (assembly language)。
+\index{low-level language}  \index{低级语言}
+
+%🍁% \item[portability:]  A property of a program that can run on more
+%🍁% than one kind of computer.
+%🍁% \index{portability}
+
+\item[可移植性 (portability)：]  程序能够在多种计算机上运行的特性。
+\index{portability}  \index{可移植性}
+
+%🍁% \item[interpreter:]  A program that reads another program and executes
+%🍁% it
+%🍁% \index{interpret}
+
+\item[解释器 (interpreter)：]  读取另一个程序并执行该程序的程序。
+\index{interpret}  \index{解释器}
+
+%🍁% \item[prompt:] Characters displayed by the interpreter to indicate
+%🍁% that it is ready to take input from the user.
+%🍁% \index{prompt}
+
+\item[提示符 (prompt)：] 解释器所显示的字符，表明已准备好接受用户的输入。
+\index{prompt}  \index{提示符}
+
+%🍁% \item[program:] A set of instructions that specifies a computation.
+%🍁% \index{program}
+
+\item[程序 (program)：] 一组定义了计算内容的指令。
+\index{program}  \index{程序}
+
+%🍁% \item[print statement:]  An instruction that causes the Python
+%🍁% interpreter to display a value on the screen.
+%🍁% \index{print statement}  \index{statement!print}
+
+\item[打印语句 (print statement)：]  使Python解释器在屏幕上显示某个值的指令。
+\index{print statement}  \index{statement!print}
+\index{打印语句}  \index{语句!打印}
+
+%🍁% \item[operator:]  A special symbol that represents a simple computation like
+%🍁% addition, multiplication, or string concatenation.
+%🍁% \index{operator}
+
+\item[运算符 (operator)：]  代表类似加法、乘法或者字符串连接 (string concatenation) 等简单计算的特殊符号。
+\index{operator}  \index{运算符}
+
+%🍁% \item[value:]  One of the basic units of data, like a number or string,
+%🍁% that a program manipulates.
+%🍁% \index{value}
+
+\item[值 (value)：]  程序所处理数据的基本元素之一，例如数字或字符串。
+\index{value}  \index{值}
+
+%🍁% \item[type:] A category of values.  The types we have seen so far
+%🍁% are integers (type {\tt int}), floating-point numbers (type {\tt
+%🍁% float}), and strings (type {\tt str}).
+%🍁% \index{type}
+
+\item[类型 (type)：] 值的类别。 我们目前接触的类型有整型数（类型为 \li{int}）、浮点数（类型为 \li{float} ）和字符串（类型为 \li{str} ）。
+\index{type}  \index{类型}
+
+%🍁% \item[integer:] A type that represents whole numbers.
+%🍁% \index{integer}
+
+\item[整型数 (integer)：] 代表整数的类型。
+\index{integer}  \index{整形数}
+
+%🍁% \item[floating-point:] A type that represents numbers with fractional
+%🍁% parts.
+%🍁% \index{floating-point}
+
+\item[浮点数 (floating-point)：] 代表一个有小数点的数字的类型。
+\index{floating-point}  \index{浮点数}
+
+%🍁% \item[string:] A type that represents sequences of characters.
+%🍁% \index{string}
+
+\item[字符串 (string)：] A type that represents sequences of characters.
+\index{string}  \index{字符串}
+
+%🍁% \item[natural language:]  Any one of the languages that people speak that
+%🍁% evolved naturally.
+%🍁% \index{natural language}
+
+\item[自然语言 (natural language)：]  任何的人们日常使用的、由自然演变而来的语言。
+\index{natural language}  \index{自然语言}
+
+%🍁% \item[formal language:]  Any one of the languages that people have designed
+%🍁% for specific purposes, such as representing mathematical ideas or
+%🍁% computer programs; all programming languages are formal languages.
+%🍁% \index{formal language}
+
+\item[形式语言 (formal language)：]  任何由人类为了某种目的而设计的语言，例如用来表示数学概念或者电脑程序；所有的编程语言都是形式语言。
+\index{formal language}  \index{形式语言}
+
+%🍁% \item[token:]  One of the basic elements of the syntactic structure of
+%🍁% a program, analogous to a word in a natural language.
+%🍁% \index{token}
+
+\item[记号 (token)：]  程序语法结构中的基本元素之一，与自然语言中的单词类似。
+\index{token}  \index{记号}
+
+%🍁% \item[syntax:] The rules that govern the structure of a program.
+%🍁% \index{syntax}
+
+\item[语法 (syntax)：] 规定了程序结构的规则。
+\index{syntax}  \index{语法}
+
+%🍁% \item[parse:] To examine a program and analyze the syntactic structure.
+%🍁% \index{parse}
+
+\item[解析 (parse)：] 阅读程序，并分析其语法结构的过程
+
+%🍁% \item[bug:] An error in a program.
+%🍁% \index{bug}
+
+\item[故障 (bug)：] 程序中的错误。
+\index{bug}
+
+%🍁% \item[debugging:] The process of finding and correcting bugs.
+%🍁% \index{debugging}
+
+\item[调试 (debugging)：] 寻找并解决错误的过程。
+\index{debugging}  \index{调试}
+
+\end{description}
+
+%🍁% \section{Exercises  |  练习}
+\section{练习}
+
+\begin{exercise}
+
+%🍁% It is a good idea to read this book in front of a computer so you can
+%🍁% try out the examples as you go.
+
+建议读者在电脑上阅读本书，这样你可以随时测试书中的示例。
+
+%🍁% Whenever you are experimenting with a new feature, you should try
+%🍁% to make mistakes.  For example, in the ``Hello, world!'' program,
+%🍁% what happens if you leave out one of the quotation marks?  What
+%🍁% if you leave out both?  What if you spell {\tt print} wrong?
+%🍁% \index{error message}
+
+每当你试验一个新特性的时候，你应该试着去犯错。 举个例子，在 {\em “Hello, World!”} 程序中，如果你漏掉一个引号会发生什么情况？如果你去掉两个引号呢？如果你把 {\em \li{print}} 写错了呢？
+\index{error message}  \index{错误信息}
+
+%🍁% This kind of experiment helps you remember what you read; it also
+%🍁% helps when you are programming, because you get to know what the error
+%🍁% messages mean.  It is better to make mistakes now and on purpose than
+%🍁% later and accidentally.
+
+这类试验能帮助你记忆读过的内容；对你平时编程也有帮助，因为你可以了解不同的错误信息代表的意思。 现在故意犯错误，总胜过以后不小心犯错。
+
+%🍁% \begin{enumerate}
+%🍁%
+%🍁% \item In a print statement, what happens if you leave out one
+%🍁% of the parentheses, or both?
+%🍁%
+%🍁% \item If you are trying to print a string, what happens if you
+%🍁% leave out one of the quotation marks, or both?
+%🍁%
+%🍁% \item You can use a minus sign to make a negative number like
+%🍁% {\tt -2}.  What happens if you put a plus sign before a number?
+%🍁% What about {\tt 2++2}?
+%🍁%
+%🍁% \item In math notation, leading zeros are ok, as in {\tt 02}.
+%🍁% What happens if you try this in Python?
+%🍁%
+%🍁% \item What happens if you have two values with no operator
+%🍁% between them?
+%🍁%
+%🍁% \end{enumerate}
+
+\begin{enumerate}
+
+\item 在打印语句中，如果你去掉一个或两个括号，会发生什么？
+
+\item 你想打印一个字符串，如果你去掉一个或两个引号，会发生什么？
+
+\item 你可以使用减号创建一个负数，如 {\em \li{-2}} 。 如果你在一个数字前再加上个加号，会发生什么？ {\em \li{2++2}} 会得出什么结果？
+
+\item 在数学标记中，前导零 {\em (leading zeros)} 没有问题，如 {\em \li{02}} 。 如果我们在 Python 中这样做，会发生什么？
+
+\item 如果两个值之间没有运算符，又会发生什么？
+
+\end{enumerate}
+
+\end{exercise}
+
+
+
+\begin{exercise}
+
+%🍁%  Start the Python interpreter and use it as a calculator.
+
+%🍁% \begin{enumerate}
+%🍁%
+%🍁% \item How many seconds are there in 42 minutes 42 seconds?
+%🍁%
+%🍁% \item How many miles are there in 10 kilometers?  Hint: there are 1.61
+%🍁%   kilometers in a mile.
+%🍁%
+%🍁% \item If you run a 10 kilometer race in 42 minutes 42 seconds, what is
+%🍁%   your average pace (time per mile in minutes and seconds)?  What is
+%🍁%   your average speed in miles per hour?
+%🍁%
+%🍁% \index{calculator}
+%🍁% \index{running pace}
+%🍁%
+%🍁% \end{enumerate}
+
+启动 {\em Python} 解释器，把它当计算器使用。
+
+\begin{enumerate}
+
+\item {\em 42} 分{\em 42} 秒一共是多少秒？
+
+\item {\em 10}公里可以换算成多少英里？提示：一英里等于{\em 1.61}公里。
+
+\item 如果你花 {\em 42} 分 {\em 42} 秒跑完了 {\em 10} 公里，你的平均配速\footnote{译注：配速（pace）是在马拉松运动的训练中常使用的一个概念，配速是速度的一种，是每公里所需要的时间。 配速=时间/距离。 }是多少（每英里耗时，分别精确到分和秒）？你每小时平均跑了多少英里（英里/时）？
+
+\index{calculator}  \index{计算器}
+\index{running pace}  \index{配速}
+
+\end{enumerate}
+
+\end{exercise}

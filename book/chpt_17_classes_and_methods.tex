@@ -1,0 +1,1153 @@
+
+
+%🍁% \chapter{Classes and methods}
+\chapter{类和方法}
+
+%🍁% Although we are using some of Python's object-oriented features,
+%🍁% the programs from the last two chapters are not really
+%🍁% object-oriented because they don't represent the relationships
+%🍁% between programmer-defined types and the functions that operate
+%🍁% on them.  The next step is to transform those functions into
+%🍁% methods that make the relationships explicit.
+
+虽然我们已经在使用部分 Python 向对象的特性，
+前两个章节中的程序并不是真正面向对象的，
+因为它们没有呈现出程序员自定义类型与对其进行操作的函数之间的关系。
+下一步， 我们将会把这些函数转换成明显突出这一关系的方法。
+
+
+%🍁% Code examples from this chapter are available from
+%🍁% \url{http://thinkpython2.com/code/Time2.py}, and solutions
+%🍁% to the exercises are in \url{http://thinkpython2.com/code/Point2_soln.py}.
+
+本章代码可以从 \href{http://thinkpython2.com/code/Time2.py}{这里} 获取，
+练习题的答案位于\href{http://thinkpython2.com/code/Point2_soln.py}{此处} 。
+
+
+%🍁% \section{Object-oriented features}
+\section{面向对象的特性}
+\index{object-oriented programming}  \index{面向对象编程}
+
+%🍁% Python is an {\bf object-oriented programming language}, which means
+%🍁% that it provides features that support object-oriented
+%🍁% programming, which has these defining characteristics:
+
+Python 是一门 {\em 面向对象的编程语言} (object-oriented programming language)，
+这意味它提供了能够支持面向对象编程的特性。
+面向对象编程具有以下特征：
+
+%🍁% \begin{itemize}
+%🍁%
+%🍁% \item Programs include class and method definitions.
+%🍁%
+%🍁% \item Most of the computation is expressed in terms of operations on
+%🍁%   objects.
+%🍁%
+%🍁% \item Objects often represent things
+%🍁% in the real world, and methods often
+%🍁% correspond to the ways things in the real world interact.
+%🍁%
+%🍁% \end{itemize}
+
+\begin{itemize}
+
+\item 程序包含类和方法定义。
+
+\item 大部分计算以对象上的操作表示。
+
+\item 对象通常代表现实世界的物体， 方法对应现实世界中物体交互的方式。
+
+\end{itemize}
+
+%🍁% For example, the {\tt Time} class defined in Chapter~\ref{time}
+%🍁% corresponds to the way people record the time of day, and the
+%🍁% functions we defined correspond to the kinds of things people do with
+%🍁% times.  Similarly, the {\tt Point} and {\tt Rectangle} classes
+%🍁% in Chapter~\ref{clobjects}
+%🍁% correspond to the mathematical concepts of a point and a rectangle.
+
+例如， 第~\ref{time}章中定义的 \li{Time} 类对应人们用来记录一天中的时间， 其中定义的各种函数对应人们使用时间的方式。
+类似的， 第~\ref{clobjects}章中的 \li{Point} 类和 \li{Rectangle} 类对应数学中点和矩形的概念。
+
+%🍁% So far, we have not taken advantage of the features Python provides to
+%🍁% support object-oriented programming.  These
+%🍁% features are not strictly necessary; most of them provide
+%🍁% alternative syntax for things we have already done.  But in many cases,
+%🍁% the alternative is more concise and more accurately conveys the
+%🍁% structure of the program.
+
+到目前为止， 我们还没有利用Python提供的支持面向对象编程的特性。
+这些特性严格来说并不是必须的；大部分提供的是我们已经实现的功能的替代语法。
+但在很多情况下， 这些替代语法更加简洁， 更准确地表达了程序的结构。
+
+%🍁% For example, in {\tt Time1.py} there is no obvious
+%🍁% connection between the class definition and the function definitions
+%🍁% that follow.  With some examination, it is apparent that every function
+%🍁% takes at least one {\tt Time} object as an argument.
+%🍁% \index{method}
+%🍁% \index{function}
+
+例如， 在 \li{Time1.py} 中， 类定义与之后的函数定义之间没有明显的联系。
+仔细检查之后， 才会发现每个函数都至少接受一个 \li{Time} 对象作为参数。
+
+%🍁% This observation is the motivation for {\bf methods}; a method is
+%🍁% a function that is associated with a particular class.
+%🍁% We have seen methods for strings, lists, dictionaries and tuples.
+%🍁% In this chapter, we will define methods for programmer-defined types.
+
+从这个观察中我们发现了 {\em 方法} ； 方法是一个与特定的类相关联的函数。
+我们已经接触了字符串、列表、字典和元组的方法。
+在这章中， 我们将会定义程序员自定义类型的方法。
+
+\index{syntax}
+\index{semantics}
+\index{programmer-defined type}
+\index{type!programmer-defined}
+
+%🍁% Methods are semantically the same as functions, but there are
+%🍁% two syntactic differences:
+
+方法和函数的语义相同， 但是有两处句法的不同：
+
+%🍁% \begin{itemize}
+%🍁%
+%🍁% \item Methods are defined inside a class definition in order
+%🍁% to make the relationship between the class and the method explicit.
+%🍁%
+%🍁% \item The syntax for invoking a method is different from the
+%🍁% syntax for calling a function.
+%🍁%
+%🍁% \end{itemize}
+
+\begin{itemize}
+
+\item 方法在一个类定义内部声明， 为的是显示地与类进行关联。
+
+\item 调用方法的语法和调用函数的语法不同。
+
+\end{itemize}
+
+%🍁% In the next few sections, we will take the functions from the previous
+%🍁% two chapters and transform them into methods.  This transformation is
+%🍁% purely mechanical; you can do it by following a sequence of
+%🍁% steps.  If you are comfortable converting from one form to another,
+%🍁% you will be able to choose the best form for whatever you are doing.
+
+在接下来的几节中，  我们会把前面两章中的函数转化为方法。
+这个转化是纯机械式的； 你可以通过一系列步骤完成。
+如果你能够轻松地将一种形式转换成另一种形式，  就可以选择最适合目前需求的形式。
+
+%🍁% \section{Printing objects}
+\section{打印对象 }
+\index{object!printing}
+
+%🍁% In Chapter~\ref{time}, we defined a class named
+%🍁% {\tt Time} and in Section~\ref{isafter}, you
+%🍁% wrote a function named \verb"print_time":
+
+在第16章中， 我们定义了一个名叫 \li{Time} 的类，  在 \ref{isafter}~节中，
+你编写了一个叫做 \li{print_time} 的函数：
+
+\begin{lstlisting}
+class Time:
+    """Represents the time of day."""
+
+def print_time(time):
+    print('%.2d:%.2d:%.2d' % (time.hour, time.minute, time.second))
+\end{lstlisting}
+
+%🍁% %
+%🍁% To call this function, you have to pass a {\tt Time} object as an
+%🍁% argument:
+
+想要调用这个函数， 你必须把一个 \li{Time} 对象作为一个参数传递给函数。
+
+\begin{lstlisting}
+>>> start = Time()
+>>> start.hour = 9
+>>> start.minute = 45
+>>> start.second = 00
+>>> print_time(start)
+09:45:00
+\end{lstlisting}
+
+%🍁% %
+%🍁% To make \verb"print_time" a method, all we have to do is
+%🍁% move the function definition inside the class definition.  Notice
+%🍁% the change in indentation.
+
+将 \li{print_time} 变成一个方法， 我们只需要将函数定义移到类定义里面即可。  注意缩进
+的变化。
+\index{indentation}  \index{缩进}
+
+\begin{lstlisting}
+class Time:
+    def print_time(time):
+        print('%.2d:%.2d:%.2d' % (time.hour, time.minute, time.second))
+\end{lstlisting}
+
+%🍁% %
+%🍁% Now there are two ways to call \verb"print_time".  The first
+%🍁% (and less common) way is to use function syntax:
+
+现在有两种方法可以调用 \li{print_time}。   第一种(也是不常用的)是使用函数的语法：
+\index{function syntax}  \index{dot notation}
+
+\begin{lstlisting}
+>>> Time.print_time(start)
+09:45:00
+\end{lstlisting}
+
+%🍁% %
+%🍁% In this use of dot notation, {\tt Time} is the name of the class,
+%🍁% and \verb"print_time" is the name of the method.  {\tt start} is
+%🍁% passed as a parameter.
+
+在这个点标记法的用法中，  \li{Time} 是类的名字， \li{print_time} 是方法的名字。
+\li{start} 是传递的参数。
+
+%🍁% The second (and more concise) way is to use method syntax:
+第二种语法(也更简洁)是使用方法语法：
+\index{method syntax}
+
+\begin{lstlisting}
+>>> start.print_time()
+09:45:00
+\end{lstlisting}
+
+%🍁% %
+%🍁% In this use of dot notation, \verb"print_time" is the name of the
+%🍁% method (again), and {\tt start} is the object the method is
+%🍁% invoked on, which is called the {\bf subject}.  Just as the
+%🍁% subject of a sentence is what the sentence is about, the subject
+%🍁% of a method invocation is what the method is about.
+在这个点标记法的用法中， \li{print_time} 是方法的名称，
+然后 \li{start} 是调用方法的对象， 被称为 {\bf 主语}({\bf subject})。
+就像一个句子的主语是句子的核心， 方法的主语也是方法作用的主要对象。
+\index{subject}
+
+%🍁% Inside the method, the subject is assigned to the first
+%🍁% parameter, so in this case {\tt start} is assigned
+%🍁% to {\tt time}.
+在方法中， 主语被赋值为第一个参数， 所以在这里 \li{start} 被赋值给 \li{time} 上了。
+\index{self (parameter name)}  \index{parameter!self}
+
+%🍁% By convention, the first parameter of a method is
+%🍁% called {\tt self}, so it would be more common to write
+%🍁% \verb"print_time" like this:
+
+根据约定， 方法的第一个参数写作 \li{self} ， 所以 \li{print_time} 写成这样更常见：
+
+\begin{lstlisting}
+class Time:
+    def print_time(self):
+        print('%.2d:%.2d:%.2d' % (self.hour, self.minute, self.second))
+\end{lstlisting}
+
+%
+%🍁% The reason for this convention is an implicit metaphor:
+使用该约定原因在于一种暗喻：
+\index{metaphor, method invocation}
+
+%🍁% \begin{itemize}
+%🍁%
+%🍁% \item The syntax for a function call, \verb"print_time(start)",
+%🍁%   suggests that the function is the active agent.  It says something
+%🍁%   like, ``Hey \verb"print_time"!  Here's an object for you to print.''
+%🍁%
+%🍁% \item In object-oriented programming, the objects are the active
+%🍁%   agents.  A method invocation like \verb"start.print_time()" says
+%🍁%   ``Hey {\tt start}!  Please print yourself.''
+%🍁%
+%🍁% \end{itemize}
+
+\begin{itemize}
+
+\item 在函数调用的语法中， \li{print_time(start)} 表示函数是一个活跃的代理。
+就像是在说 ``Hi, print\_time! 这有一个对象需要你打印''。
+
+\item 在面向对象编程中， 对象是活跃的代理。    一个类似 \li{start.print_time()} 的方法调用， 就像是在说 ``Hi start! 请打印你自己''。
+
+\end{itemize}
+
+%🍁% This change in perspective might be more polite, but it is not obvious
+%🍁% that it is useful.  In the examples we have seen so far, it may not
+%🍁% be.  But sometimes shifting responsibility from the functions onto the
+%🍁% objects makes it possible to write more versatile functions (or
+%🍁% methods), and makes it easier to maintain and reuse code.
+
+视角的转换似乎让语气变得更文雅些了， 但很难看出其好处。
+在前面的例子中， 的确如此。
+但是将职责从函数上面转移到对象上， 可以更加容易地写出多样化的函数(或方法)，
+并且代码将更加容易维护和复用。
+
+%🍁% As an exercise, rewrite \verb"time_to_int" (from
+%🍁% Section~\ref{prototype}) as a method.  You might be tempted to
+%🍁% rewrite \verb"int_to_time" as a method, too, but that doesn't
+%🍁% really make sense because there would be no object to invoke
+%🍁% it on.
+
+我们做个练习， 将 \li{time_to_int} (见 \ref{prototype}~节)重写为方法。
+你或许也想将 \li{int_to_time} 改写为方法，  但是那样做并没有什么意义，  因为没有调用它的对象。
+
+%🍁% \section{Another example}
+\section{再举一例}
+\index{increment}
+
+%🍁% Here's a version of {\tt increment} (from Section~\ref{increment})
+%🍁% rewritten as a method:
+
+下面是 \li{increment} (见 \ref{increment}~节 )改写为方法后的代码版本：
+
+\begin{lstlisting}
+# inside class Time:
+
+    def increment(self, seconds):
+        seconds += self.time_to_int()
+        return int_to_time(seconds)
+\end{lstlisting}
+
+%
+%🍁% This version assumes that \verb"time_to_int" is written
+%🍁% as a method.  Also, note that
+%🍁% it is a pure function, not a modifier.
+
+这个版本假设 \li{time_to_int} 已经改成了方法。    另外， 注意这是一个纯函数， 不是修改器。
+
+%🍁% Here's how you would invoke {\tt increment}:
+
+下面是调用 \li{increment} 的方法：
+
+\begin{lstlisting}
+>>> start.print_time()
+09:45:00
+>>> end = start.increment(1337)
+>>> end.print_time()
+10:07:17
+\end{lstlisting}
+
+%
+%🍁% The subject, {\tt start}, gets assigned to the first parameter,
+%🍁% {\tt self}.  The argument, {\tt 1337}, gets assigned to the
+%🍁% second parameter, {\tt seconds}.
+
+主语 \li{start} 被赋值给第一个形参 \li{self}。
+实参 \li{1337} 被赋值给第二个形参 \li{seconds} 。
+
+%🍁% This mechanism can be confusing, especially if you make an error.
+%🍁% For example, if you invoke {\tt increment} with two arguments, you
+%🍁% get:
+
+这个机制有时会把人弄晕， 尤其是你犯错的时候。
+例如， 如果你使用两个实参调用 \li{increment}，  你会得到：
+\index{exception!TypeError}  \index{TypeError}
+
+\begin{lstlisting}
+>>> end = start.increment(1337, 460)
+TypeError: increment() takes 2 positional arguments but 3 were given
+\end{lstlisting}
+
+%
+%🍁% The error message is initially confusing, because there are
+%🍁% only two arguments in parentheses.  But the subject is also
+%🍁% considered an argument, so all together that's three.
+
+错误信息一开始让人很难理解， 因为在括号内只有两个实参。
+但是主语也被认为是一个实参， 所以加在一起共有三个实参。
+
+%🍁% By the way, a {\bf positional argument} is an argument that
+%🍁% doesn't have a parameter name; that is, it is not a keyword
+%🍁% argument.  In this function call:
+另外，  {\em 位置参数} 是没有形参名的参数； 也就是说， 它不是一个关键字参数。
+在下面这个函数调用中：
+\index{positional argument}  \index{argument!positional}
+
+\begin{lstlisting}
+sketch(parrot, cage, dead=True)
+\end{lstlisting}
+
+%🍁% {\tt parrot} and {\tt cage} are positional, and {\tt dead} is
+%🍁% a keyword argument.
+
+\li{parrot} 和 \li{cage} 是位置参数， 而 \li{dead} 是一个关键字参数。
+
+%🍁% \section{A more complicated example}
+\section{一个更复杂的例子}
+
+%🍁% Rewriting \verb"is_after" (from Section~\ref{isafter}) is slightly
+%🍁% more complicated because it takes two Time objects as parameters.  In
+%🍁% this case it is conventional to name the first parameter {\tt self}
+%🍁% and the second parameter {\tt other}: \index{other (parameter name)}
+
+重写 \li{is_after} (见 \ref{isafter}~节)要更加复杂一些，
+因为它接受两个 \li{Time} 对象作为参数。
+在这个例子中， 惯用的做法是将第一个形参命名为 \li{self}， 第二个形参命名为 \li{other}：
+\index{parameter!other}
+
+\begin{lstlisting}
+# inside class Time:
+
+    def is_after(self, other):
+        return self.time_to_int() > other.time_to_int()
+\end{lstlisting}
+
+%
+%🍁% To use this method, you have to invoke it on one object and pass
+%🍁% the other as an argument:
+
+要使用该方法的话， 你必须在某个对象上调用它， 并传入 \li{other} 的实参：
+
+\begin{lstlisting}
+>>> end.is_after(start)
+True
+\end{lstlisting}
+
+%
+%🍁% One nice thing about this syntax is that it almost reads
+%🍁% like English: ``end is after start?''
+
+这个语法有一个好处， 就是它读起来很像英语：``end是出现在start之后吗？''
+
+%🍁% \section{The init method}
+\section{init 方法}
+\index{init method}  \index{method!init}
+
+%🍁% The init method (short for ``initialization'') is
+%🍁% a special method that gets invoked when an object is instantiated.
+%🍁% Its full name is \verb"__init__" (two underscore characters,
+%🍁% followed by {\tt init}, and then two more underscores).  An
+%🍁% init method for the {\tt Time} class might look like this:
+
+init 方法(``initialization''的简称)是一个特殊的方法，
+当一个对象初始化的时候调用。
+它的全名是 \li{__init__} (两个下划线后加 init 再加两个下划线)。
+一个 \li{Time} 类的 \li{init} 方法看起来像是这样的：
+
+\begin{lstlisting}
+# inside class Time:
+
+    def __init__(self, hour=0, minute=0, second=0):
+        self.hour = hour
+        self.minute = minute
+        self.second = second
+\end{lstlisting}
+
+%
+%🍁% It is common for the parameters of \verb"__init__"
+%🍁% to have the same names as the attributes.  The statement
+
+通常 \li{__init__} 方法的 参数 和 属性 的名称一样。
+
+
+\begin{lstlisting}
+        self.hour = hour
+\end{lstlisting}
+
+%
+%🍁% stores the value of the parameter {\tt hour} as an attribute
+%🍁% of {\tt self}.
+
+上面的语句把 \li{hour} 参数的值储存为 \li{self} 的一个属性。
+\index{optional parameter}  \index{parameter!optional}
+\index{default value}  \index{override}
+
+%🍁% The parameters are optional, so if you call {\tt Time} with
+%🍁% no arguments, you get the default values.
+
+参数是可选的， 所以如果你不带参数的调用 \li{Time} ， 你会得到默认值。
+
+\begin{lstlisting}
+>>> time = Time()
+>>> time.print_time()
+00:00:00
+\end{lstlisting}
+
+%
+%🍁% If you provide one argument, it overrides {\tt hour}:
+
+如果你提供一个参数， 它会覆盖 \li{hour} ：
+
+\begin{lstlisting}
+>>> time = Time (9)
+>>> time.print_time()
+09:00:00
+\end{lstlisting}
+
+%
+%🍁% If you provide two arguments, they override {\tt hour} and
+%🍁% {\tt minute}.
+
+如果你提供两个参数， 他们会覆盖 \li{hour} 和 \li{minute} 。
+
+\begin{lstlisting}
+>>> time = Time(9, 45)
+>>> time.print_time()
+09:45:00
+\end{lstlisting}
+
+%
+%🍁% And if you provide three arguments, they override all three
+%🍁% default values.
+
+如果你提供三个参数， 它们会覆盖三个默认值。
+
+%🍁% As an exercise, write an init method for the {\tt Point} class that takes
+%🍁% {\tt x} and {\tt y} as optional parameters and assigns
+%🍁% them to the corresponding attributes.
+
+我们做个练习， 为 \li{Point} 类写一个 init 方法， 使用 \li{x} 和 \li{y} 作为可选参数， 然后赋值给对应的属性。
+\index{Point class}  \index{class!Point}
+
+
+%🍁% \section{The {\tt \_\_str\_\_} method}
+\section{ {\tt \_\_str\_\_} 方法}
+
+\index{str method@\_\_str\_\_ method}  \index{method!\_\_str\_\_}
+
+%🍁% \verb"__str__" is a special method, like \verb"__init__",
+%🍁% that is supposed to return a string representation of an object.
+
+\li{__str__} 是一个和 \li{__init__}
+方法类似的特殊方法， 返回一个对象的字符串表现形式。
+
+\index{string representation}
+
+%🍁% For example, here is a {\tt str} method for Time objects:
+
+例如， 下面是一个 \li{Time} 对象的 \li{str} 方法：
+
+\begin{lstlisting}
+# inside class Time:
+
+    def __str__(self):
+        return '%.2d:%.2d:%.2d' % (self.hour, self.minute, self.second)
+\end{lstlisting}
+
+%
+%🍁% When you {\tt print} an object, Python invokes the {\tt str} method:
+
+当你打印(\li{print})一个对象， Python 调用 \li{str} 方法：
+
+\index{print statement}  \index{statement!print}
+
+\begin{lstlisting}
+>>> time = Time(9, 45)
+>>> print(time)
+09:45:00
+\end{lstlisting}
+
+%
+%🍁% When I write a new class, I almost always start by writing
+%🍁% \verb"__init__", which makes it easier to instantiate objects, and
+%🍁% \verb"__str__", which is useful for debugging.
+
+写一个新类时， 我总是从 \li{__init__} 开始， 使得更容易实例化对象，
+接着就是写 \li{__str__} 方法， 方便调试。
+
+%🍁% As an exercise, write a {\tt str} method for the {\tt Point} class.
+%🍁% Create a Point object and print it.
+
+我们做个练习， 为 \li{Point} 类写一个 \li{str} 方法。
+然后创建一个 \li{Point} 对象并打印。
+
+%🍁% \section{Operator overloading}
+\section{运算符重载}
+\label{operator.overloading}
+
+%🍁% By defining other special methods, you can specify the behavior
+%🍁% of operators on programmer-defined types.  For example, if you define
+%🍁% a method named \verb"__add__" for the {\tt Time} class, you can use the
+%🍁% {\tt +} operator on Time objects.
+
+通过定义其它的一些特殊方法， 你可以在程序员自定义类型上指定运算符的行为。
+例如， 如果你为 \li{Time} 类定义了一个叫 \li{__add__} 的方法，
+你就可以在 \li{Time} 对象上使用 \li{+} 运算符。
+
+\index{programmer-defined type}  \index{type!programmer-defined}
+
+%🍁% Here is what the definition might look like:
+
+可以大致像这样定义：
+
+\index{add method}  \index{method!add}
+
+\begin{lstlisting}
+# inside class Time:
+
+    def __add__(self, other):
+        seconds = self.time_to_int() + other.time_to_int()
+        return int_to_time(seconds)
+\end{lstlisting}
+
+%
+%🍁% And here is how you could use it:
+
+下面是使用方式：
+
+\begin{lstlisting}
+>>> start = Time(9, 45)
+>>> duration = Time(1, 35)
+>>> print(start + duration)
+11:20:00
+\end{lstlisting}
+
+%
+%🍁% When you apply the {\tt +} operator to Time objects, Python invokes
+%🍁% \verb"__add__".  When you print the result, Python invokes
+%🍁% \verb"__str__".  So there is a lot happening behind the scenes!
+
+当你在 \li{Time} 对象上应用 \li{+} 运算符， Python 会调用 \li{__add__} 。
+当你打印结果时， Python 会调用 \li{__str__} 。
+所以实际上后台发生了很多有趣的事情！
+
+\index{operator overloading}
+
+%🍁% Changing the behavior of an operator so that it works with
+%🍁% programmer-defined types is called {\bf operator overloading}.  For every
+%🍁% operator in Python there is a corresponding special method, like
+%🍁% \verb"__add__".  For more details, see
+%🍁% \url{http://docs.python.org/3/reference/datamodel.html#specialnames}.
+
+改变一个运算符的行为， 使其兼容程序员自定义类型， 这被称为
+{\em 运算符重载} (operator overloading)。
+对于每一个运算符， Python 有一个类似 \li{__add__} 的对应的特殊方法。
+更多的详情， 请参考\href{http://docs.python.org/3/reference/datamodel.html#specialnames}{官方文档的介绍} 。
+
+%🍁% As an exercise, write an {\tt add} method for the Point class.
+
+我们来做个练习， 为 \li{Point} 类编写一个 \li{add} 方法。
+
+%🍁% \section{Type-based dispatch}
+\section{类型分发 (type-based dispatch)}
+
+%🍁% In the previous section we added two Time objects, but you
+%🍁% also might want to add an integer to a Time object.  The
+%🍁% following is a version of \verb"__add__"
+%🍁% that checks the type of {\tt other} and invokes either
+%🍁% \verb"add_time" or {\tt increment}:
+
+在上一节中， 我们将两个 \li{Time}对象相加，
+但是你还会想要将一个整数与 \li{Time}对象相加。
+下面这个版本的 \li{__add__}会检查 \li{other}的类型，
+并相应地调用 \li{add_time}或者 \li{increment}：
+
+\begin{lstlisting}
+# inside class Time:
+
+    def __add__(self, other):
+        if isinstance(other, Time):
+            return self.add_time(other)
+        else:
+            return self.increment(other)
+
+    def add_time(self, other):
+        seconds = self.time_to_int() + other.time_to_int()
+        return int_to_time(seconds)
+
+    def increment(self, seconds):
+        seconds += self.time_to_int()
+        return int_to_time(seconds)
+\end{lstlisting}
+
+%
+%🍁% The built-in function {\tt isinstance} takes a value and a
+%🍁% class object, and returns {\tt True} if the value is an instance
+%🍁% of the class.
+
+内建函数 \li{isinstance} 接受一个值和一个类对象，
+如果值是这个类的实例则返回 \li{True} 。
+\index{isinstance function}  \index{function!isinstance}
+
+%🍁% If {\tt other} is a Time object, \verb"__add__" invokes
+%🍁% \verb"add_time".  Otherwise it assumes that the parameter
+%🍁% is a number and invokes {\tt increment}.  This operation is
+%🍁% called a {\bf type-based dispatch} because it dispatches the
+%🍁% computation to different methods based on the type of the
+%🍁% arguments.
+
+如果 \li{other} 是一个 \li{Time} 对象， \li{__add__} 调用 \li{add_time} 。
+否则它假设参数是一个数字然后调用 \li{increment} 。
+这个操作被称为 {\em 类型分发} (type-based dispatch)，  因为它根据参数的
+类型将计算任务分发给不同的方法。
+
+\index{type-based dispatch}  \index{dispatch, type-based}
+
+%🍁% Here are examples that use the {\tt +} operator with different
+%🍁% types:
+
+下面是一些在不同类型上使用 \li{+} 运算符的例子：
+
+\begin{lstlisting}
+>>> start = Time(9, 45)
+>>> duration = Time(1, 35)
+>>> print(start + duration)
+11:20:00
+>>> print(start + 1337)
+10:07:17
+\end{lstlisting}
+
+%
+%🍁% Unfortunately, this implementation of addition is not commutative.
+%🍁% If the integer is the first operand, you get
+
+不幸的是， 这个加法的实现没有交换性 (commutative)。
+如果第一个运算数是一个整数， 你会得到：
+
+\index{commutativity}
+
+\begin{lstlisting}
+>>> print(1337 + start)
+TypeError: unsupported operand type(s) for +: 'int' and 'instance'
+\end{lstlisting}
+
+%
+%🍁% The problem is, instead of asking the Time object to add an integer,
+%🍁% Python is asking an integer to add a Time object, and it doesn't know
+%🍁% how.  But there is a clever solution for this problem: the
+%🍁% special method \verb"__radd__", which stands for ``right-side add''.
+%🍁% This method is invoked when a Time object appears on the right side of
+%🍁% the {\tt +} operator.  Here's the definition:
+
+问题在于， 我们不是让一个 \li{Time} 对象去加一个整数，
+而是让一个整数去加一个 \li{Time} 对象， 但是Python不知道怎样去做。
+不过这个问题有一个优雅的解决方案：特殊方法 \li{__radd__}， 表示“右手加法”。
+当一个 \li{Time} 对象在 \li{+} 运算符的右手边出现时， 调用这个方法。    下面是定义：
+
+\index{radd method}  \index{method!radd}
+
+\begin{lstlisting}
+# inside class Time:
+
+    def __radd__(self, other):
+        return self.__add__(other)
+\end{lstlisting}
+
+%
+%🍁% And here's how it's used:
+
+接着是使用方法：
+
+\begin{lstlisting}
+>>> print(1337 + start)
+10:07:17
+\end{lstlisting}
+
+%
+
+%🍁% As an exercise, write an {\tt add} method for Points that works with
+%🍁% either a Point object or a tuple:
+
+我们做个练习， 为 \li{Points} 编写一个 \li{add} 方法，
+使其既适用 \li{Point} 对象， 也适用元组：
+
+%🍁% \begin{itemize}
+%🍁%
+%🍁% \item If the second operand is a Point, the method should return a new
+%🍁% Point whose $x$ coordinate is the sum of the $x$ coordinates of the
+%🍁% operands, and likewise for the $y$ coordinates.
+%🍁%
+%🍁% \item If the second operand is a tuple, the method should add the
+%🍁% first element of the tuple to the $x$ coordinate and the second
+%🍁% element to the $y$ coordinate, and return a new Point with the result.
+%🍁%
+%🍁% \end{itemize}
+
+\begin{itemize}
+
+\item 如果第二个运算数是一个 \li{Point} ， 该方法将返回一个新的 \li{Point}，
+$x$ 坐标是两个运算数的 $x$ 的和，  $y$ 以此类推。
+
+\item 如果第二个运算数是一个元组， 该方法将把元组的第一个元素与 $x$ 相加，
+第二个元素与 $y$ 相加， 然后返回以相关结果为参数的新的 \li{Point}。
+
+\end{itemize}
+
+
+%🍁% \section{Polymorphism}
+\section{多态性}
+\label{polymorphism}
+
+%🍁% Type-based dispatch is useful when it is necessary, but (fortunately)
+%🍁% it is not always necessary.  Often you can avoid it by writing functions
+%🍁% that work correctly for arguments with different types.
+
+类型分发在必要的时候非常有用， 但是(幸运的是)它不是绝对必须的。
+通常， 你可以通过编写对不同参数类型都适用的函数， 来避免这种情况。
+
+\index{type-based dispatch}  \index{dispatch!type-based}
+
+%🍁% Many of the functions we wrote for strings also
+%🍁% work for other sequence types.
+%🍁% For example, in Section~\ref{histogram}
+%🍁% we used {\tt histogram} to count the number of times each letter
+%🍁% appears in a word.
+
+许多我们为字符串写的函数， 实际上也适用于其他序列类型。
+例如， 在 \ref{histogram}~节中， 我们使用 \li{histogram}
+计算了单词中每个字母出现的次数。
+
+\begin{lstlisting}
+def histogram(s):
+    d = dict()
+    for c in s:
+        if c not in d:
+            d[c] = 1
+        else:
+            d[c] = d[c]+1
+    return d
+\end{lstlisting}
+
+%
+%🍁% This function also works for lists, tuples, and even dictionaries,
+%🍁% as long as the elements of {\tt s} are hashable, so they can be used
+%🍁% as keys in {\tt d}.
+
+这个函数也适用于列表、元组甚至是字典， 只要 \li{s} 的元素是可哈希的， 你就可以把
+它用作 \li{d} 的键。
+
+\begin{lstlisting}
+>>> t = ['spam', 'egg', 'spam', 'spam', 'bacon', 'spam']
+>>> histogram(t)
+{'bacon': 1, 'egg': 1, 'spam': 4}
+\end{lstlisting}
+
+%
+%🍁% Functions that work with several types are called {\bf polymorphic}.
+%🍁% Polymorphism can facilitate code reuse.  For example, the built-in
+%🍁% function {\tt sum}, which adds the elements of a sequence, works
+%🍁% as long as the elements of the sequence support addition.
+
+适用于多种类型的函数， 被称为 {\em 多态} 函数。
+多态性有助于代码复用。  例如， 内建函数 \li{sum} 对一个序列的元素求和， 只要序列中的元素支持加法即可。
+
+\index{polymorphism}
+
+%🍁% Since Time objects provide an {\tt add} method, they work
+%🍁% with {\tt sum}:
+
+因为 \li{Time} 对象提供了一个 \li{add} 方法， \li{sum} 也可以应用于该对象：
+
+\begin{lstlisting}
+>>> t1 = Time(7, 43)
+>>> t2 = Time(7, 41)
+>>> t3 = Time(7, 37)
+>>> total = sum([t1, t2, t3])
+>>> print(total)
+23:01:00
+\end{lstlisting}
+
+%
+%🍁% In general, if all of the operations inside a function
+%🍁% work with a given type, the function works with that type.
+
+通常， 如果一个函数内所有的操作都适用于一个类型， 那这个函数就能适用该类型。
+
+%🍁% The best kind of polymorphism is the unintentional kind, where
+%🍁% you discover that a function you already wrote can be
+%🍁% applied to a type you never planned for.
+
+最好的多态性是无心成柳柳成荫的， 就是你发现你已经写的一个函数，
+在你没有预计的类型上也能使用。
+
+
+
+
+%🍁% \section{Interface and implementation}
+\section{接口和实现}
+
+%🍁% One of the goals of object-oriented design is to make software more
+%🍁% maintainable, which means that you can keep the program working when
+%🍁% other parts of the system change, and modify the program to meet new
+%🍁% requirements.
+
+面向对象设计的一个目标是使得软件更容易维护，
+这意味着当系统的其它部分改变时程序还能正常运行， 你可以修改程序满足新的需求。
+\index{interface}  \index{implementation}
+\index{maintainable}  \index{object-oriented design}
+
+%🍁% A design principle that helps achieve that goal is to keep
+%🍁% interfaces separate from implementations.  For objects, that means
+%🍁% that the methods a class provides should not depend on how the
+%🍁% attributes are represented.
+
+有助于实现该目标的一个设计原则是， 接口和实现分离。
+对于对象， 就意味着一个类提供的方法不应该依赖属性的形式。
+\index{attribute}
+
+%🍁% For example, in this chapter we developed a class that represents
+%🍁% a time of day.  Methods provided by this class include
+%🍁% \verb"time_to_int", \verb"is_after", and \verb"add_time".
+
+例如， 在本章中， 我们设计了一个表示一天中时间的类。  这个类提供的方法包括
+\li{time_to_int} ， \li{is_after} 和 \li{add_time} 。
+
+%🍁% We could implement those methods in several ways.  The details of the
+%🍁% implementation depend on how we represent time.  In this chapter, the
+%🍁% attributes of a {\tt Time} object are {\tt hour}, {\tt minute}, and
+%🍁% {\tt second}.
+
+我们有多种方式可以实现这些方法。  实现的细节取决于我们如何表示时间。
+在本章中， \li{Time} 对象的属性是 \li{hour} ， \li{minute} 和 \li{second} 。
+
+%🍁% As an alternative, we could replace these attributes with
+%🍁% a single integer representing the number of seconds
+%🍁% since midnight.  This implementation would make some methods,
+%🍁% like \verb"is_after", easier to write, but it makes other methods
+%🍁% harder.
+
+另一种方式是， 我们用一个整数表示从零点开始的秒数， 来替代这些属性。
+这个实现会使得一些方法(如 \li{is_after} ) 更容易编写， 但也让编写其他方法变得更难。
+
+%🍁% After you deploy a new class, you might discover a better
+%🍁% implementation.  If other parts of the program are using your
+%🍁% class, it might be time-consuming and error-prone to change the
+%🍁% interface.
+
+在你完成一个新类后， 你可能会发现有一个更好的实现。  如果程序其他部分使用了你的类，
+再来改变接口需要很多时间， 而且容易出错。
+
+%🍁% But if you designed the interface carefully, you can
+%🍁% change the implementation without changing the interface, which
+%🍁% means that other parts of the program don't have to change.
+
+但是如果你细心设计好接口， 你可以改变实现而保持接口不变， 这样程序的其它部分都不用改变。
+
+
+%🍁% \section{Debugging}
+\section{调试}
+\index{debugging}
+
+%🍁% It is legal to add attributes to objects at any point in the execution
+%🍁% of a program, but if you have objects with the same type that don't
+%🍁% have the same attributes, it is easy to make mistakes.
+%🍁% It is considered a good idea to
+%🍁% initialize all of an object's attributes in the init method.
+
+在程序执行的任何时间， 为一个对象添加属性都是合法的，
+但是如果相同类型的对象拥有不同的属性， 就会很容易出现错误。
+通常一个好的做法是在 init 方法中初始化一个对象的所有属性。
+
+\index{init method}  \index{attribute!initializing}
+
+%🍁% If you are not sure whether an object has a particular attribute, you
+%🍁% can use the built-in function {\tt hasattr} (see Section~\ref{hasattr}).
+
+如果你不确定一个对象是否应该有某个属性， 你可以使用内建函数 \li{hasattr}
+ (参见 \ref{hasattr}~节)。
+
+\index{hasattr function}  \index{function!hasattr}
+\index{dict attribute@\_\_dict\_\_ attribute}
+\index{attribute!\_\_dict\_\_}
+
+%🍁% Another way to access attributes is the built-in function {\tt vars},
+%🍁% which takes an object and returns a dictionary that maps from
+%🍁% attribute names (as strings) to their values:
+
+另一种访问对象属性的方法是使用内建函数 \li{vars}，
+它接受一个对象， 并返回一个将属性名称(字符串形式)到对应值的字典：
+
+\begin{lstlisting}
+>>> p = Point(3, 4)
+>>> vars(p)
+{'y': 4, 'x': 3}
+\end{lstlisting}
+
+%
+%🍁% For purposes of debugging, you might find it useful to keep this
+%🍁% function handy:
+
+定义下面这段代码， 可能对调试非常有用：
+
+\begin{lstlisting}
+def print_attributes(obj):
+    for attr in vars(obj):
+        print(attr, getattr(obj, attr))
+\end{lstlisting}
+
+%
+%🍁% \verb"print_attributes" traverses the dictionary
+%🍁% and prints each attribute name and its corresponding value.
+
+\li{print_attributes} 遍历一个对象的字典，
+然后打印每个属性的名称和对应的值。
+
+\index{traversal!dictionary}  \index{dictionary!traversal}
+
+%🍁% The built-in function {\tt getattr} takes an object and an attribute
+%🍁% name (as a string) and returns the attribute's value.
+
+内建函数 \li{getattr}接受一个对象和一个属性名称(字符串)
+作为参数， 然后返回该属性的值。
+
+\index{getattr function}  \index{function!getattr}
+
+%🍁% \section{Glossary}
+\section{术语表}
+
+%🍁% \begin{description}
+%🍁%
+%🍁% \item[object-oriented language:] A language that provides features,
+%🍁%   such as programmer-defined types and methods, that facilitate
+%🍁%   object-oriented programming.
+%🍁% \index{object-oriented language}
+%🍁%
+%🍁% \item[object-oriented programming:] A style of programming in which
+%🍁% data and the operations that manipulate it are organized into classes
+%🍁% and methods.
+%🍁% \index{object-oriented programming}
+%🍁%
+%🍁% \item[method:] A function that is defined inside a class definition and
+%🍁% is invoked on instances of that class.
+%🍁% \index{method}
+%🍁%
+%🍁% \item[subject:] The object a method is invoked on.
+%🍁% \index{subject}
+%🍁%
+%🍁% \item[positional argument:]  An argument that does not include
+%🍁% a parameter name, so it is not a keyword argument.
+%🍁% \index{positional argument}
+%🍁% \index{argument!positional}
+%🍁%
+%🍁% \item[operator overloading:] Changing the behavior of an operator like
+%🍁% {\tt +} so it works with a programmer-defined type.
+%🍁% \index{overloading}
+%🍁% \index{operator!overloading}
+%🍁%
+%🍁% \item[type-based dispatch:] A programming pattern that checks the type
+%🍁% of an operand and invokes different functions for different types.
+%🍁% \index{type-based dispatch}
+%🍁%
+%🍁% \item[polymorphic:] Pertaining to a function that can work with more
+%🍁%   than one type.
+%🍁% \index{polymorphism}
+%🍁%
+%🍁% \item[information hiding:] The principle that the interface provided
+%🍁% by an object should not depend on its implementation, in particular
+%🍁% the representation of its attributes.
+%🍁% \index{information hiding}
+%🍁%
+%🍁% \end{description}
+
+\begin{description}
+
+\item[面向对象的语言 (object-oriented language):] 提供有助于面向对象编程特性的语言， 如程序员自定义类型和方法。
+\index{object-oriented language}
+
+\item[面向对象编程 (object-oriented programming):] 一种编程风格， 数据和处理数据的操作被组织成类和方法。
+\index{object-oriented programming}
+
+\item[方法 (method):] 在类定义内部定义的一个函数， 必须在该类的实例上调用。
+\index{method}
+
+\item[主语 (subject):] 方法在该对象上调用。
+\index{subject}
+
+\item[位置参数 (positional argument):]  不包括形参名的实参， 所以不是关键字实参。
+\index{positional argument}  \index{argument!positional}
+
+\item[运算符重载 (operator overloading):] 改变类似 \li{+} 的运算符，
+使其可以应用于程序员自定义类型。
+\index{overloading}  \index{operator!overloading}
+
+\item[类型分发 (type-based dispatch):] 一种检查运算符的类型， 并根据类型不同调用不同函数的编程模式。
+\index{type-based dispatch}
+
+\item[多态的 (polymorphic):] 描述一个可应用于多种类型的函数。
+\index{polymorphism}
+
+\item[信息隐藏 (information hiding):] 对象提供的接口不应依赖于其实现的原则， 尤其是其属性的表示形式。
+\index{information hiding}
+
+\end{description}
+
+
+%🍁% \section{Exercises}
+\section{练习}
+
+%🍁% \begin{exercise}
+%🍁%
+%🍁% Download the code from this chapter from
+%🍁% \url{http://thinkpython2.com/code/Time2.py}.  Change the attributes of
+%🍁%     {\tt Time} to be a single integer representing seconds since
+%🍁%     midnight.  Then modify the methods (and the function
+%🍁%     \verb"int_to_time") to work with the new implementation.  You
+%🍁%     should not have to modify the test code in {\tt main}.  When you
+%🍁%     are done, the output should be the same as before.  Solution:
+%🍁%     \url{http://thinkpython2.com/code/Time2_soln.py}.
+%🍁%
+%🍁% \end{exercise}
+
+\begin{exercise}
+
+\href{http://thinkpython2.com/code/Time2.py}{此处}可下载到本章的代码。
+修改 {\em \li{Time}} 类的属性， 使用一个整数代表自午夜零点开始的秒数。
+然后修改类的方法(和 {\em \li{int_to_time}} 函数 )， 使其适用于新的实现。
+你不用修改 {\em \li{main}} 函数中的测试代码。    完成之后， 程序的输出应该和之前保持一致。
+
+\href{http://thinkpython2.com/code/Time2_soln.py}{参考答案}
+
+\end{exercise}
+
+
+\begin{exercise}
+\label{kangaroo}
+\index{default value!avoiding mutable}
+\index{mutable object, as default value}
+\index{worst bug}
+\index{bug!worst}
+\index{Kangaroo class}
+\index{class!Kangaroo}
+
+%🍁% This exercise is a cautionary tale about one of the most
+%🍁% common, and difficult to find, errors in Python.
+%🍁% Write a definition for a class named {\tt Kangaroo} with the following
+%🍁% methods:
+
+这道习题中包含了 Python 中最常见、最难找出来的错误。
+编写一个叫 {\em \li{Kangaroo}} 的类， 包含以下方法：
+
+\begin{enumerate}
+
+%🍁% \item An \verb"__init__" method that initializes an attribute named
+%🍁% \verb"pouch_contents" to an empty list.
+%🍁%
+%🍁% \item A method named \verb"put_in_pouch" that takes an object
+%🍁% of any type and adds it to \verb"pouch_contents".
+%🍁%
+%🍁% \item A \verb"__str__" method that returns a string representation
+%🍁% of the Kangaroo object and the contents of the pouch.
+
+\item 一个 {\em \li{__init__}} 方法， 初始化一个叫 {\em \li{pounch_contents}} 的属性为空列表。
+
+\item 一个叫 {\em \li{put_in_pounch}} 的方法， 将一个任意类型的对象加入 {\em \li{pounch_contents}}。
+
+\item 一个 {\em \li{__str__}} 方法， 返回 {\em \li{Kangaroo}} 对象的字符串表示和 {\em \li{pounch}} 中的内容。
+
+\end{enumerate}
+
+%
+%🍁% Test your code
+%🍁% by creating two {\tt Kangaroo} objects, assigning them to variables
+%🍁% named {\tt kanga} and {\tt roo}, and then adding {\tt roo} to the
+%🍁% contents of {\tt kanga}'s pouch.
+
+%🍁% Download \url{http://thinkpython2.com/code/BadKangaroo.py}.  It contains
+%🍁% a solution to the previous problem with one big, nasty bug.
+%🍁% Find and fix the bug.
+
+%🍁% If you get stuck, you can download
+%🍁% \url{http://thinkpython2.com/code/GoodKangaroo.py}, which explains the
+%🍁% problem and demonstrates a solution.
+%🍁% \index{aliasing}  \index{embedded object}  \index{object!embedded}
+
+创建两个 {\em \li{Kangaroo}} 对象， 将它们命名为 {\em \li{kanga}} 和 {\em \li{roo}} ， 然后将 {\em \li{roo}} 加入 {\em \li{kanga}} 的 {\em \li{pounch}} 列表， 以此测试你写的代码。
+
+下载 \href{http://thinkpython2.com/code/BadKangaroo.py}{这段代码}。
+其中有一个上述习题的答案， 但是其中存在一个又大又棘手的 {\em bug} 。
+找出这个 {\em bug} 并修正。
+
+如果你找不到 {\em bug} ， 可以下载\href{http://thinkpython2.com/code/GoodKangaroo.py}{参考答案} ， 里面解释了问题所在并提供了一个解决方案。
+
+
+\end{exercise}
+

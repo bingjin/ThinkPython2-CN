@@ -1,0 +1,1163 @@
+
+
+%🍁% \chapter{Files  |  文件}
+\chapter{文件}
+
+%🍁% This chapter introduces the idea of ``persistent'' programs that
+%🍁% keep data in permanent storage, and shows how to use different
+%🍁% kinds of permanent storage, like files and databases.
+
+本章将介绍 ``持久\footnote{persistent}'' 程序的概念，即永久储存数据的程序，并说明如何使用不同种类的永久存储形式，例如文件和数据库。
+
+%🍁% \section{Persistence  |  持久化}
+\section{持久化}
+
+\index{file}  \index{type!file}  \index{persistence}
+
+%🍁% Most of the programs we have seen so far are transient in the
+%🍁% sense that they run for a short time and produce some output,
+%🍁% but when they end, their data disappears.  If you run the program
+%🍁% again, it starts with a clean slate.
+
+目前我们所见到的大多数程序都是临时的\footnote{transient}，
+因为它们只运行一段时间并输出一些结果，但当它们结束时，数据也就消失了。
+如果你再次运行程序，它将以全新的状态开始。
+
+%🍁% Other programs are {\bf persistent}: they run for a long time
+%🍁% (or all the time); they keep at least some of their data
+%🍁% in permanent storage (a hard drive, for example); and
+%🍁% if they shut down and restart, they pick up where they left off.
+
+另一类程序是 {\bf 持久的} ：它们长时间运行(或者一直在运行)；
+它们至少将一部分数据记录在永久存储(如一个硬盘中)；
+如果你关闭程序然后重新启动时，它们将从上次中断的地方开始继续。
+
+%🍁% Examples of persistent programs are operating systems, which
+%🍁% run pretty much whenever a computer is on, and web servers,
+%🍁% which run all the time, waiting for requests to come in on
+%🍁% the network.
+
+持久程序的一个例子是操作系统，在一台电脑开机后的绝大多数时间系统都在运行。
+另一个例子是网络服务器，不停地在运行，等待来自网络的请求。
+
+%🍁% One of the simplest ways for programs to maintain their data
+%🍁% is by reading and writing text files.  We have already seen
+%🍁% programs that read text files; in this chapter we will see programs
+%🍁% that write them.
+
+程序保存其数据的一个最简单方法，就是读写文本文件。
+我们已经接触过读取文本文件的程序；在本章，我们将接触写入文本的程序。
+
+%🍁% An alternative is to store the state of the program in a database.
+%🍁% In this chapter I will present a simple database and a module,
+%🍁% {\tt pickle}, that makes it easy to store program data.
+
+另一种方法是使用数据库保存程序的状态。本章我将介绍一个简单的数据库，
+以及简化存储程序数据过程的 \li{pickle} 模块。
+\index{pickle module}  \index{module!pickle}
+
+
+%🍁% \section{Reading and writing  |  读取和写入}
+\section{读取和写入}
+\index{file!reading and writing}
+
+%🍁% A text file is a sequence of characters stored on a permanent
+%🍁% medium like a hard drive, flash memory, or CD-ROM.  We saw how
+%🍁% to open and read a file in Section~\ref{wordlist}.
+
+文本文件是储存在类似硬盘、闪存、或者CD-ROM等永久介质上的字符序列。
+我们在\ref{wordlist}~节中接触了如何打开和读取文件。
+\index{open function}  \index{function!open}
+
+%🍁% To write a file, you have to open it with mode \verb"'w'" as a second
+%🍁% parameter:
+
+要写入一个文件，你必须在打开文件时设置第二个参数来为 \li{'w'} 模式：
+
+\begin{lstlisting}
+>>> fout = open('output.txt', 'w')
+\end{lstlisting}
+
+%
+%🍁% If the file already exists, opening it in write mode clears out
+%🍁% the old data and starts fresh, so be careful!
+%🍁% If the file doesn't exist, a new one is created.
+
+如果该文件已经存在，那么用写入模式打开它将会清空原来的数据并从新开始，所以要小心！
+如果文件不存在，那么将创建一个新的文件。
+
+%🍁% {\tt open} returns a file object that provides methods for working
+%🍁% with the file.
+%🍁% The {\tt write} method puts data into the file.
+
+\li{open} 会返回一个文件对象，该对象提供了操作文件的方法。 \li{write} 方法将数据写入文件。
+
+\begin{lstlisting}
+>>> line1 = "This here's the wattle,\n"
+>>> fout.write(line1)
+24
+\end{lstlisting}
+
+%
+%🍁% The return value is the number of characters that were written.
+%🍁% The file object keeps track of where it is, so if
+%🍁% you call {\tt write} again, it adds the new data to the end of
+%🍁% the file.
+
+返回值是被写入字符的个数。文件对象将跟踪自身的位置，所以下次你调用 \li{write}的时候，它会在文件末尾添加新的数据。
+
+\begin{lstlisting}
+>>> line2 = "the emblem of our land.\n"
+>>> fout.write(line2)
+24
+\end{lstlisting}
+
+%
+%🍁% When you are done writing, you should close the file.
+
+完成文件写入后，你应该关闭文件。
+
+\begin{lstlisting}
+>>> fout.close()
+\end{lstlisting}
+%
+\index{close method}
+\index{method!close}
+
+%
+%🍁% If you don't close the file, it gets closed for you when the
+%🍁% program ends.
+
+如果你不关闭这个文件，程序结束时它才会关闭。
+
+%🍁% \section{Format operator  |  格式化运算符}
+\section{格式化运算符}
+\index{format operator}  \index{operator!format}
+
+%🍁% The argument of {\tt write} has to be a string, so if we want
+%🍁% to put other values in a file, we have to convert them to
+%🍁% strings.  The easiest way to do that is with {\tt str}:
+
+\li{write} 的参数必须是字符串，所以如果想要在文件中写入其它值，
+我们需要先将它们转换为字符串。最简单的法是使用 \li{str} ：
+
+\begin{lstlisting}
+>>> x = 52
+>>> fout.write(str(x))
+\end{lstlisting}
+
+%
+%🍁% An alternative is to use the {\bf format operator}, {\tt \%}.  When
+%🍁% applied to integers, {\tt \%} is the modulus operator.  But
+%🍁% when the first operand is a string, {\tt \%} is the format operator.
+
+另一个方法是使用 {\em 格式化运算符} (format operator)，即 \li{%}。
+作用于整数时，\li{%}
+是取模运算符，而当第一个运算数是字符串时，\li{%}
+则是格式化运算符。
+\index{format string}
+
+%🍁% The first operand is the {\bf format string}, which contains
+%🍁% one or more {\bf format sequences}, which
+%🍁% specify how
+%🍁% the second operand is formatted.  The result is a string.
+
+第一个运算数是 {\em 格式化字符串} (format string)，它包含一个或多个 {\em 格式化序列} (format sequence)。 格式化序列指定了第二个运算数是如何格式化的。 运算结果是一个字符串。
+\index{format sequence}
+
+%🍁% For example, the format sequence \verb"'%d'" means that
+%🍁% the second operand should be formatted as a decimal
+%🍁% integer:
+
+例如，格式化序列 \li{'%d'}
+意味着第二个运算数应该被格式化为一个十进制整数：
+
+\begin{lstlisting}
+>>> camels = 42
+>>> '%d' % camels
+'42'
+\end{lstlisting}
+
+%
+%🍁% The result is the string \verb"'42'", which is not to be confused
+%🍁% with the integer value {\tt 42}.
+
+结果是字符串 \li{'42'} ，需要和整数值 \li{42} 区分开来。
+
+%🍁% A format sequence can appear anywhere in the string,
+%🍁% so you can embed a value in a sentence:
+
+一个格式化序列可以出现在字符串中的任何位置，所以可以将一个值嵌入到一个语句中：
+
+\begin{lstlisting}
+>>> 'I have spotted %d camels.' % camels
+'I have spotted 42 camels.'
+\end{lstlisting}
+
+%
+%🍁% If there is more than one format sequence in the string,
+%🍁% the second argument has to be a tuple.  Each format sequence is
+%🍁% matched with an element of the tuple, in order.
+
+如果字符串中有多个格式化序列，那么第二个参数必须是一个元组。
+每个格式化序列按顺序和元组中的元素对应。
+
+%🍁% The following example uses \verb"'%d'" to format an integer,
+%🍁% \verb"'%g'" to format a floating-point number, and
+%🍁% \verb"'%s'" to format a string:
+
+下面的例子中使用 \li{'%d'}
+来格式化一个整数， \li{'%g'}
+来格式化一个浮点数，以及 \li{'%s'}
+来格式化一个字符串：
+
+\begin{lstlisting}
+>>> 'In %d years I have spotted %g %s.' % (3, 0.1, 'camels')
+'In 3 years I have spotted 0.1 camels.'
+\end{lstlisting}
+
+%
+%🍁% The number of elements in the tuple has to match the number
+%🍁% of format sequences in the string.  Also, the types of the
+%🍁% elements have to match the format sequences:
+
+元组中元素的个数必须等于字符串中格式化序列的个数。
+同时，元素的类型也必须符合对应的格式化序列：
+\index{exception!TypeError}
+\index{TypeError}
+
+\begin{lstlisting}
+>>> '%d %d %d' % (1, 2)
+TypeError: not enough arguments for format string
+>>> '%d' % 'dollars'
+TypeError: %d format: a number is required, not str
+\end{lstlisting}
+
+%
+%🍁% In the first example, there aren't enough elements; in the
+%🍁% second, the element is the wrong type.
+
+在第一个例子中，元组中没有足够的元素；在第二个例子中，元素的类型错误。
+
+%🍁% For more information on the format operator, see
+%🍁% \url{https://docs.python.org/3/library/stdtypes.html#printf-style-string-formatting}.  A more powerful alternative is the string
+%🍁% format method, which you can read about at
+%🍁% \url{https://docs.python.org/3/library/stdtypes.html#str.format}.
+
+你可以前往 \href{https://docs.python.org/3/library/stdtypes.html#printf-style-string-formatting}{此处} 了解关于格式化运算符的更多信息。
+一个更为强大的方法是使用字符串的 \li{format} 方法，可以前往 \href{https://docs.python.org/3/library/stdtypes.html#str.format}{此处} 了解。
+
+% You can specify the number of digits as part of the format sequence.
+% For example, the sequence \verb"'%8.2f'"
+% formats a floating-point number to be 8 characters long, with
+% 2 digits after the decimal point:
+
+% % \begin{lstlisting}
+% >>> '%8.2f' % 3.14159
+% '    3.14'
+% \end{lstlisting}
+% \afterverb
+% %
+% The result takes up eight spaces with two
+% digits after the decimal point.
+
+
+%🍁% \section{Filenames and paths  |  文件名和路径}
+\section{文件名和路径}
+\label{paths}
+\index{filename}  \index{path}
+\index{directory}  \index{folder}
+
+%🍁% Files are organized into {\bf directories} (also called ``folders'').
+%🍁% Every running program has a ``current directory'', which is the
+%🍁% default directory for most operations.
+%🍁% For example, when you open a file for reading, Python looks for it in the
+%🍁% current directory.
+
+文件以 {\em 目录\footnote{也称为``文件夹 (folder)''}} (directory) 的形式组织起来。
+每个正在运行的程序都有一个 ``当前目录\footnote{current directory}'' 作为大多数操作的默认目录。
+例如，当你打开一个文件来读取时，Python 会在当前目录下寻找这个文件。
+
+\index{os module}  \index{module!os}
+
+%🍁% The {\tt os} module provides functions for working with files and
+%🍁% directories (``os'' stands for ``operating system'').  {\tt os.getcwd}
+%🍁% returns the name of the current directory:
+
+\li{os}\footnote{``os'' 代表 ``operating system''} 模块提供了操作文件和目录的函数。 \li{os.getcwd} 返回当前目录的名称：
+
+\index{getcwd function}  \index{function!getcwd}
+
+\begin{lstlisting}
+>>> import os
+>>> cwd = os.getcwd()
+>>> cwd
+'/home/dinsdale'
+\end{lstlisting}
+
+%
+%🍁% {\tt cwd} stands for ``current working directory''.  The result in
+%🍁% this example is {\tt /home/dinsdale}, which is the home directory of a
+%🍁% user named {\tt dinsdale}.
+%🍁%
+%🍁% \li{cwd} 代表 ``current working directory''，即 ``当前工作目录''。
+%🍁% 在本例中，返回的结果是 \li{/home/dinsdale} ，即用户名为 ``dinsdale'' 的主目录。
+
+\index{working directory}  \index{directory!working}
+
+%🍁% A string like \verb"'/home/dinsdale'" that identifies a file or
+%🍁% directory is called a {\bf path}.
+
+类似 \li{'/home/dinsdale'} 这样的字符串指明一个文件或者目录， 叫做 {\em 路径} (path) 。
+
+%🍁% A simple filename, like {\tt memo.txt} is also considered a path,
+%🍁% but it is a {\bf relative path} because it relates to the current
+%🍁% directory.  If the current directory is {\tt /home/dinsdale}, the
+%🍁% filename {\tt memo.txt} would refer to {\tt /home/dinsdale/memo.txt}.
+
+一个简单的文件名，如 \li{memo.txt} ，同样被看做是一个路径，只不过是 {\em 相对路径} (relative path) ，因为它是相对于当前目录而言的。如果当前目录是 \li{/home/dinsdale} ，那么文件名 \li{memo.txt} 就代表 \li{/home/dinsdale/memo.txt} 。
+
+\index{relative path} \index{path!relative}
+\index{absolute path} \index{path!absolute}
+
+%🍁% A path that begins with {\tt /} does not depend on the current
+%🍁% directory; it is called an {\bf absolute path}.  To find the absolute
+%🍁% path to a file, you can use {\tt os.path.abspath}:
+
+一个以 \li{/} 开头的路径和当前目录无关，叫做 {\em 绝对路径} (absolute path)。 要获得一个文件的绝对路径，你可以使用 \li{os.path.abspath} ：
+
+\begin{lstlisting}
+>>> os.path.abspath('memo.txt')
+'/home/dinsdale/memo.txt'
+\end{lstlisting}
+
+%
+%🍁% {\tt os.path} provides other functions for working with filenames
+%🍁% and paths.  For example,
+%🍁% {\tt os.path.exists} checks
+%🍁% whether a file or directory exists:
+
+\li{os.path} 还提供了其它函数来对文件名和路径进行操作。  例如，\li{os.path.exists} 检查一个文件或者目录是否存在：
+
+\index{exists function}  \index{function!exists}
+
+\begin{lstlisting}
+>>> os.path.exists('memo.txt')
+True
+\end{lstlisting}
+
+%
+%🍁% If it exists, {\tt os.path.isdir} checks whether it's a directory:
+
+如果存在，可以通过 \li{os.path.isdir} 检查它是否是一个目录：
+
+\begin{lstlisting}
+>>> os.path.isdir('memo.txt')
+False
+>>> os.path.isdir('/home/dinsdale')
+True
+\end{lstlisting}
+
+%
+%🍁% Similarly, {\tt os.path.isfile} checks whether it's a file.
+
+类似的， \li{os.path.isfile} 检查它是否是一个文件。
+
+%🍁% {\tt os.listdir} returns a list of the files (and other directories)
+%🍁% in the given directory:
+
+\li{os.listdir} 返回给定目录下的文件列表(以及其它目录)。
+
+\begin{lstlisting}
+>>> os.listdir(cwd)
+['music', 'photos', 'memo.txt']
+\end{lstlisting}
+
+%
+%🍁% To demonstrate these functions, the following example
+%🍁% ``walks'' through a directory, prints
+%🍁% the names of all the files, and calls itself recursively on
+%🍁% all the directories.
+
+接下来演示下以上函数的使用。 下面的例子 ``遍历''一个目录， 打印所有文件的名字，并且针对其中所有的目录递归的调用自身。
+
+\index{walk, directory}  \index{directory!walk}
+
+\begin{lstlisting}
+def walk(dirname):
+    for name in os.listdir(dirname):
+        path = os.path.join(dirname, name)
+
+        if os.path.isfile(path):
+            print(path)
+        else:
+            walk(path)
+\end{lstlisting}
+
+%
+%🍁% {\tt os.path.join} takes a directory and a file name and joins
+%🍁% them into a complete path.
+
+\li{os.path.join} 接受一个目录和一个文件名，并把它们合并成一个完整的路径。
+
+%🍁% The {\tt os} module provides a function called {\tt walk} that is
+%🍁% similar to this one but more versatile.  As an exercise, read the
+%🍁% documentation and use it to print the names of the files in a given
+%🍁% directory and its subdirectories.  You can download my solution from
+%🍁% \url{http://thinkpython2.com/code/walk.py}.
+
+os模块提供了一个叫做 \li{walk} 的函数，和我们上面写的类似，但是功能更加更富。
+作为练习，阅读文档并且使用 \li{walk} 打印出给定目录下的文件名和子目录。
+你可以在 \href{http://thinkpython2.com/code/walk.py}{此处} 下载我的答案。
+
+
+%🍁% \section{Catching exceptions  |  捕获异常}
+\section{捕获异常}
+\label{catch}
+
+%🍁% A lot of things can go wrong when you try to read and write
+%🍁% files.  If you try to open a file that doesn't exist, you get an
+%🍁% {\tt IOError}:
+
+试图读写文件时，很多地方可能会发生错误。如果你试图打开一个不存在的文件夹，
+会得到一个{\bf 输入输出错误} (\li{IOError})：
+
+\index{open function}  \index{function!open}
+\index{exception!IOError}  \index{IOError}
+
+\begin{lstlisting}
+>>> fin = open('bad_file')
+IOError: [Errno 2] No such file or directory: 'bad_file'
+\end{lstlisting}
+
+%
+%🍁% If you don't have permission to access a file:
+
+如果你没有权限访问一个文件：
+
+\index{file!permission}  \index{permission, file}
+
+\begin{lstlisting}
+>>> fout = open('/etc/passwd', 'w')
+PermissionError: [Errno 13] Permission denied: '/etc/passwd'
+\end{lstlisting}
+
+%
+%🍁% And if you try to open a directory for reading, you get
+
+如果你试图打开一个目录来读取，你会得到：
+
+\begin{lstlisting}
+>>> fin = open('/home')
+IsADirectoryError: [Errno 21] Is a directory: '/home'
+\end{lstlisting}
+
+%
+%🍁% To avoid these errors, you could use functions like {\tt os.path.exists}
+%🍁% and {\tt os.path.isfile}, but it would take a lot of time and code
+%🍁% to check all the possibilities (if ``{\tt Errno 21}'' is any
+%🍁% indication, there are at least 21 things that can go wrong).
+
+为了避免这些错误，你可以使用类似 \li{os.path.exists} 和 \li{os.path.isfile} 的函数来检查，但这将会耗费大量的时间和代码去检查所有的可能性(从 ``\li{Errno 21}''这个错误信息来看，至少有 21 种可能出错的情况)。
+
+\index{exception, catching}  \index{try statement}
+\index{statement!try}
+
+%🍁% It is better to go ahead and try---and deal with problems if they
+%🍁% happen---which is exactly what the {\tt try} statement does.  The
+%🍁% syntax is similar to an {\tt if...else} statement:
+
+更好的办法是在问题出现的时候才去处理，而这正是 \li{try} 语句做的事情。
+它的语法类似 \li{if...else} 语句：
+
+\begin{lstlisting}
+try:
+    fin = open('bad_file')
+except:
+    print('Something went wrong.')
+\end{lstlisting}
+
+%
+%🍁% Python starts by executing the {\tt try} clause.  If all goes
+%🍁% well, it skips the {\tt except} clause and proceeds.  If an
+%🍁% exception occurs, it jumps out of the {\tt try} clause and
+%🍁% runs the {\tt except} clause.
+
+Python 从 \li{try} 子句\footnote{clause} 开始执行。
+如果一切正常，那么 \li{except} 子句将被跳过。
+如果发生异常，则跳出 \li{try} 子句，执行 \li{except} 子句。
+
+%🍁% Handling an exception with a {\tt try} statement is called {\bf
+%🍁% catching} an exception.  In this example, the {\tt except} clause
+%🍁% prints an error message that is not very helpful.  In general,
+%🍁% catching an exception gives you a chance to fix the problem, or try
+%🍁% again, or at least end the program gracefully.
+
+使用 \li{try} 语句处理异常被称为是 {\em 捕获} (catching) 异常。
+在本例中，\li{except} 子句打印出一个并非很有帮助的错误信息。
+一般来说，捕获异常后你可以选择是否解决这个问题，或者继续尝试运行，又或者至少优雅地结束程序。
+
+
+%🍁% \section{Databases  |  数据库}
+\section{数据库}
+\index{database}  \index{数据库}
+
+%🍁% A {\bf database} is a file that is organized for storing data.  Many
+%🍁% databases are organized like a dictionary in the sense that they map
+%🍁% from keys to values.  The biggest difference between a database and a
+%🍁% dictionary is that the database is on disk (or other permanent
+%🍁% storage), so it persists after the program ends.
+
+{\em 数据库} 是一个用来存储数据的文件。
+大多数的数据库采用类似字典的形式，即将键映射到值。
+数据库和字典的最大区别是，数据库是存储在硬盘上(或者其他永久存储中)，
+所以即使程序结束，它们依然存在。
+
+\index{dbm module} \index{module!dbm}
+
+%🍁% The module {\tt dbm} provides an interface for creating
+%🍁% and updating database files.
+%🍁% As an example, I'll create a database
+%🍁% that contains captions for image files.
+
+\li{dbm} 模块提供了一个创建和更新数据库文件的接口。
+举个例子，我接下来创建建一个包含图片文件标题的数据库。
+
+\index{open function}  \index{function!open}
+
+%🍁% Opening a database is similar to opening other files:
+
+打开数据库和打开其它文件的方法类似：
+
+\begin{lstlisting}
+>>> import dbm
+>>> db = dbm.open('captions', 'c')
+\end{lstlisting}
+
+%
+%🍁% The mode \verb"'c'" means that the database should be created if
+%🍁% it doesn't already exist.  The result is a database object
+%🍁% that can be used (for most operations) like a dictionary.
+
+模式 \li{'c'} 代表如果数据库不存在则创建该数据库。
+这个操作返回的是一个数据库对象，可以像字典一样使用它(对于大多数操作)。
+
+\index{database object}  \index{object!database}
+
+%🍁% When you create a new item, {\tt dbm} updates the database file.
+
+当你创建一个新项时，\li{dbm} 将更新数据库文件。
+
+\index{update!database}
+
+\begin{lstlisting}
+>>> db['cleese.png'] = 'Photo of John Cleese.'
+\end{lstlisting}
+
+%
+%🍁% When you access one of the items, {\tt dbm} reads the file:
+
+当你访问某个项时，\li{dbm} 将读取文件：
+
+\begin{lstlisting}
+>>> db['cleese.png']
+b'Photo of John Cleese.'
+\end{lstlisting}
+
+%
+%🍁% The result is a {\bf bytes object}, which is why it begins with {\tt
+%🍁%   b}.  A bytes object is similar to a string in many ways.  When you
+%🍁% get farther into Python, the difference becomes important, but for now
+%🍁% we can ignore it.
+
+返回的结果是一个 {\em 字节对象} (bytes object) ，这就是为什么结果以 \li{b} 开头。
+一个字节对象在很多方面都和一个字符串很像。但是当你深入了解 Python 时，
+它们之间的差别会变得很重要，但是目前我们可以忽略掉那些差别。
+
+\index{bytes object}  \index{object!bytes}
+
+%🍁% If you make another assignment to an existing key, {\tt dbm} replaces
+%🍁% the old value:
+
+如果你对已有的键再次进行赋值，\li{dbm} 将把旧的值替换掉：
+
+
+\begin{lstlisting}
+>>> db['cleese.png'] = 'Photo of John Cleese doing a silly walk.'
+>>> db['cleese.png']
+b'Photo of John Cleese doing a silly walk.'
+\end{lstlisting}
+%
+
+%🍁% Some dictionary methods, like {\tt keys} and {\tt items}, don't
+%🍁% work with database objects.  But iteration with a {\tt for}
+%🍁% loop works:
+
+一些字典方法，例如 \li{keys} 和 \li{items} ，不适用于数据库对象，但是 \li{for} 循环依然适用：
+\index{dictionary methods!dbm module}
+
+\begin{lstlisting}
+for key in db:
+    print(key, db[key])
+\end{lstlisting}
+
+%
+%🍁% As with other files, you should close the database when you are
+%🍁% done:
+
+与其它文件一样，当你完成操作后需要关闭文件：
+
+\begin{lstlisting}
+>>> db.close()
+\end{lstlisting}
+%
+\index{close method}  \index{method!close}
+
+
+%🍁% \section{Pickling  |  序列化}
+\section{序列化}
+\index{pickling}
+
+%🍁% A limitation of {\tt dbm} is that the keys and values have to be
+%🍁% strings or bytes.  If you try to use any other type, you get an error.
+
+\li{dbm} 的一个限制在于键和值必须是字符串或者字节。
+如果你尝试去用其它数据类型，你会得到一个错误。
+\index{pickle module} \index{module!pickle}
+
+%🍁% The {\tt pickle} module can help.  It translates
+%🍁% almost any type of object into a string suitable for storage in a
+%🍁% database, and then translates strings back into objects.
+
+\li{pickle} 模块可以解决这个问题。它能将几乎所有类型的对象转化为适合在数据库中存储的字符串，以及将那些字符串还原为原来的对象。
+
+%🍁% {\tt pickle.dumps} takes an object as a parameter and returns
+%🍁% a string representation ({\tt dumps} is short for ``dump string''):
+
+\li{pickle.dumps} 读取一个对象作为参数，并返回一个字符串表示( \li{dumps} 是 ``dump string'' 的缩写)：
+
+\begin{lstlisting}
+>>> import pickle
+>>> t = [1, 2, 3]
+>>> pickle.dumps(t)
+b'\x80\x03]q\x00(K\x01K\x02K\x03e.'
+\end{lstlisting}
+
+%
+%🍁% The format isn't obvious to human readers; it is meant to be
+%🍁% easy for {\tt pickle} to interpret.  {\tt pickle.loads}
+%🍁% (``load string'') reconstitutes the object:
+
+这个格式对人类来说不是很直观，但是对 \li{pickle} 来说很容易去解释。 \li{pickle.loads} (``load string'') 可以重建对象：
+
+\begin{lstlisting}
+>>> t1 = [1, 2, 3]
+>>> s = pickle.dumps(t1)
+>>> t2 = pickle.loads(s)
+>>> t2
+[1, 2, 3]
+\end{lstlisting}
+
+%
+%🍁% Although the new object has the same value as the old, it is
+%🍁% not (in general) the same object:
+
+尽管新对象和旧对象有相同的值，但它们(一般来说)不是同一个对象：
+
+\begin{lstlisting}
+>>> t1 == t2
+True
+>>> t1 is t2
+False
+\end{lstlisting}
+
+%
+%🍁% In other words, pickling and then unpickling has the same effect
+%🍁% as copying the object.
+
+换言之，序列化然后反序列化等效于复制一个对象。
+
+%🍁% You can use {\tt pickle} to store non-strings in a database.
+%🍁% In fact, this combination is so common that it has been
+%🍁% encapsulated in a module called {\tt shelve}.
+
+你可以使用 \li{pickle} 将非字符串对象存储在数据库中。
+事实上，这个组合非常常用，已经被封装进了模块 \li{shelve} 中。
+
+\index{shelve module}  \index{module!shelve}
+
+%🍁% \section{Pipes  |  管道}
+\section{管道}
+\index{shell}  \index{pipe}
+
+%🍁% Most operating systems provide a command-line interface,
+%🍁% also known as a {\bf shell}.  Shells usually provide commands
+%🍁% to navigate the file system and launch applications.  For
+%🍁% example, in Unix you can change directories with {\tt cd},
+%🍁% display the contents of a directory with {\tt ls}, and launch
+%🍁% a web browser by typing (for example) {\tt firefox}.
+
+大多数的操作系统提供了一个命令行的接口，也被称为 {\em shell} 。
+shell 通常提供浏览文件系统和启动程序的命令。
+例如，在 Unix 系统中你可以使用 \li{cd} 改变目录，使用 \li{ls} 显示一个目录的内容，
+通过输入 \li{firefox} (举例来说)来启动一个网页浏览器。
+
+\index{ls (Unix command)}  \index{Unix command!ls}
+
+%🍁% Any program that you can launch from the shell can also be
+%🍁% launched from Python using a {\bf pipe object}, which
+%🍁% represents a running program.
+
+任何可以在shell中启动的程序，也可以在 Python 中通过使用 {\em 管道对象} (pipe object) 来启动。 一个管道代表着一个正在运行的程序。
+
+%🍁% For example, the Unix command {\tt ls -l} normally displays the
+%🍁% contents of the current directory in long format.  You can
+%🍁% launch {\tt ls} with {\tt os.popen}\footnote{{\tt popen} is deprecated
+%🍁% now, which means we are supposed to stop using it and start using
+%🍁% the {\tt subprocess} module.  But for simple cases, I find
+%🍁% {\tt subprocess} more complicated than necessary.  So I am going
+%🍁% to keep using {\tt popen} until they take it away.}:
+
+例如，Unix 命令 \li{ls -l} 将以详细格式显示当前目录下的内容。
+你可以使用 \li{os.popen} 来启动 \li{ls} ：
+
+\index{popen function}  \index{function!popen}
+
+\begin{lstlisting}
+>>> cmd = 'ls -l'
+>>> fp = os.popen(cmd)
+\end{lstlisting}
+
+%
+%🍁% The argument is a string that contains a shell command.  The
+%🍁% return value is an object that behaves like an open
+%🍁% file.  You can read the output from the {\tt ls} process one
+%🍁% line at a time with {\tt readline} or get the whole thing at
+%🍁% once with {\tt read}:
+
+实参是一个包含shell命令的字符串。返回值是一个行为类似已打开文件的对象。
+你可以使用 \li{readline} 来每次从 \li{ls} 进程的输出中读取一行，或者使用 \li{read} 来一次读取所有内容：
+
+\index{readline method}  \index{method!readline}
+\index{read method}  \index{method!read}
+
+\begin{lstlisting}
+>>> res = fp.read()
+\end{lstlisting}
+
+%
+%🍁% When you are done, you close the pipe like a file:
+
+当你完成操作后，像关闭一个文件一样关闭管道：
+
+\index{close method}  \index{method!close}
+
+\begin{lstlisting}
+>>> stat = fp.close()
+>>> print(stat)
+None
+\end{lstlisting}
+
+%
+%🍁% The return value is the final status of the {\tt ls} process;
+%🍁% {\tt None} means that it ended normally (with no errors).
+
+返回值是 \li{ls} 进程的最终状态。 \li{None} 表示正常结束(没有出现错误)。
+
+%🍁% For example, most Unix systems provide a command called {\tt md5sum}
+%🍁% that reads the contents of a file and computes a ``checksum''.
+%🍁% You can read about MD5 at \url{http://en.wikipedia.org/wiki/Md5}.  This
+%🍁% command provides an efficient way to check whether two files
+%🍁% have the same contents.  The probability that different contents
+%🍁% yield the same checksum is very small (that is, unlikely to happen
+%🍁% before the universe collapses).
+
+例如，大多数 Unix 系统提供了一个叫做 \li{md5sum} 的命令，来读取一个文件的内容并计算出一个 ``校验和 (checksum)''。
+你可以在 \href{http://en.wikipedia.org/wiki/Md5}{维基百科} 中了解更多 MD5 的信息。
+不同的内容产生相同校验和的概率非常小(也就是说，在宇宙坍塌之前不会发生)。
+\index{md5}  \index{checksum}
+
+\index{维基百科}
+
+
+%🍁% You can use a pipe to run {\tt md5sum} from Python and get the result:
+
+你可以使用一个管道来从 Python 中运行 \li{md5sum} ，并得到计算结果：
+
+\begin{lstlisting}
+>>> filename = 'book.tex'
+>>> cmd = 'md5sum ' + filename
+>>> fp = os.popen(cmd)
+>>> res = fp.read()
+>>> stat = fp.close()
+>>> print(res)
+1e0033f0ed0656636de0d75144ba32e0  book.tex
+>>> print(stat)
+None
+\end{lstlisting}
+
+
+%🍁% \section{Writing modules  |  编写模块}
+\section{编写模块}
+\label{modules}
+\index{module, writing}
+\index{word count}
+
+%🍁% Any file that contains Python code can be imported as a module.
+%🍁% For example, suppose you have a file named {\tt wc.py} with the following
+%🍁% code:
+
+任何包含 Python 代码的文件，都可以作为模块被导入。
+例如，假设你有包含以下代码的文件 \li{wc.py} ：
+
+\begin{lstlisting}
+def linecount(filename):
+    count = 0
+    for line in open(filename):
+        count += 1
+    return count
+
+print(linecount('wc.py'))
+\end{lstlisting}
+
+%
+%🍁% If you run this program, it reads itself and prints the number
+%🍁% of lines in the file, which is 7.
+%🍁% You can also import it like this:
+
+如果你运行这个程序，它将读取自身并打印文件的行数，结果是 7 。
+你也可以这样导入模块：
+
+\begin{lstlisting}
+>>> import wc
+7
+\end{lstlisting}
+
+%
+%🍁% Now you have a module object {\tt wc}:
+
+现在你有了一个模块对象 \li{wc} ：
+
+\index{module object}  \index{object!module}
+
+\begin{lstlisting}
+>>> wc
+<module 'wc' from 'wc.py'>
+\end{lstlisting}
+
+%
+%🍁% The module object provides \verb"linecount":
+
+这个模块对象提供了 \li{linecount} 函数：
+
+\begin{lstlisting}
+>>> wc.linecount('wc.py')
+7
+\end{lstlisting}
+
+%
+%🍁% So that's how you write modules in Python.
+
+以上就是如何编写 Python 模块的方法。
+
+%🍁% The only problem with this example is that when you import
+%🍁% the module it runs the test code at the bottom.  Normally
+%🍁% when you import a module, it defines new functions but it
+%🍁% doesn't run them.
+
+这个例子中唯一的问题在于，当你导入模块后，它将自动运行最后面的测试代码。
+通常当导入一个模块时，它将定义一些新的函数，但是并不运行它们。
+
+\index{import statement}  \index{statement!import}
+
+%🍁% Programs that will be imported as modules often
+%🍁% use the following idiom:
+
+作为模块的程序通常写成以下结构：
+
+\begin{lstlisting}
+if __name__ == '__main__':
+    print(linecount('wc.py'))
+\end{lstlisting}
+
+%
+%🍁% \verb"__name__" is a built-in variable that is set when the
+%🍁% program starts.  If the program is running as a script,
+%🍁% \verb"__name__" has the value \verb"'__main__'"; in that
+%🍁% case, the test code runs.  Otherwise,
+%🍁% if the module is being imported, the test code is skipped.
+
+\li{__name__} 是一个在程序开始时设置好的内建变量。
+如果程序以脚本的形式运行，\li{__name__} 的值为 \li{__main__} ，这时其中的代码将被执行。否则当被作为模块导入时，其中的代码将被跳过。
+
+%🍁% As an exercise, type this example into a file named {\tt wc.py} and run
+%🍁% it as a script.  Then run the Python interpreter and
+%🍁% {\tt import wc}.  What is the value of \verb"__name__"
+%🍁% when the module is being imported?
+
+我们做个练习，将例子输入到文件 \li{wc.py} 中，然后以脚本形式运行它。
+接着，打开 Python 解释器并导入 \li{wc} 。当模块被导入后， \li{__name__} 的值是什么？
+
+%🍁% Warning: If you import a module that has already been imported,
+%🍁% Python does nothing.  It does not re-read the file, even if it has
+%🍁% changed.
+
+警示：如果你导入一个已经被导入了的模块，Python 将不会做任何事情。它并不会重新读取文件，即使文件的内容已经发生了改变。
+\index{module!reload}  \index{reload function}
+\index{function!reload}
+
+%🍁% If you want to reload a module, you can use the built-in function
+%🍁% {\tt reload}, but it can be tricky, so the safest thing to do is
+%🍁% restart the interpreter and then import the module again.
+
+如果你要重载一个模块，可以使用内建函数 \li{reload} ，但它可能会出错。因此最安全的方法是重启解释器，然后重新导入模块。
+
+%🍁% \section{Debugging  |  调试}
+\section{调试}
+\index{debugging}  \index{whitespace}
+
+%🍁% When you are reading and writing files, you might run into problems
+%🍁% with whitespace.  These errors can be hard to debug because spaces,
+%🍁% tabs and newlines are normally invisible:
+
+当你读写文件时，可能会遇到空白带来的问题。这些问题会很难调试，因为空格、制表符和换行符通常是看不见的：
+
+\begin{lstlisting}
+>>> s = '1 2\t 3\n 4'
+>>> print(s)
+1 2  3
+ 4
+\end{lstlisting}
+\index{repr function}  \index{function!repr}
+\index{string representation}
+
+%🍁% The built-in function {\tt repr} can help.  It takes any object as an
+%🍁% argument and returns a string representation of the object.  For
+%🍁% strings, it represents whitespace
+%🍁% characters with backslash sequences:
+
+内建函数 \li{repr} 可以用来解决这个问题。它接受任意一个对象作为参数，然后返回一个该对象的字符串表示。对于空白符号，它将用反斜杠序列表示：
+
+\begin{lstlisting}
+>>> print(repr(s))
+'1 2\t 3\n 4'
+\end{lstlisting}
+
+%🍁% This can be helpful for debugging.
+
+这个对于调试会很有用。
+
+%🍁% One other problem you might run into is that different systems
+%🍁% use different characters to indicate the end of a line.  Some
+%🍁% systems use a newline, represented \verb"\n".  Others use
+%🍁% a return character, represented \verb"\r".  Some use both.
+%🍁% If you move files between different systems, these inconsistencies
+%🍁% can cause problems.
+
+另一个你可能会遇到的问题是，不同的的系统使用不同的符号来表示一行的结束。
+有些系统使用换行符 \li{\n`}，有的使用返回符号 \li{\r} ，有些两者都使用。
+如果你在不同的系统中移动文件，这些差异会导致问题。
+\index{end of line character}
+
+%🍁% For most systems, there are applications to convert from one
+%🍁% format to another.  You can find them (and read more about this
+%🍁% issue) at \url{http://en.wikipedia.org/wiki/Newline}.  Or, of course, you
+%🍁% could write one yourself.
+
+对大多数的系统，有一些转换不同格式文件的应用。
+你可以在 \href{http://en.wikipedia.org/wiki/Newline}{维基} 中找到这些应用的信息(并阅读更多相关内容)。 当然，你也可以自己编写一个转换程序。
+
+
+\index{维基百科}
+
+
+%🍁% \section{Glossary  |  术语表}
+\section{术语表}
+
+\begin{description}
+
+%🍁% \item[persistent:] Pertaining to a program that runs indefinitely
+%🍁% and keeps at least some of its data in permanent storage.
+
+\item[持久性 (persistent)：] 用于描述长期运行并至少将一部分自身的数据保存在永久存储中的程序。
+\index{persistence}
+
+%🍁% \item[format operator:] An operator, {\tt \%}, that takes a format
+%🍁% string and a tuple and generates a string that includes
+%🍁% the elements of the tuple formatted as specified by the format string.
+
+\item[格式化运算符 (format operator)：] 运算符 \li{%}。
+读取一个格式化字符串和一个元组，生成一个包含元组中元素的字符串，按照格式化字符串的要求格式化。
+\index{format operator}  \index{operator!format}
+
+%🍁% \item[format string:] A string, used with the format operator, that
+%🍁% contains format sequences.
+
+\item[格式化字符串 (format string)：] 一个包含格式化序列的字符串，和格式化运算符一起使用。
+\index{format string}
+
+%🍁% \item[format sequence:] A sequence of characters in a format string,
+%🍁% like {\tt \%d}, that specifies how a value should be formatted.
+
+\item[格式化序列 (format sequence)：] 格式化字符串中的一个字符序列，例如 \li{%d}
+，指定了一个值的格式。
+\index{format sequence}
+
+%🍁% \item[text file:] A sequence of characters stored in permanent
+%🍁% storage like a hard drive.
+
+\item[文本文件 (text file)：]保存在类似硬盘的永久存储设备上的字符序列。
+\index{text file}
+
+%🍁% \item[directory:] A named collection of files, also called a folder.
+
+\item[目录 (directory)：] 一个有命名的文件集合，也叫做文件夹。
+\index{directory}
+
+%🍁% \item[path:] A string that identifies a file.
+
+\item[路径 (path)：] 一个指定一个文件的字符串。
+\index{path}
+
+%🍁% \item[relative path:] A path that starts from the current directory.
+
+\item[相对路径 (relative path)：] 从当前目录开始的路径。
+\index{relative path}
+
+%🍁% \item[absolute path:] A path that starts from the topmost directory
+%🍁% in the file system.
+
+\item[绝对路径 (absolute path)：] 从文件系统顶部开始的路径。
+\index{absolute path}
+
+%🍁% \item[catch:] To prevent an exception from terminating
+%🍁% a program using the {\tt try}
+%🍁% and {\tt except} statements.
+
+\item[捕获 (catch)：] 为了防止程序因为异常而终止，使用 \li{try} 和 \li{except} 语句来捕捉异常。
+\index{catch}
+
+%🍁% \item[database:] A file whose contents are organized like a dictionary
+%🍁% with keys that correspond to values.
+
+\item[数据库 (database)：] 一个内容结构类似字典的文件，将键映射至对应的值。
+\index{database}
+
+%🍁% \item[bytes object:] An object similar to a string.
+
+\item[字节对象 (bytes object)：] 和字符串类的对象。
+\index{bytes object}  \index{object!bytes}
+
+%🍁% \item[shell:] A program that allows users to type commands and then
+%🍁% executes them by starting other programs.
+
+\item[shell：] 一个允许用户输入命令，并通过启用其它程序执行命令的程序。
+\index{shell}
+
+%🍁% \item[pipe object:] An object that represents a running program, allowing
+%🍁% a Python program to run commands and read the results.
+
+\item[管道对象 (pipe object)：] 一个代表某个正在运行的程序的对象，允许一个 Python 程序去运行命令并得到运行结果。
+
+\index{pipe object}  \index{object!pipe}
+
+\end{description}
+
+
+%🍁% \section{Exercises  |  练习}
+\section{练习}
+
+\begin{exercise}
+
+%🍁% Write a function called {\tt sed} that takes as arguments a pattern string,
+%🍁% a replacement string, and two filenames; it should read the first file
+%🍁% and write the contents into the second file (creating it if
+%🍁% necessary).  If the pattern string appears anywhere in the file, it
+%🍁% should be replaced with the replacement string.
+
+编写一个叫做 {\em \li{sed}} 的函数，它的参数是一个模式字符串 \footnote{pattern string}，一个替换字符串和两个文件名。
+它应该读取第一个文件，并将内容写入到第二个文件 (需要时创建它)。
+如果在文件的任何地方出现了模式字符串，就用替换字符串替换它。
+
+%🍁% If an error occurs while opening, reading, writing or closing files,
+%🍁% your program should catch the exception, print an error message, and
+%🍁% exit.  Solution: \url{http://thinkpython2.com/code/sed.py}.
+
+如果在打开、读取、写入或者关闭文件时出现了错误，你的程序应该捕获这个异常，打印一个错误信息，并退出。
+
+\href{http://thinkpython2.com/code/sed.py}{参考答案} 。
+
+\end{exercise}
+
+\begin{exercise}
+\index{anagram set}
+\index{set!anagram}
+
+%🍁% If you download my solution to Exercise~\ref{anagrams} from
+%🍁% \url{http://thinkpython2.com/code/anagram_sets.py}, you'll see that it creates
+%🍁% a dictionary that maps from a sorted string of letters to the list of
+%🍁% words that can be spelled with those letters.  For example,
+%🍁% \verb"'opst'" maps to the list
+%🍁% \verb"['opts', 'post', 'pots', 'spot', 'stop', 'tops']".
+
+如果你从 \href{http://thinkpython2.com/code/anagram_sets.py}{此处} 下载了
+练习~{\em \ref{anagrams}} 的答案，你会看到答案中创建了一个字典，
+将从一个由排序后的字母组成的字符串映射到一个可以由这些字母拼成的单词组成的列表。
+例如， {\em \li{'opst'}} 映射到列表
+{\em \li{['opts', 'post', 'pots', 'spot', 'stop', 'tops']}}。
+
+%🍁% Write a module that imports \verb"anagram_sets" and provides
+%🍁% two new functions: \verb"store_anagrams" should store the
+%🍁% anagram dictionary in a ``shelf''; \verb"read_anagrams" should
+%🍁% look up a word and return a list of its anagrams.
+%🍁% Solution: \url{http://thinkpython2.com/code/anagram_db.py}.
+
+编写一个模块， 导入 {\em \li{anagram_sets}} 并提供两个新函数：函数 {\em \li{store_anagrams}} 在将 {\em \li{anagram}} 字典保存至 {\em \li{shelf}}中； {\em \li{read_anagrams}}
+ 查找一个单词， 并返回它的 {\em \li{anagrams}} 列表。
+
+\end{exercise}
+
+\begin{exercise}
+\label{checksum}
+\index{MP3}
+
+%🍁% In a large collection of MP3 files, there may be more than one
+%🍁% copy of the same song, stored in different directories or with
+%🍁% different file names.  The goal of this exercise is to search for
+%🍁% duplicates.
+
+在一个很大的MP3文件集合中，或许会有同一首歌的不同拷贝，
+它们存放在不同的目录下或者有不同的名字。这个练习的目的是检索出这些拷贝。
+
+\begin{enumerate}
+
+%🍁% \item Write a program that searches a directory and all of its
+%🍁% subdirectories, recursively, and returns a list of complete paths
+%🍁% for all files with a given suffix (like {\tt .mp3}).
+%🍁% Hint: {\tt os.path} provides several useful functions for
+%🍁% manipulating file and path names.
+
+\item 编写一个程序，搜索一个目录和它的所有子目录，并返回一个列表，列表中包含所有的有给定后缀(例如{\em .mp3})的文件的完整路径。 提示： {\em \li{os.path}}提供了一些可以操作文件和路径名的函数。
+
+\index{duplicate}  \index{MD5 algorithm}
+\index{algorithm!MD5}  \index{checksum}
+
+%🍁% \item To recognize duplicates, you can use {\tt md5sum}
+%🍁% to compute a ``checksum'' for each files.  If two files have
+%🍁% the same checksum, they probably have the same contents.
+
+\item 为了识别出重复的文件，你可以使用 {\em \li{md5sum}} 来计算每个文件的 ``校验和''。 如果两个文件的校验和相同，它们很可能有相同的内容。
+
+\index{md5sum}
+
+%🍁% \item To double-check, you can use the Unix command {\tt diff}.
+\index{diff}
+
+\item 你可以使用 {\em Unix} 命令 {\em \li{diff}} 再确认一下。
+
+\end{enumerate}
+
+%🍁% Solution: \url{http://thinkpython2.com/code/find_duplicates.py}.
+
+\href{http://thinkpython2.com/code/find_duplicates.py}{参考答案}
+\end{exercise}

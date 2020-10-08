@@ -1641,12 +1641,12 @@ Python 2有31个关键字：
 
 ::
 
-    and       del       from      not       while    
-    as        elif      global    or        with     
-    assert    else      if        pass      yield    
-    break     except    import    print              
-    class     exec      in        raise              
-    continue  finally   is        return             
+    and       del       from      not       while
+    as        elif      global    or        with
+    assert    else      if        pass      yield
+    break     except    import    print
+    class     exec      in        raise
+    continue  finally   is        return
     def       for       lambda    try
 
 In Python 3, exec is no longer a keyword, but nonlocal is.
@@ -2018,7 +2018,7 @@ This comment contains useful information that is not in the code:
 
 ::
 
-    v = 5     # velocity in meters/second. 
+    v = 5     # velocity in meters/second.
 
 Good variable names can reduce the need for comments, but long names can
 make complex expressions hard to read, so there is a tradeoff.
@@ -3318,7 +3318,7 @@ we have learned so far.
 
    ::
 
-       print '+', 
+       print '+',
        print '-'
 
    The output of these statements is ``'+ -'``.
@@ -3881,7 +3881,7 @@ arc. The result might look like this:
         n = int(arc_length / 3) + 1
         step_length = arc_length / n
         step_angle = float(angle) / n
-        
+
         for i in range(n):
             fd(t, step_length)
             lt(t, step_angle)
@@ -4010,7 +4010,7 @@ the interface (“doc” is short for “documentation”). Here is an example:
     def polyline(t, n, length, angle):
         """Draws n line segments with the given length and
         angle (in degrees) between them.  t is a turtle.
-        """    
+        """
         for i in range(n):
             fd(t, length)
             lt(t, angle)
@@ -4744,7 +4744,7 @@ recursion depth is reached:
       File "<stdin>", line 2, in recurse
       File "<stdin>", line 2, in recurse
       File "<stdin>", line 2, in recurse
-                      .   
+                      .
                       .
                       .
       File "<stdin>", line 2, in recurse
@@ -6126,9 +6126,9 @@ Ackermann函数，\ :math:`A(m, n)`\ ，的定义是：
 .. math::
 
    \begin{aligned}
-   A(m, n) = \begin{cases} 
-                 n+1 & \mbox{if } m = 0 \\ 
-           A(m-1, 1) & \mbox{if } m > 0 \mbox{ and } n = 0 \\ 
+   A(m, n) = \begin{cases}
+                 n+1 & \mbox{if } m = 0 \\
+           A(m-1, 1) & \mbox{if } m > 0 \mbox{ and } n = 0 \\
    A(m-1, A(m, n-1)) & \mbox{if } m > 0 \mbox{ and } n > 0.
    \end{cases} \end{aligned}
 
@@ -6867,7 +6867,7 @@ be used to generate a numerical approximation of :math:`\pi`:
 
 .. math::
 
-   \frac{1}{\pi} = \frac{2\sqrt{2}}{9801} 
+   \frac{1}{\pi} = \frac{2\sqrt{2}}{9801}
    \sum^\infty_{k=0} \frac{(4k)!(1103+26390k)}{(k!)^4 396^{4k}}
 
 Write a function called ``estimate_pi`` that uses this formula to
@@ -7485,7 +7485,7 @@ words is the reverse of the other, but it contains two errors:
     def is_reverse(word1, word2):
         if len(word1) != len(word2):
             return False
-        
+
         i = 0
         j = len(word2)
 
@@ -7538,7 +7538,7 @@ of the indices immediately before the line where the error appears.
 
         while j > 0:
             print i, j        # print here
-            
+
             if word1[i] != word2[j]:
                 return False
             i = i+1
@@ -7964,7 +7964,7 @@ reversed:
 ::
 
     def uses_only(word, available):
-        for letter in word: 
+        for letter in word:
             if letter not in available:
                 return False
         return True
@@ -7984,7 +7984,7 @@ the string of letters:
 ::
 
     def uses_all(word, required):
-        for letter in required: 
+        for letter in required:
             if letter not in word:
                 return False
         return True
@@ -10121,7 +10121,7 @@ the global variable before you use it:
     been_called = False
 
     def example2():
-        global been_called 
+        global been_called
         been_called = True
 
 The global statement tells the interpreter something like, “In this
@@ -11239,7 +11239,7 @@ And here’s a dictionary with 3 items that map integers to strings.
 
 ::
 
-    >>> d = dict(lt) 
+    >>> d = dict(lt)
     >>> print structshape(d)
     dict of 3 int->str
 
@@ -11572,7 +11572,7 @@ in the file:
 
     def process_line(line, hist):
         line = line.replace('-', ' ')
-        
+
         for word in line.split():
             word = word.strip(string.punctuation + string.whitespace)
             word = word.lower()
@@ -11802,7 +11802,7 @@ Here are some of the results from *Emma*:
 ::
 
     The words in the book that aren't in the word list are:
-     rencontre jane's blanche woodhouses disingenuousness 
+     rencontre jane's blanche woodhouses disingenuousness
     friend's venice apartment ...
 
 Some of these words are names and possessives. Others, like “rencontre,”
@@ -12713,7 +12713,7 @@ similar to an if statement:
 
 ::
 
-    try:    
+    try:
         fin = open('bad_file')
         for line in fin:
             print line
@@ -13528,7 +13528,7 @@ Here is the class definition:
 ::
 
     class Rectangle(object):
-        """Represents a rectangle. 
+        """Represents a rectangle.
 
         attributes: width, height, corner.
         """
@@ -13997,7 +13997,7 @@ Time that records the time of day. The class definition looks like this:
 
     class Time(object):
         """Represents the time of day.
-           
+
         attributes: hour, minute, second
         """
 
@@ -15614,7 +15614,7 @@ these lists to **class attributes**:
     # inside class Card:
 
         suit_names = ['Clubs', 'Diamonds', 'Hearts', 'Spades']
-        rank_names = [None, 'Ace', '2', '3', '4', '5', '6', '7', 
+        rank_names = [None, 'Ace', '2', '3', '4', '5', '6', '7',
                   '8', '9', '10', 'Jack', 'Queen', 'King']
 
         def __str__(self):
@@ -15745,7 +15745,7 @@ With that decided, we can write ``__cmp__``:
             if self.rank < other.rank: return -1
 
             # ranks are the same... it's a tie
-            return 0    
+            return 0
 
 You can write this more concisely using tuple comparison:
 
@@ -15915,7 +15915,7 @@ shuffle函数。
 ::
 
     # inside class Deck:
-                
+
         def shuffle(self):
             random.shuffle(self.cards)
 
@@ -16294,8 +16294,8 @@ http://thinkpython.com/code/markov.py\ 下载我的代码，你可以看到它�
 
 ::
 
-    suffix_map = {}        
-    prefix = ()            
+    suffix_map = {}
+    prefix = ()
 
 Because these variables are global we can only run one analysis at a
 time. If we read two texts, their prefixes and suffixes would be added
@@ -16317,7 +16317,7 @@ state of each analysis in an object. Here’s what that looks like:
 
         def __init__(self):
             self.suffix_map = {}
-            self.prefix = ()    
+            self.prefix = ()
 
 Next, we transform the functions into methods. For example, here’s
 ``process_word``:
@@ -16337,7 +16337,7 @@ Next, we transform the functions into methods. For example, here’s
                 # if there is no entry for this prefix, make one
                 self.suffix_map[self.prefix] = [word]
 
-            self.prefix = shift(self.prefix, word)        
+            self.prefix = shift(self.prefix, word)
 
 Transforming a program like this—changing the design without changing
 the function—is another example of refactoring (see
@@ -16885,7 +16885,7 @@ bg的值是颜色名字的字符串。不同实现的Python的合法颜色名称
 ::
 
     white   black
-    red     green    blue   
+    red     green    blue
     cyan    yellow   magenta
 
 Shapes on a Canvas are called **items**. For example, the Canvas method
@@ -16948,7 +16948,7 @@ rectangle方法使用两个坐标的列表来制定一个矩形的两个对角�
 
 ::
 
-    canvas.rectangle([[0, 0], [200, 100]], 
+    canvas.rectangle([[0, 0], [200, 100]],
                      fill='blue', outline='orange', width=10)
 
 This way of specifying corners is called a **bounding box** because the

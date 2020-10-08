@@ -1,0 +1,1215 @@
+
+
+%🍁% \chapter{Case study: data structure selection  |  案例研究：数据结构选择}
+\chapter{案例研究：数据结构选择}
+
+%🍁% At this point you have learned about Python's core data structures,
+%🍁% and you have seen some of the algorithms that use them.
+%🍁% If you would like to know more about algorithms, this might be a good
+%🍁% time to read Chapter~\ref{algorithms}.
+%🍁% But you don't have to read it before you go on; you can read
+%🍁% it whenever you are interested.
+
+目前为止， 你已经学完了 Python 的核心数据结构， 同时你也接触了利用到这些数据结构的一些算法。
+如果你希望学习更多算法知识， 那么现在是阅读 附录~\ref{algorithms} 的好时机。
+但是不必急着马上读， 什么时候感兴趣了再去读即可。
+
+%🍁% This chapter presents a case study with exercises that let
+%🍁% you think about choosing data structures and practice using them.
+
+本章是一个案例研究， 同时给出了一些习题， 目的是启发你思考如何选择数据结构， 并练习数据结构使用。
+
+%🍁% \section{Word frequency analysis  |  词频分析}
+\section{词频分析}
+\label{analysis}
+
+%🍁% As usual, you should at least attempt the exercises
+%🍁% before you read my solutions.
+
+和之前一样， 在查看答案之前， 你可以试着解答一下这些习题。
+
+\begin{exercise}
+
+%🍁% Write a program that reads a file, breaks each line into
+%🍁% words, strips whitespace and punctuation from the words, and
+%🍁% converts them to lowercase.
+
+编写一个程序， 读取一个文件， 将每一行转换成单词列表， 删掉单词中的空格和标点， 然后将它们转换为小写字母。
+
+\index{string module}
+\index{module!string}
+
+%🍁% Hint: The {\tt string} module provides a string named {\tt whitespace},
+%🍁% which contains space, tab, newline, etc., and {\tt
+%🍁%   punctuation} which contains the punctuation characters.  Let's see
+%🍁% if we can make Python swear:
+
+提示： {\em \li{string}} 模块提供了名为 {\em \li{whitespace}} 的字符串，
+其包括空格、制表符、新行等等， 以及名为 {\em \li{punctuation}} 的字符串，
+其包括标点字符。   试试能否让 {\em Python} 说脏话：
+
+\begin{em}
+\begin{lstlisting}
+>>> import string
+>>> string.punctuation
+'!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~'
+\end{lstlisting}
+\end{em}
+
+%🍁% %
+%🍁% Also, you might consider using the string methods {\tt strip},
+%🍁% {\tt replace} and {\tt translate}.
+
+同时， 你可以考虑使用字符串方法 {\em \li{strip}} 、 {\em \li{replace}} 和 {\em \li{translate}}。
+
+\index{strip method}
+\index{method!strip}
+\index{replace method}
+\index{method!replace}
+\index{translate method}
+\index{method!translate}
+\end{exercise}
+
+\begin{exercise}
+\index{Project Gutenberg}
+
+%🍁% Go to Project Gutenberg (\url{http://gutenberg.org}) and download
+%🍁% your favorite out-of-copyright book in plain text format.
+
+前往\href{http://gutenberg.org}{古登堡项目\footnote{Project Gutenberg, \url{http://gutenberg.org}.}}， 以纯文本格式下载你喜欢的已无版权保护的图书。
+
+\index{plain text}
+\index{text!plain}
+
+%🍁% Modify your program from the previous exercise to read the book
+%🍁% you downloaded, skip over the header information at the beginning
+%🍁% of the file, and process the rest of the words as before.
+%🍁% Then modify the program to count the total number of words in
+%🍁% the book, and the number of times each word is used.
+
+修改前面习题的程序， 读取你下载的书，
+跳过文件开始的头部信息， 像之前那样处理其余的单词。
+然后修改程序， 计算书中单词的总数， 以及每个单词使用的次数。
+
+\index{word frequency}
+\index{frequency!word}
+
+%🍁% Print the number of different words used in the book.  Compare
+%🍁% different books by different authors, written in different eras.
+%🍁% Which author uses the most extensive vocabulary?
+
+打印该书使用单词的总数。   比较不同年代、不同作者写的书。
+哪个作者使用的词汇量最大？
+
+\end{exercise}
+
+\begin{exercise}
+%🍁% Modify the program from the previous exercise to print the
+%🍁% 20 most frequently used words in the book.
+
+修改上一个习题中的程序， 打印书中最常使用的 {\em 20} 个单词。
+\end{exercise}
+
+\begin{exercise}
+%🍁% Modify the previous program to read a word list (see
+%🍁% Section~\ref{wordlist}) and then print all the words in the book that
+%🍁% are not in the word list.  How many of them are typos?  How many of
+%🍁% them are common words that {\em should} be in the word list, and how
+%🍁% many of them are really obscure?
+
+修改上一个习题中的程序， 读取一个单词列表(见 {\em \ref{wordlist}}~节)，
+然后打印书中所有没有出现在该单词表中的单词。
+它们中有多少是拼写错误的？有多少是词表中 {\bf 应该} 包括的常用词？有多少是生僻词？
+\end{exercise}
+
+%🍁% \section{Random numbers  |  随机数}
+\section{随机数}
+\index{random number}
+\index{number, random}
+\index{deterministic}
+\index{pseudorandom}
+
+%🍁% Given the same inputs, most computer programs generate the same
+%🍁% outputs every time, so they are said to be {\bf deterministic}.
+%🍁% Determinism is usually a good thing, since we expect the same
+%🍁% calculation to yield the same result.  For some applications, though,
+%🍁% we want the computer to be unpredictable.  Games are an obvious
+%🍁% example, but there are more.
+
+给定相同的输入， 大多数计算机程序每次都会生成相同的输出，
+它们因此被称作 {\bf 确定性的\footnote{deterministic}}  。
+确定性通常是个好东西， 因为我们期望相同的计算产生相同的结果。
+然而， 对于有些应用， 我们希望计算机不可预知。
+游戏是一个明显的例子， 但是不限于此。
+
+%🍁% Making a program truly nondeterministic turns out to be difficult,
+%🍁% but there are ways to make it at least seem nondeterministic.  One of
+%🍁% them is to use algorithms that generate {\bf pseudorandom} numbers.
+%🍁% Pseudorandom numbers are not truly random because they are generated
+%🍁% by a deterministic computation, but just by looking at the numbers it
+%🍁% is all but impossible to distinguish them from random.
+
+让程序具备真正意义上的非确定性并不容易， 但是有办法使它至少看起来是不确定的。
+其中之一是使用生成 {\em 伪随机数} (pseudorandom) 的算法。
+伪随机数不是真正的随机数， 因为它们由一个确定性的计算生成，
+但是仅看其生成的数字， 不可能将它们和随机生成的相区分开。
+
+\index{random module}
+\index{module!random}
+
+%🍁% The {\tt random} module provides functions that generate
+%🍁% pseudorandom numbers (which I will simply call ``random'' from
+%🍁% here on).
+
+\li{random} 模块提供了生成伪随机数(下文中简称为``随机数'')的函数。
+
+\index{random function}
+\index{function!random}
+
+%🍁% The function {\tt random} returns a random float
+%🍁% between 0.0 and 1.0 (including 0.0 but not 1.0).  Each time you
+%🍁% call {\tt random}, you get the next number in a long series.  To see a
+%🍁% sample, run this loop:
+
+函数 \li{random} 返回一个 0.0 到 1.0 之间的随机浮点数(包括 0.0 ， 但是不包括 1.0 )。    每次调用 \li{random} ， 你获得一个长序列中的下一个数。
+举个例子， 运行此循环：
+
+\begin{lstlisting}
+import random
+for i in range(10):
+    x = random.random()
+    print(x)
+\end{lstlisting}
+
+%🍁% %
+%🍁% The function {\tt randint} takes parameters {\tt low} and
+%🍁% {\tt high} and returns an integer between {\tt low} and
+%🍁% {\tt high} (including both).
+
+函数 \li{randint} 接受参数 \li{low} 和 \li{high} ，
+返回一个 \li{low} 和 \li{high} 之间的整数(两个都包括)。
+
+\index{randint function}
+\index{function!randint}
+
+\begin{lstlisting}
+>>> random.randint(5, 10)
+5
+>>> random.randint(5, 10)
+9
+\end{lstlisting}
+
+%🍁% %
+%🍁% To choose an element from a sequence at random, you can use
+%🍁% {\tt choice}:
+
+你可以使用 \li{choice} ， 从一个序列中随机选择一个元素：
+
+\index{choice function}
+\index{function!choice}
+
+\begin{lstlisting}
+>>> t = [1, 2, 3]
+>>> random.choice(t)
+2
+>>> random.choice(t)
+3
+\end{lstlisting}
+
+%🍁% %
+%🍁% The {\tt random} module also provides functions to generate
+%🍁% random values from continuous distributions including
+%🍁% Gaussian, exponential, gamma, and a few more.
+
+\li{random} 模块提供的函数， 还可以生成符合高斯、指数、伽马等连续分布的随机值。
+
+\begin{exercise}
+\index{histogram!random choice}
+
+%🍁% Write a function named \verb"choose_from_hist" that takes
+%🍁% a histogram as defined in Section~\ref{histogram} and returns a
+%🍁% random value from the histogram, chosen with probability
+%🍁% in proportion to frequency.  For example, for this histogram:
+
+编写一个名为 {\em \li{choose_from_hist}} 的函数，  其接受一个如 {\em \ref{histogram}} 一节中定义的 {\em \li{histogram}} 对象作为参数，  并从该对象中返回一个随机值，  其选择概率和值出现的频率成正比。   例如：
+
+\begin{em}
+\begin{lstlisting}
+>>> t = ['a', 'a', 'b']
+>>> hist = histogram(t)
+>>> hist
+{'a': 2, 'b': 1}
+\end{lstlisting}
+\end{em}
+
+%🍁% %
+%🍁% your function should return \verb"'a'" with probability $2/3$ and \verb"'b'"
+%🍁% with probability $1/3$.
+
+你的函数返回 {\em \li{'a'}} 的概率应该是 {\em $2/3$} ， 返回 {\em \li{'b'}} 的概率应该是 {\em $1/3$} 。
+
+\end{exercise}
+
+%🍁% \section{Word histogram  |  单词直方图}
+\section{单词直方图}
+
+%🍁% You should attempt the previous exercises before you go on.
+%🍁% You can download my solution from
+%🍁%  \url{http://thinkpython2.com/code/analyze_book1.py}.  You will
+%🍁% also need \url{http://thinkpython2.com/code/emma.txt}.
+%🍁% Here is a program that reads a file and builds a histogram of the
+%🍁% words in the file:
+
+在继续下面的习题之前， 你应该尝试完成前面的练习。
+你可以下载 \href{http://thinkpython2.com/code/analyze_book1.py}{我的答案}。
+你还需要下载\href{http://thinkpython2.com/code/emma.txt}{这个文件} 。
+下面这个程序将读取一个文件， 并建立文件中单词的直方图：
+
+\index{histogram!word frequencies}
+
+\begin{lstlisting}
+import string
+def process_file(filename):
+    hist = dict()
+    fp = open(filename)
+    for line in fp:
+        process_line(line, hist)
+    return hist
+def process_line(line, hist):
+    line = line.replace('-', ' ')
+    for word in line.split():
+        word = word.strip(string.punctuation + string.whitespace)
+        word = word.lower()
+        hist[word] = hist.get(word, 0) + 1
+hist = process_file('emma.txt')
+\end{lstlisting}
+
+%🍁% %
+%🍁% This program reads {\tt emma.txt}, which contains the text of {\em
+%🍁%   Emma} by Jane Austen.
+
+该程序读取 \li{emma.txt} ， 其包括 Jane Austen 的小说 《{\em Emma}》 文本。
+
+\index{Austin, Jane}
+
+%🍁% \verb"process_file" loops through the lines of the file,
+%🍁% passing them one at a time to \verb"process_line".  The histogram
+%🍁% {\tt hist} is being used as an accumulator.
+
+\li{process_file} 循环读取文件的每行， 依次把它们传递给 \li{process_line} 。
+直方图 \li{hist} 被用作一个累加器。
+
+\index{accumulator!histogram}
+\index{traversal}
+
+%🍁% \verb"process_line" uses the string method {\tt replace} to replace
+%🍁% hyphens with spaces before using {\tt split} to break the line into a
+%🍁% list of strings.  It traverses the list of words and uses {\tt strip}
+%🍁% and {\tt lower} to remove punctuation and convert to lower case.  (It
+%🍁% is a shorthand to say that strings are ``converted''; remember that
+%🍁% strings are immutable, so methods like {\tt strip} and {\tt lower}
+%🍁% return new strings.)
+
+\li{process_line} 使用字符串的 \li{replace} 方法将连字符替换成空格。
+它会遍历单词列表， 并使用 \li{strip} 和 \li{lower} 来删除标点以及将单词转换为小写。
+(``转换'' 只是一种简略的说法；记住， 字符串是不可变的， 所以类似 \li{strip} 和 \li{lower} 这样的方法其实返回的是新字符串。  )
+
+%🍁% Finally, \verb"process_line" updates the histogram by creating a new
+%🍁% item or incrementing an existing one.
+
+最后， \li{process_line} 通过生成一个新的项或者递增一个已有的项来更新直方
+
+\index{update!histogram}
+
+%🍁% To count the total number of words in the file, we can add up
+%🍁% the frequencies in the histogram:
+
+我们可以通过累加直方图中的频率， 来统计文件中的单词总数：
+
+\begin{lstlisting}
+def total_words(hist):
+    return sum(hist.values())
+\end{lstlisting}
+
+%
+%🍁% The number of different words is just the number of items in
+%🍁% the dictionary:
+
+不同单词的数量恰好是词典中项的数目：
+
+\begin{lstlisting}
+def different_words(hist):
+    return len(hist)
+\end{lstlisting}
+
+%🍁% %
+%🍁% Here is some code to print the results:
+
+以下打印结果的代码：
+
+\begin{lstlisting}
+print('Total number of words:', total_words(hist))
+print('Number of different words:', different_words(hist))
+\end{lstlisting}
+
+%🍁% %
+%🍁% And the results:
+
+其结果是：
+
+\begin{lstlisting}
+Total number of words: 161080
+Number of different words: 7214
+\end{lstlisting}
+
+%
+%🍁% \section{Most common words  |  最常用单词}
+\section{最常用单词}
+
+%🍁% To find the most common words, we can make a list of tuples,
+%🍁% where each tuple contains a word and its frequency,
+%🍁% and sort it.
+%🍁% The following function takes a histogram and returns a list of
+%🍁% word-frequency tuples:
+
+为了找到最常用的单词， 我们可以使用元组列表， 其中每个元组包含单词和它的频率， 然后排序这个列表。
+
+下面的函数接受一个直方图并且返回一个
+单词-频率的元组列表：
+
+\begin{lstlisting}
+def most_common(hist):
+    t = []
+    for key, value in hist.items():
+        t.append((value, key))
+    t.sort(reverse=True)
+    return t
+\end{lstlisting}
+
+%🍁% In each tuple, the frequency appears first, so the resulting list is
+%🍁% sorted by frequency.  Here is a loop that prints the ten most common
+%🍁% words:
+
+每一个元组中， 频率在前， 所以这个列表是按照频率排序。
+下面是输出最常用的十个单词的循环：
+
+\begin{lstlisting}
+t = most_common(hist)
+print('The most common words are:')
+for freq, word in t[:10]:
+    print(word, freq, sep='\t')
+\end{lstlisting}
+
+%🍁% %
+%🍁% I use the keyword argument {\tt sep} to tell {\tt print} to use a tab
+%🍁% character as a ``separator'', rather than a space, so the second
+%🍁% column is lined up.  Here are the results from {\em Emma}:
+
+这里我通过关键词参数 \li{sep}，  让 \li{print} 使用一个制表符(Tab)而不是空格键作为分隔符，  所以第二行将对齐。    下面是对 《{\em Emma}》 的分析结果：
+
+\begin{lstlisting}
+The most common words are:
+to      5242
+the     5205
+and     4897
+of      4295
+i       3191
+a       3130
+it      2529
+her     2483
+was     2400
+she     2364
+\end{lstlisting}
+
+%🍁% %
+%🍁% This code can be simplified using the {\tt key} parameter of
+%🍁% the {\tt sort} function.  If you are curious, you can read about it
+%🍁% at \url{https://wiki.python.org/moin/HowTo/Sorting}.
+
+当然， 这段代码也可以通过 \li{sort} 函数的参数 \li{key} 进行简化。
+如果你感兴趣， 可以阅读\href{https://wiki.python.org/moin/HowTo/Sorting}{这篇文章} 。
+
+%🍁% \section{Optional parameters  |  可选形参}
+\section{可选形参}
+
+\index{optional parameter}
+\index{parameter!optional}
+
+%🍁% We have seen built-in functions and methods that take optional
+%🍁% arguments.  It is possible to write programmer-defined functions
+%🍁% with optional arguments, too.  For example, here is a function that
+%🍁% prints the most common words in a histogram
+
+我们已经见过接受可变数量实参的函数和方法了。
+程序员也可以自己定义具有可选实参的函数。
+例如， 下面就是一个打印直方图中最常见单词的函数。
+
+\index{programmer-defined function}
+\index{function!programmer defined}
+
+\begin{lstlisting}
+def print_most_common(hist, num=10):
+    t = most_common(hist)
+    print('The most common words are:')
+    for freq, word in t[:num]:
+        print(word, freq, sep='\t')
+\end{lstlisting}
+
+%🍁% The first parameter is required; the second is optional.
+%🍁% The {\bf default value} of {\tt num} is 10.
+
+第一个形参是必须的；第二个是可选的。   \li{num} 的\ **默认值(default
+value)**\ 是10。
+
+\index{default value}
+\index{value!default}
+
+%🍁% If you only provide one argument:
+
+如果你只提供了一个实参:
+
+\begin{lstlisting}
+print_most_common(hist)
+\end{lstlisting}
+{\tt num} gets the default value.  If you provide two arguments:
+\begin{lstlisting}
+print_most_common(hist, 20)
+\end{lstlisting}
+{\tt num} gets the value of the argument instead.  In other
+words, the optional argument {\bf overrides} the default value.
+
+\index{override}
+
+%🍁% If a function has both required and optional parameters, all
+%🍁% the required parameters have to come first, followed by the
+%🍁% optional ones.
+
+如果一个函数同时有必选和可选两类形参， 则所有的必选形参必须首先出现， 可选形参紧随其后。
+
+%🍁% \section{Dictionary subtraction  |  字典差集}
+\section{字典差集}
+
+\label{dictsub}
+\index{dictionary!subtraction}
+\index{subtraction!dictionary}
+
+%🍁% Finding the words from the book that are not in the word list
+%🍁% from {\tt words.txt} is a problem you might recognize as set
+%🍁% subtraction; that is, we want to find all the words from one
+%🍁% set (the words in the book) that are not in the other (the
+%🍁% words in the list).
+
+从书中找到所有没出现在词表 \li{words.txt} 中的单词， 可以认为是一个差集问题；
+也就是， 我们应该从一个集合中(书中的单词)找到所有没出现在另一个集合中
+(列表中的单词)的单词。
+
+%🍁% {\tt subtract} takes dictionaries {\tt d1} and {\tt d2} and returns a
+%🍁% new dictionary that contains all the keys from {\tt d1} that are not
+%🍁% in {\tt d2}.  Since we don't really care about the values, we
+%🍁% set them all to None.
+
+\li{subtract} 接受词典 \li{d1} 和 \li{d2} ， 并返回一个新的词典，
+其包括 \li{d1} 中的所有没出现在 \li{d2} 中的键。
+由于并不真正关心值是什么， 我们将它们都设为 \li{None}。
+
+\begin{lstlisting}
+def subtract(d1, d2):
+    res = dict()
+    for key in d1:
+        if key not in d2:
+            res[key] = None
+    return res
+\end{lstlisting}
+
+%🍁% %
+%🍁% To find the words in the book that are not in {\tt words.txt},
+%🍁% we can use \verb"process_file" to build a histogram for
+%🍁% {\tt words.txt}, and then subtract:
+
+为了找到书中没有出现在 \li{words.txt} 中的单词，
+我们可以使用 \li{process_file} 来为 \li{words.txt} 构建一个直方图，
+然后使用 \li{subtract} ：
+
+\begin{lstlisting}
+words = process_file('words.txt')
+diff = subtract(hist, words)
+print("Words in the book that aren't in the word list:")
+for word in diff.keys():
+    print(word, end=' ')
+\end{lstlisting}
+
+%🍁% %
+%🍁% Here are some of the results from {\em Emma}:
+
+这是针对小说 《{\em Emma}》 的部分运行结果：
+
+\begin{lstlisting}
+Words in the book that aren't in the word list:
+rencontre jane's blanche woodhouses disingenuousness
+friend's venice apartment ...
+\end{lstlisting}
+
+%🍁% %
+%🍁% Some of these words are names and possessives.  Others, like
+%🍁% ``rencontre'', are no longer in common use.  But a few are common
+%🍁% words that should really be in the list!
+
+这些单词中， 一些是名字和名词所有格。  如“rencontre”这样的其他单词已经不常使用了。
+但是有一些真的应该包括在列表中！
+
+\begin{exercise}
+\index{set}
+\index{type!set}
+%🍁% Python provides a data structure called {\tt set} that provides many
+%🍁% common set operations.  You can read about them in Section~\ref{sets},
+%🍁% or read the documentation at
+%🍁% \url{http://docs.python.org/3/library/stdtypes.html#types-set}.
+%🍁% Write a program that uses set subtraction to find words in the book
+%🍁% that are not in the word list.  Solution:
+%🍁% \url{http://thinkpython2.com/code/analyze_book2.py}.
+
+Python　提供了一个叫做集合 (set) 的数据结构， 支持许多常见的集合操作。
+你可以前往第十九章阅读相关内容， 或者阅读\href{http://docs.python.org/3/library/stdtypes.html#types-set}{官方文档} 。
+
+编写一个程序， 使用集合的差集操作来找出一本书中不在 \li{work list} 中的单词。
+
+\href{http://thinkpython2.com/code/analyze_book2.py}{参考答案}
+
+\end{exercise}
+
+%🍁% \section{Random words  |  随机单词}
+\section{随机单词}
+\label{randomwords}
+\index{histogram!random choice}
+
+%🍁% To choose a random word from the histogram, the simplest algorithm
+%🍁% is to build a list with multiple copies of each word, according
+%🍁% to the observed frequency, and then choose from the list:
+
+如果想从直方图中随机选择一个单词， 最简单的算法是创建一个列表，
+其中根据其出现的频率， 每个单词都有相应个数的拷贝， 然后从该列表中选择单词：
+
+\begin{lstlisting}
+def random_word(h):
+    t = []
+    for word, freq in h.items():
+        t.extend([word] * freq)
+    return random.choice(t)
+\end{lstlisting}
+
+%🍁% %
+%🍁% The expression {\tt [word] * freq} creates a list with {\tt freq}
+%🍁% copies of the string {\tt word}.  The {\tt extend}
+%🍁% method is similar to {\tt append} except that the argument is
+%🍁% a sequence.
+
+表达式 \li{[word] * freq} 创建一个具有 \li{freq} 个 \li{word} 字符串拷贝的列表。
+除了它的实参要求是一个序列外， \li{extend} 方法和 \li{append} 方法很像。
+
+%🍁% This algorithm works, but it is not very efficient; each time you
+%🍁% choose a random word, it rebuilds the list, which is as big as
+%🍁% the original book.  An obvious improvement is to build the list
+%🍁% once and then make multiple selections, but the list is still big.
+%🍁% An alternative is:
+
+该算法能够满足要求， 但是效率不够高；
+每次你选择一个随机单词， 它都重建列表， 这个列表和原书一样大。
+一个明显的改进是， 创建列表一次， 然后进行多次选择，  但是该列表仍然很大。
+
+\begin{enumerate}
+%🍁% \item Use {\tt keys} to get a list of the words in the book.
+
+\item 使用 \li{keys} 来获得该书中单词的列表。
+
+%🍁% \item Build a list that contains the cumulative sum of the word
+%🍁%   frequencies (see Exercise~\ref{cumulative}).  The last item
+%🍁%   in this list is the total number of words in the book, $n$.
+
+\item 创建一个包含单词频率累积和的列表(见 练习~\ref{cumulative})。    此列表的最后一项是书中单词的数目 $n$ 。
+
+%🍁% \item Choose a random number from 1 to $n$.  Use a bisection search
+%🍁%   (See Exercise~\ref{bisection}) to find the index where the random
+%🍁%   number would be inserted in the cumulative sum.
+
+\item 选择一个从 1 到 $n$ 的随机数。   使用二分搜索(见\ref{bisection}节)  找到该随机数应该被在累积和中插入的索引。
+
+%🍁% \item Use the index to find the corresponding word in the word list.
+
+\item 使用该索引从单词列表中找到相应的单词。
+\end{enumerate}
+
+\begin{exercise}
+\label{randhist}
+\index{algorithm}
+%🍁% Write a program that uses this algorithm to choose a random word from
+%🍁% the book.  Solution:
+%🍁% \url{http://thinkpython2.com/code/analyze_book3.py}.
+\end{exercise}
+
+编写一个使用该算法从书中选择一个随机单词的程序。
+\href{http://thinkpython2.com/code/analyze_book3.py}{参考答案}
+
+
+%🍁% \section{Markov analysis  |  马尔科夫分析}
+\section{马尔科夫分析}
+\label{markov}
+\index{Markov analysis}
+
+%🍁% If you choose words from the book at random, you can get a
+%🍁% sense of the vocabulary, but you probably won't get a sentence:
+
+如果你从书中随机选择单词， 那么你会大致了解其使用的词汇， 但可能不会得到一个完整的句子：
+
+\begin{lstlisting}
+this the small regard harriet which knightley's it most things
+\end{lstlisting}
+
+%🍁% %
+%🍁% A series of random words seldom makes sense because there
+%🍁% is no relationship between successive words.  For example, in
+%🍁% a real sentence you would expect an article like ``the'' to
+%🍁% be followed by an adjective or a noun, and probably not a verb
+%🍁% or adverb.
+
+一系列随机单词很少有意义， 因为相邻的单词之间没有关系。
+例如， 在一个真实的句子中， 你可能期望 ``the'' 这样的冠词后面跟着的是一个形容词或者名词，
+而大不可能会是一个动词或者副词。
+
+%🍁% One way to measure these kinds of relationships is Markov
+%🍁% analysis, which
+%🍁% characterizes, for a given sequence of words, the probability of the
+%🍁% words that might come next.  For example, the song {\em Eric, the Half a
+%🍁%   Bee} begins:
+
+衡量相邻单词关系的方法之一是马尔科夫分析法， 对于一个给定的单词序列，
+马尔科夫分析法将给出接下来单词的概率。   例如， 歌曲 {\em Eric, the Half a
+Bee} 的开头是：
+
+\begin{quote}
+Half a bee, philosophically, \\
+Must, ipso facto, half not be. \\
+But half the bee has got to be \\
+Vis a vis, its entity. D'you see? \\
+\\
+But can a bee be said to be \\
+Or not to be an entire bee \\
+When half the bee is not a bee \\
+Due to some ancient injury? \\
+\end{quote}
+
+%🍁% %
+%🍁% In this text,
+%🍁% the phrase ``half the'' is always followed by the word ``bee'',
+%🍁% but the phrase ``the bee'' might be followed by either
+%🍁% ``has'' or ``is''.
+
+在此文本中， 短语 ``half the'' 后面总是跟着单词 ``bee''，  但是短语 ``the
+bee'' 则可能跟着 ``has'' 或者  ``is''。
+
+\index{prefix}
+\index{suffix}
+\index{mapping}
+
+%🍁% The result of Markov analysis is a mapping from each prefix
+%🍁% (like ``half the'' and ``the bee'') to all possible suffixes
+%🍁% (like ``has'' and ``is'').
+
+马尔科夫分析的结果是从每个前缀(如``half the''和``the bee'')
+到所有可能的后缀(如``has'' 和 ``is'')的映射。
+
+\index{random text}
+\index{text!random}
+
+%🍁% Given this mapping, you can generate a random text by
+%🍁% starting with any prefix and choosing at random from the
+%🍁% possible suffixes.  Next, you can combine the end of the
+%🍁% prefix and the new suffix to form the next prefix, and repeat.
+%🍁%
+%🍁% For example, if you start with the prefix ``Half a'', then the
+%🍁% next word has to be ``bee'', because the prefix only appears
+%🍁% once in the text.  The next prefix is ``a bee'', so the
+%🍁% next suffix might be ``philosophically'', ``be'' or ``due''.
+%🍁%
+%🍁% In this example the length of the prefix is always two, but
+%🍁% you can do Markov analysis with any prefix length.
+
+给定此映射， 你能够通过以任意前缀开始并从可能的后缀中随机选择一个的方法， 来生成一个随机文本。
+接下来， 你可以将前缀的结尾和新的后缀组合成下一个前缀， 并重复下去。
+
+例如， 如果你以前缀``Half a''开始， 然后下一个但是必须是``bee''，
+因为此前缀在文本中仅出现一次。  下一个前缀是``a bee''，
+所以下一个后缀可能是``philosophically''， ``be''或``due''。
+
+此例中， 前缀的长度总是2， 但是你可以以任意前缀长度进行马尔科夫分析。
+前缀的长度被称作此分析的“阶”。
+
+\begin{exercise}
+%🍁% Markov analysis:
+马尔科夫分析：
+\begin{enumerate}
+%🍁% \item Write a program to read a text from a file and perform Markov
+%🍁% analysis.  The result should be a dictionary that maps from
+%🍁% prefixes to a collection of possible suffixes.  The collection
+%🍁% might be a list, tuple, or dictionary; it is up to you to make
+%🍁% an appropriate choice.  You can test your program with prefix
+%🍁% length two, but you should write the program in a way that makes
+%🍁% it easy to try other lengths.
+
+\item 编写一个程序， 从一个文件中读取文本并执行马尔科夫分析。
+   结果应该是一个字典， 即从前缀映射到一个可能的后缀集合。
+   此后缀集合可以是一个列表、元组或字典；你需要做出合适的选择。
+   你可以用长度为2的前缀测试程序， 但是在编写程序时， 应确保其很容易支持其它长度。
+
+%🍁% \item Add a function to the previous program to generate random text
+%🍁% based on the Markov analysis.  Here is an example from {\em Emma}
+%🍁% with prefix length 2:
+%🍁%
+%🍁% \begin{quote}
+%🍁% He was very clever, be it sweetness or be angry, ashamed or only
+%🍁% amused, at such a stroke. She had never thought of Hannah till you
+%🍁% were never meant for me?" "I cannot make speeches, Emma:" he soon cut
+%🍁% it all himself.
+%🍁% \end{quote}
+%🍁%
+%🍁% For this example, I left the punctuation attached to the words.
+%🍁% The result is almost syntactically correct, but not quite.
+%🍁% Semantically, it almost makes sense, but not quite.
+%🍁%
+%🍁% What happens if you increase the prefix length?  Does the random
+%🍁% text make more sense?
+
+\item 在前面的程序中添加一个函数， 基于马尔科夫分析生成随机文本。
+   下面是使用 《{\em Emma} 》 执行前缀为2的马尔科夫分析生成的示例：
+
+\begin{quote}
+He was very clever, be it sweetness or be angry, ashamed or only
+amused, at such a stroke. She had never thought of Hannah till you
+were never meant for me?" "I cannot make speeches, Emma:" he soon cut
+it all himself.
+\end{quote}
+
+在此例中， 我保留了附在词后面的标点符号。  从语法上看， 结果几乎是正确的， 但不完全。
+语义上讲， 它几乎有意义， 但也不完全。
+
+如果你增加前缀的长度， 会发生什么？随机文本更有意义是么？
+
+%🍁% \item Once your program is working, you might want to try a mash-up:
+%🍁% if you combine text from two or more books, the random
+%🍁% text you generate will blend the vocabulary and phrases from
+%🍁% the sources in interesting ways.
+
+\item 一旦程序正常运行， 你可以想尝试一下混搭：如果你组合两本或更多书中的文本，
+   你生成的随机文本将以有趣的方式混合这些书中的词汇和短语。
+
+\index{mash-up}
+
+\end{enumerate}
+
+%🍁% Credit: This case study is based on an example from Kernighan and
+%🍁% Pike, {\em The Practice of Programming}, Addison-Wesley, 1999.
+
+致谢：此案例研究基于 Kernighan 与 Pike 所著的 《{\em The Practice of
+Programming}》 一书中的示例。
+
+\end{exercise}
+
+%🍁% You should attempt this exercise before you go on; then you can can
+%🍁% download my solution from \url{http://thinkpython2.com/code/markov.py}.
+%🍁% You will also need \url{http://thinkpython2.com/code/emma.txt}.
+
+在继续阅读之前， 你应该尝试解决这个习题；
+你可以从 \href{http://thinkpython2.com/code/markov.py}{此处}下载我的答案。
+你还需要下载\href{http://thinkpython2.com/code/emma.txt}{Emma 的文本} 。
+
+%🍁% \section{Data structures  |  数据结构}
+\section{数据结构}
+\index{data structure}
+
+%🍁% Using Markov analysis to generate random text is fun, but there is
+%🍁% also a point to this exercise: data structure selection.  In your
+%🍁% solution to the previous exercises, you had to choose:
+
+使用马尔科夫分析生成随机文本很有趣，
+但是上面那道习题的目的是：学习数据结构选择。
+在解答上述习题时， 你不得不选择：
+
+%🍁% \begin{itemize}
+%🍁% \item How to represent the prefixes.
+%🍁% \item How to represent the collection of possible suffixes.
+%🍁% \item How to represent the mapping from each prefix to
+%🍁% the collection of possible suffixes.
+%🍁% \end{itemize}
+
+\begin{itemize}
+\item 如何表示前缀。
+\item 如何表示可能后缀的集合。
+\item 如何表示从前缀到可能后缀集合的映射。
+\end{itemize}
+
+%🍁% The last one is easy: a dictionary is the obvious choice
+%🍁% for a mapping from keys to corresponding values.
+
+最后一个选择很简单：明显应该选择字典作为键至对应值的映射。
+
+%🍁% For the prefixes, the most obvious options are string,
+%🍁% list of strings, or tuple of strings.
+
+对于前缀， 最明显的选择是字符串、字符串列表或者字符串元组。
+
+%🍁% For the suffixes,
+%🍁% one option is a list; another is a histogram (dictionary).
+
+对于后缀， 一个选择是列表；另一个是直方图(字典)。
+
+\index{implementation}
+
+%🍁% How should you choose?  The first step is to think about
+%🍁% the operations you will need to implement for each data structure.
+%🍁% For the prefixes, we need to be able to remove words from
+%🍁% the beginning and add to the end.  For example, if the current
+%🍁% prefix is ``Half a'', and the next word is ``bee'', you need
+%🍁% to be able to form the next prefix, ``a bee''.
+
+你如何选择呢？ 第一步是考虑对每个数据结构你需要实现的操作。
+对于前缀， 我们需要能从头部删除单词， 并在结尾处加入单词。
+例如， 如果当前的前缀是``Half a''， 下一个词是``bee''，
+你需要能构成下一个前缀``a bee''。
+\index{tuple!as key in dictionary}
+
+%🍁% Your first choice might be a list, since it is easy to add
+%🍁% and remove elements, but we also need to be able to use the
+%🍁% prefixes as keys in a dictionary, so that rules out lists.
+%🍁% With tuples, you can't append or remove, but you can use
+%🍁% the addition operator to form a new tuple:
+
+你的第一个选择可能是列表， 因为它能很容易的增加和删除元素，
+但是我们也需要让前缀作为字典的键， 这就排除了列表。
+使用元组， 你不能追加或删除元素，
+但是你能使用加号运算符来形成一个新的元组：
+
+\begin{lstlisting}
+def shift(prefix, word):
+    return prefix[1:] + (word,)
+\end{lstlisting}
+
+%🍁% %
+%🍁% {\tt shift} takes a tuple of words, {\tt prefix}, and a string,
+%🍁% {\tt word}, and forms a new tuple that has all the words
+%🍁% in {\tt prefix} except the first, and {\tt word} added to
+%🍁% the end.
+
+\li{shift} 接受一个单词元组 \li{prefix} 和一个字符串 \li{word} ，
+并形成一个新的元组， 其具有 \li{prefix} 中除第一个单词外的全部单词，
+然后在结尾增加 \li{word} 。
+
+%🍁% For the collection of suffixes, the operations we need to
+%🍁% perform include adding a new suffix (or increasing the frequency
+%🍁% of an existing one), and choosing a random suffix.
+
+对于后缀的集合， 我们需要执行的运算包括增加一个新的后缀
+(或者增加一个已有后缀的频率)， 并选择一个随机后缀。
+
+%🍁% Adding a new suffix is equally easy for the list implementation
+%🍁% or the histogram.  Choosing a random element from a list
+%🍁% is easy; choosing from a histogram is harder to do
+%🍁% efficiently (see Exercise~\ref{randhist}).
+
+对于列表或者直方图， 增加一个新的后缀一样容易。
+从列表中选择一个随机元素很容易；
+在直方图中选择的难度更大(见 练习~\ref{randhist})。
+
+%🍁% So far we have been talking mostly about ease of implementation,
+%🍁% but there are other factors to consider in choosing data structures.
+%🍁% One is run time.  Sometimes there is a theoretical reason to expect
+%🍁% one data structure to be faster than other; for example, I mentioned
+%🍁% that the {\tt in} operator is faster for dictionaries than for lists,
+%🍁% at least when the number of elements is large.
+
+目前为止， 我们主要讨论实现的难易，
+但是选择数据结构时还要考虑其它因素。  一个是运行时间。
+有时， 一个数据结构比另一个快有理论依据；
+例如， 我提到过 \li{{in} 运算符对于字典比对列表要快，
+至少当元素的数目很大的时候。
+
+%🍁% But often you don't know ahead of time which implementation will
+%🍁% be faster.  One option is to implement both of them and see which
+%🍁% is better.  This approach is called {\bf benchmarking}.  A practical
+%🍁% alternative is to choose the data structure that is
+%🍁% easiest to implement, and then see if it is fast enough for the
+%🍁% intended application.  If so, there is no need to go on.  If not,
+%🍁% there are tools, like the {\tt profile} module, that can identify
+%🍁% the places in a program that take the most time.
+
+但是通常你事先不知道哪个实现更快。
+一个选择是两个都实现， 然后再看哪个更快。
+此方法被称作 {\em 基准测试} (benchmarking) 。
+另一个更实际的选择是选择最容易实现的数据结构，
+然后看它对于拟定的应用是否足够快。  如果是的话， 就不需要继续了。
+如果不是， 可以使用一些工具， 如 \li{profile} 模块， 识别程序中哪处最耗时。
+\index{benchmarking}
+\index{profile module}
+\index{module!profile}
+
+%🍁% The other factor to consider is storage space.  For example, using a
+%🍁% histogram for the collection of suffixes might take less space because
+%🍁% you only have to store each word once, no matter how many times it
+%🍁% appears in the text.  In some cases, saving space can also make your
+%🍁% program run faster, and in the extreme, your program might not run at
+%🍁% all if you run out of memory.  But for many applications, space is a
+%🍁% secondary consideration after run time.
+
+另一个要考虑的因素是存储空间。  例如， 使用直方图表示后缀集合可能用更少的空间，
+因为无论一个单词在文本中出现多少次， 你只需要存储它一次。
+在一些情况下， 节省空间也能让你的程序更快， 极端情况下，
+如果内存溢出， 你的程序可能根本不能运行。
+但是对于许多应用， 空间是运行时间之后的第二位考虑。
+
+%🍁% One final thought: in this discussion, I have implied that
+%🍁% we should use one data structure for both analysis and generation.  But
+%🍁% since these are separate phases, it would also be possible to use one
+%🍁% structure for analysis and then convert to another structure for
+%🍁% generation.  This would be a net win if the time saved during
+%🍁% generation exceeded the time spent in conversion.
+
+最后一点：在此讨论中， 我暗示了我们应该使用一种数据结构同时进行分析和生成。
+但是既然这些是独立的步骤， 使用一种数据结构进行分析，
+然后采用另一种结构进行生成也是可能的。
+如果生成节省的时间超过了转化花费的时间， 这也会提高程序的性能。
+
+%🍁% \section{Debugging  |  调试}
+\section{调试}
+\index{debugging}
+%🍁% When you are debugging a program, and especially if you are
+%🍁% working on a hard bug, there are five things to try:
+
+在调试一个程序的时候， 特别是调试一个很难的错误时， 应该做到以下五点：
+
+%🍁% \begin{description}
+%🍁% \item[Reading:] Examine your code, read it back to yourself, and
+%🍁% check that it says what you meant to say.
+%🍁% \item[Running:] Experiment by making changes and running different
+%🍁% versions.  Often if you display the right thing at the right place
+%🍁% in the program, the problem becomes obvious, but sometimes you have to
+%🍁% build scaffolding.
+%🍁% \item[Ruminating:] Take some time to think!  What kind of error
+%🍁% is it: syntax, runtime, or semantic?  What information can you get from
+%🍁% the error messages, or from the output of the program?  What kind of
+%🍁% error could cause the problem you're seeing?  What did you change
+%🍁% last, before the problem appeared?
+%🍁% \item[Rubberducking:] If you explain the problem to someone else, you
+%🍁%   sometimes find the answer before you finish asking the question.
+%🍁%   Often you don't need the other person; you could just talk to a rubber
+%🍁%   duck.  And that's the origin of the well-known strategy called {\bf
+%🍁%     rubber duck debugging}.  I am not making this up; see
+%🍁%   \url{https://en.wikipedia.org/wiki/Rubber_duck_debugging}.
+%🍁% \item[Retreating:] At some point, the best thing to do is back
+%🍁% off, undoing recent changes, until you get back to a program that
+%🍁% works and that you understand.  Then you can start rebuilding.
+%🍁% \end{description}
+
+\begin{description}
+
+\item [细读：]检查你的代码， 仔细地阅读， 并且检查是否实现了你的期望。
+
+\item [运行：]通过修改和运行不同的版本来不断试验。    通常， 如果你在程序中正确的地方打印了正确的东西， 问题会变得很明显， 但是有时你不得不搭建一些脚手架。
+
+\item [思考：]    花些时间思考！错误的类型是什么：语法、运行时、语义？
+    你从错误信息或者程序的输出中能获得什么信息？
+    什么类型的错误能引起你看到的问题？问题出现前， 你最后的修改是什么？
+
+\item [小黄鸭调试法(rubberducking)：]如果将你的问题解释给别人听， 有时你会发现在解释完问题之前就能找到答案。
+    你通常并不需要真的去问另外一个人；你可以对着一个小黄鸭说。
+    这就是著名的{\em 小黄鸭调试法} (rubber duck
+    debugging) 的由来。   这可不是我编造的， 看看\href{https://en.wikipedia.org/wiki/Rubber_duck_debugging}{维基的解释}。
+
+\index{维基百科}
+
+\item [回退：]有时候， 最好的做法是回退， 撤销最近的修改，
+    直到你回到一个能运行并且你能理解的程序。  然后你可以开始重建。
+
+\end{description}
+
+
+%🍁% Beginning programmers sometimes get stuck on one of these activities
+%🍁% and forget the others.  Each activity comes with its own failure
+%🍁% mode.
+
+初级程序员有时陷入这些步骤之一， 忘记了还可以做其他的事情。
+事实上， 每种方法都有失败的可能。
+
+\index{typographical error}
+
+%🍁% For example, reading your code might help if the problem is a
+%🍁% typographical error, but not if the problem is a conceptual
+%🍁% misunderstanding.  If you don't understand what your program does, you
+%🍁% can read it 100 times and never see the error, because the error is in
+%🍁% your head.
+
+例如， 如果程序是一个排版错误， 读代码可能有帮助，
+但是如果问题是概念理解错误， 则未必是这样。
+如果你不理解程序要做什么， 可能读100遍程序都不会发现错误， 因为错误在你的头脑中。
+
+\index{experimental debugging}
+
+%🍁% Running experiments can help, especially if you run small, simple
+%🍁% tests.  But if you run experiments without thinking or reading your
+%🍁% code, you might fall into a pattern I call ``random walk programming'',
+%🍁% which is the process of making random changes until the program
+%🍁% does the right thing.  Needless to say, random walk programming
+%🍁% can take a long time.
+
+试验可能会有帮助， 特别是如果你运行简单短小的测试。
+但是， 如果你不思考或者阅读你的代码， 就直接进行实验，
+你可能陷入一种我称为“随机游走编程”的模式。
+这指的是随机修改， 直到程序通过测试。
+不用说， 随机游走编程会花费很长的时间。
+
+\index{random walk programming}
+\index{development plan!random walk programming}
+
+%🍁% You have to take time to think.  Debugging is like an
+%🍁% experimental science.  You should have at least one hypothesis about
+%🍁% what the problem is.  If there are two or more possibilities, try to
+%🍁% think of a test that would eliminate one of them.
+
+你必须花时间思考。  调试就像是一门实验科学。
+你应该至少有一个关于问题是什么的假设。
+如果有两个或者更多的可能， 试着考虑利用测试消除其中一个可能。
+
+%🍁% But even the best debugging techniques will fail if there are too many
+%🍁% errors, or if the code you are trying to fix is too big and
+%🍁% complicated.  Sometimes the best option is to retreat, simplifying the
+%🍁% program until you get to something that works and that you
+%🍁% understand.
+
+但是， 如果有太多的错误， 或者你正试图修复的代码太大、太复杂，
+即使最好的调试技巧也会失败。
+有时， 最好的选择是回退， 简化程序， 直到你获得一个正常运行并且能理解的程序。
+
+%🍁% Beginning programmers are often reluctant to retreat because
+%🍁% they can't stand to delete a line of code (even if it's wrong).
+%🍁% If it makes you feel better, copy your program into another file
+%🍁% before you start stripping it down.  Then you can copy the pieces
+%🍁% back one at a time.
+
+初级程序员经常不愿意回退， 因为他们舍不得删除一行代码(即使它是错误的)。
+如果能让你好受些， 在你开始精简之前， 可以将你的代码拷贝到另一个文件中。
+然后你再把修改后的代码一块一块地拷贝回去。
+
+%🍁% Finding a hard bug requires reading, running, ruminating, and
+%🍁% sometimes retreating.  If you get stuck on one of these activities,
+%🍁% try the others.
+
+发现一个错误， 需要阅读、运行、沉思、和时而的回退。
+如果其中某个步骤没有进展， 试一下其它的。
+
+%🍁% \section{Glossary  |  术语表}
+\section{术语表}
+\begin{description}
+%🍁% \item[deterministic:] Pertaining to a program that does the same
+%🍁% thing each time it runs, given the same inputs.
+
+\item[确定性的 (deterministic)：] 指的是给定相同的输入， 一个程序每次运行的结果是一样的。
+\index{deterministic}
+
+%🍁% \item[pseudorandom:] Pertaining to a sequence of numbers that appears
+%🍁% to be random, but is generated by a deterministic program.
+
+\item[伪随机 (pseudorandom)：] 指的是一串数字看上去是随机的， 但是实际是由一个确定性程序生成的。
+\index{pseudorandom}
+
+%🍁% \item[default value:] The value given to an optional parameter if no
+%🍁% argument is provided.
+
+\item[默认值：] 没有提供实参时， 赋给可选形参的值。
+\index{default value}
+
+%🍁% \item[override:] To replace a default value with an argument.
+
+\item[覆盖：] 用实参替代默认值。
+\index{override}
+
+%🍁% \item[benchmarking:] The process of choosing between data structures
+%🍁% by implementing alternatives and testing them on a sample of the
+%🍁% possible inputs.
+
+\item[基准测试 (benchmarking)：] 通过可能的输入样本对使用不同数据结构的实现进行测试， 从而选择数据结构的过程。
+\index{benchmarking}
+
+%🍁% \item[rubber duck debugging:] Debugging by explaining your problem
+%🍁% to an inanimate object such as a rubber duck.  Articulating the
+%🍁% problem can help you solve it, even if the rubber duck doesn't know
+%🍁% Python.
+
+\item[小黄鸭调试法 (rubberducking)：] 通过向小黄鸭这样的非生物体解释你的问题来进行调试。
+    清晰地陈述问题可以帮助你解决问题， 即使小黄鸭并不懂 Python。
+
+\index{rubber duck debugging}
+\index{debugging!rubber duck}
+\end{description}
+
+%🍁% \section{Exercises  |  练习}
+\section{练习}
+\begin{exercise}
+\index{word frequency}
+\index{frequency!word}
+\index{Zipf's law}
+
+%🍁% The ``rank'' of a word is its position in a list of words
+%🍁% sorted by frequency: the most common word has rank 1, the
+%🍁% second most common has rank 2, etc.
+
+单词的``秩''是指它在按照单词频率排序的列表中的位置：
+出现频率最高的单词， 它的秩是{\em 1}， 频率第二高的单词， 它的秩是{\em 2}， 以此类推。
+
+%🍁% Zipf's law describes a relationship between the ranks and frequencies
+%🍁% of words in natural languages
+%🍁% (\url{http://en.wikipedia.org/wiki/Zipf's_law}).  Specifically, it
+%🍁% predicts that the frequency, $f$, of the word with rank $r$ is:
+
+\href{http://en.wikipedia.org/wiki/Zipf's_law}{Zipf定律} 描述了自然语言中秩和单词出现频率的关系。  特别是， 它预测对于秩为 $r$ 的单词，
+其出现的频率 $f$ 是：
+
+\[ f = c r^{-s} \]
+
+%🍁% %
+%🍁% where $s$ and $c$ are parameters that depend on the language and the
+%🍁% text.  If you take the logarithm of both sides of this equation, you
+%🍁% get:
+
+其中， $s$ 和 $c$ 是依赖于语言和文本的参数。  如果在上述等式两边取对数的话， 你可以得到：
+\index{logarithm}
+
+\[ \log f = \log c - s \log r \]
+
+%🍁% %
+%🍁% So if you plot log $f$ versus log $r$, you should get
+%🍁% a straight line with slope $-s$ and intercept log $c$.
+
+因此， 如果绘出 {\em log} $f$ 和 {\em log} $r$ 的图像， 你可以得到一条以 $-s$　为斜率、以 $c$ 为截距的直线。
+
+%🍁% Write a program that reads a text from a file, counts
+%🍁% word frequencies, and prints one line
+%🍁% for each word, in descending order of frequency, with
+%🍁% log $f$ and log $r$.  Use the graphing program of your
+%🍁% choice to plot the results and check whether they form
+%🍁% a straight line.  Can you estimate the value of $s$?
+
+编写一个程序， 从文件中读取文本， 计算单词频率， 倒序输出每个单词，
+一个单词一行， 同时在这行输出对应的 {\em log} $f$ 和 {\em log} $r$。
+使用你喜欢的绘图程序， 画出结果并检查是不是形成一条直线。
+你可以估算出 $s$ 的值吗？
+
+%🍁% Solution: \url{http://thinkpython2.com/code/zipf.py}.
+%🍁% To run my solution, you need the plotting module {\tt matplotlib}.
+%🍁% If you installed Anaconda, you already have {\tt matplotlib};
+%🍁% otherwise you might have to install it.
+\index{matplotlib}
+
+\href{http://thinkpython2.com/code/zipfpy}{参考答案}
+
+你需要安装绘图模块 \href{http://www.matplotlib.org}{{\em \li{matplotlib}}} 才能运行我的答案。
+当然如果你安装了  \href{http://www.anaconda.org}{{\em \li{Anaconda}}}， 你就已经有了 {\em \li{matplotlib}}；否则你需要安装它。
+\index{matplotlib}
+
+\end{exercise}

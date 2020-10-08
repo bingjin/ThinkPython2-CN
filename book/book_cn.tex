@@ -1,0 +1,325 @@
+%!TEX program = xelatex
+% Encoding: UTF8
+
+% LaTeX source for ``Think Python: How to Think Like a Computer Scientist''
+% Copyright (c)  2015  Allen B. Downey.Glossary
+
+% License: Creative Commons Attribution-NonCommercial 3.0 Unported License.
+% http://creativecommons.org/licenses/by-nc/3.0/
+%
+
+%\documentclass[10pt,b5paper]{book}
+%\documentclass[10pt]{book}
+\documentclass[10pt,b5paper]{ctexbook} % support chinese
+
+\usepackage[width=5.2 in,height=8in,
+  hmarginratio=3:2,vmarginratio=1:1]{geometry}
+
+% for some of these packages, you might have to install
+% texlive-latex-extra (in Ubuntu)
+
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{mathpazo}
+\usepackage{url}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsthm}
+%\usepackage{amssymb}
+\usepackage{exercise}                        % texlive-latex-extra
+\usepackage{makeidx}
+\usepackage{setspace}
+\usepackage{hevea}
+\usepackage{upquote}
+\usepackage{appendix}
+\usepackage[bookmarks]{hyperref}
+
+\usepackage{xcolor}
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{codeback}{rgb}{0.92,0.97,0.94}
+
+\newfontfamily\CodeFont{Ubuntu Mono}
+% \newfontfamily\CodeFont{Consolas}
+% \newfontfamily\CodeFont{Monaco}
+
+%🍁%
+
+\usepackage{listings}
+\lstset{ %
+  backgroundcolor=\color{codeback},    % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+  basicstyle=\linespread{0.95}\footnotesize\CodeFont,   % the size of the fonts that are used for the code
+  breakatwhitespace=false,           % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                   % sets automatic line breaking
+  captionpos=bl,                     % sets the caption-position to bottom
+  commentstyle=\color{mygreen},      % comment style
+  deletekeywords={...},              % if you want to delete keywords from the given language
+  escapeinside={\%*}{*)},            % if you want to add LaTeX within your code
+  extendedchars=true,                % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  frame=single,                      % adds a frame around the code
+  frameround=ftft,
+  keepspaces=true,                   % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},         % keyword style
+  language=Python,                   % the language of the code
+  morekeywords={*,...},              % if you want to add more keywords to the set
+  numbers=none,                      % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                     % how far the line-numbers are from the code
+  numberstyle=\tiny\CodeFont\color{mygray},   % the style that is used for the line-numbers
+  rulecolor=\color{mygray},          % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                  % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=true,             % underline spaces within strings only
+  showtabs=true,                     % show tabs within strings adding particular underscores
+  stepnumber=1,                      % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{orange},        % string literal style
+  tabsize=2,                         % sets default tabsize to 2 spaces
+  %title=myPython.py                 % show the filename of files included with \lstinputlisting; also try caption instead of title
+  xleftmargin = 2em,
+  xrightmargin = 2em,
+  aboveskip = 1.5 em
+}
+
+\newcommand{\li}{\lstinline}
+
+\title{Think Python}
+\author{Allen B. Downey}
+\newcommand{\thetitle}{Think Python: How to Think Like a Computer Scientist}
+\newcommand{\theversion}{2nd Edition, Version 2.2.14}
+\newcommand{\thedate}{}
+
+% these styles get translated in CSS for the HTML version
+\newstyle{a:link}{color:black;}
+\newstyle{p+p}{margin-top:1em;margin-bottom:1em}
+\newstyle{img}{border:0px}
+
+% change the arrows
+\setlinkstext
+  {\imgsrc[ALT="Previous"]{back.png}}
+  {\imgsrc[ALT="Up"]{up.png}}
+  {\imgsrc[ALT="Next"]{next.png}}
+
+\makeindex
+
+\newif\ifplastex
+\plastexfalse
+
+\begin{document}
+
+\frontmatter
+
+% PLASTEX ONLY
+\ifplastex
+    \usepackage{localdef}
+    \maketitle
+
+\newcount\anchorcnt
+\newcommand*{\Anchor}[1]{%
+  \@bsphack%
+    \Hy@GlobalStepCount\anchorcnt%
+    \edef\@currentHref{anchor.\the\anchorcnt}%
+    \Hy@raisedlink{\hyper@anchorstart{\@currentHref}\hyper@anchorend}%
+    \M@gettitle{}\label{#1}%
+    \@esphack%
+}
+
+\else
+% skip the following for plastex
+
+\newtheorem{exercise}{Exercise}[chapter]
+
+% LATEXONLY
+
+\input{latexonly}
+
+\begin{latexonly}
+
+\renewcommand{\blankpage}{\thispagestyle{empty} \quad \newpage}
+
+%\blankpage
+%\blankpage
+
+% TITLE PAGES FOR LATEX VERSION
+
+%-half title--------------------------------------------------
+\thispagestyle{empty}
+
+\begin{flushright}
+\vspace*{2.0in}
+
+\begin{spacing}{3}
+{\huge Think Python}\\
+{\Large How to Think Like a Computer Scientist \\ {\bf 像计算机科学家一样思考}}
+\end{spacing}
+
+\vspace{0.25in}
+
+\theversion
+
+\thedate
+
+\vfill
+
+\end{flushright}
+
+%--verso------------------------------------------------------
+
+\blankpage
+\blankpage
+%\clearemptydoublepage
+%\pagebreak
+%\thispagestyle{empty}
+%\vspace*{6in}
+
+%--title page--------------------------------------------------
+\pagebreak
+\thispagestyle{empty}
+
+\begin{flushright}
+\vspace*{2.0in}
+
+\begin{spacing}{3}
+{\huge Think Python}\\
+{\Large How to Think Like a Computer Scientist \\ {\bf 像计算机科学家一样思考}}
+\end{spacing}
+
+\vspace{0.25in}
+
+\theversion
+
+\thedate
+{\scriptsize \today}
+
+\vspace{1in}
+
+
+{\Large
+Allen Downey\\
+}
+
+
+\vspace{0.5in}
+
+{\Large Green Tea Press}
+
+{\small Needham, Massachusetts}
+
+% \includegraphics[width=1in]{../source/figs/logo1.pdf}
+\vfill
+
+\end{flushright}
+
+
+%--copyright--
+\pagebreak
+\thispagestyle{empty}
+
+{\small
+Copyright \copyright ~2015 Allen Downey.
+
+
+\vspace{0.2in}
+
+\begin{flushleft}
+Green Tea Press       \\
+9 Washburn Ave        \\
+Needham MA 02492
+\end{flushleft}
+
+Permission is granted to copy, distribute, and/or modify this document
+under the terms of the Creative Commons Attribution-NonCommercial 3.0 Unported
+License, which is available at \url{http://creativecommons.org/licenses/by-nc/3.0/}.
+
+The original form of this book is \LaTeX\ source code.  Compiling this
+\LaTeX\ source has the effect of generating a device-independent
+representation of a textbook, which can be converted to other formats
+and printed.
+
+The \LaTeX\ source for this book is available from
+\url{http://www.thinkpython2.com}
+
+\vspace{0.2in}
+
+} % end small
+
+\end{latexonly}
+
+
+% HTMLONLY
+
+\begin{htmlonly}
+
+% TITLE PAGE FOR HTML VERSION
+
+{\Large \thetitle}
+
+{\large Allen B. Downey}
+
+\theversion
+
+\thedate
+
+\setcounter{chapter}{-1}
+
+\end{htmlonly}
+
+\fi
+% END OF THE PART WE SKIP FOR PLASTEX
+
+\include{chpt_0_preface}
+
+% START THE BOOK
+\mainmatter
+
+\include{chpt_01_way_of_program}
+
+\include{chpt_02_variables}
+
+\include{chpt_03_functions}
+
+\include{chpt_04_interface_design}
+
+\include{chpt_05_conditionals_and_recursion}
+
+\include{chpt_06_fruitful_functions}
+
+\include{chpt_07_iteration}
+
+\include{chpt_08_strings}
+
+\include{chpt_09_word_play}
+
+\include{chpt_10_lists}
+
+\include{chpt_11_dictionaries}
+
+\include{chpt_12_tuples}
+
+\include{chpt_13_cs_data_structure_selection}
+
+\include{chpt_14_files}
+
+\include{chpt_15_classes_and_objects}
+
+\include{chpt_16_classes_and_functions}
+
+\include{chpt_17_classes_and_methods}
+
+\include{chpt_18_inheritance}
+
+\include{chpt_19_the_goodies}
+
+\appendix
+
+\include{chpt_20_debugging}
+
+\include{chpt_21_analysis_of_algorithms}
+
+\printindex
+
+\clearemptydoublepage
+
+%\blankpage
+%\blankpage
+%\blankpage
+
+\end{document}

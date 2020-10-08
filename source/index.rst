@@ -3,15 +3,14 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-《Think Python 2ed》最新版中文翻译
+《Think Python 2e》中文版
 ========================================================================
 
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
-   foreword
    00-preface
    01-the-way-of-the-program
    02-variables-expressions-and-statements
@@ -24,12 +23,21 @@ Contents:
    09-case-study-word-play
    10-lists
    11-dictionaries
+   12-tuples
+   13-case-study-data-structure-selection
+   14-files.rst
+   15-classes-and-objects
+   16-classes-and-functions
+   17-classes-and-methods
+   18-inheritance
+   19-the-goodies
+   20-debugging
+   21-analysis-of-algorithms
+   foreword
 
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
+.. Indices and tables
+   ==================
+   * :ref:`genindex`
+   * :ref:`modindex`
+   * :ref:`search`
